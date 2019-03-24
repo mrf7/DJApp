@@ -17,7 +17,7 @@ import retrofit.Callback
 import retrofit.RetrofitError
 import retrofit.client.Response
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class TestingStuff : AppCompatActivity(), View.OnClickListener {
 
     // static members stored in companion object
     companion object {
@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        button.setOnClickListener(this)
         mSpotifyApi = SpotifyApi()
         Log.d("MainAct", "Create")
         when {
