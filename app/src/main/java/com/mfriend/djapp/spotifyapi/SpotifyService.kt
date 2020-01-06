@@ -1,5 +1,7 @@
 package com.mfriend.djapp.spotifyapi
 
+import com.mfriend.djapp.spotifyapi.models.Playlist
+import com.mfriend.djapp.spotifyapi.models.Response
 import com.mfriend.djapp.spotifyapi.models.User
 import retrofit2.http.GET
 
@@ -12,4 +14,7 @@ import retrofit2.http.GET
 interface SpotifyService {
     @GET("me")
     suspend fun getCurrentUser(): User
+
+    @GET("me/playlists")
+    suspend fun getUsersPlaylists(): Response<Playlist>
 }

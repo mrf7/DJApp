@@ -1,8 +1,9 @@
-package com.mfriend.djapp
+package com.mfriend.djapp.tempUi
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.commit
+import com.mfriend.djapp.R
 
 
 class ApiActivity : AppCompatActivity() {
@@ -14,7 +15,6 @@ class ApiActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             supportFragmentManager.commit {
                 replace(R.id.container, ApiFragment.newInstance(apiToken))
-                addToBackStack("api")
             }
         }
     }
