@@ -3,27 +3,23 @@ package com.mfriend.djapp.tempUi
 import androidx.lifecycle.*
 import com.mfriend.djapp.spotifyapi.ApiFactory
 import com.mfriend.djapp.spotifyapi.models.Playlist
-import com.mfriend.djapp.spotifyapi.models.User
 import kotlinx.coroutines.launch
 
-class ApiViewModel(authToken: String) : ViewModel() {
-    private val _user = MutableLiveData<User>()
+class PlaylistViewModel(authToken: String) : ViewModel() {
+
     private val spotifyService = ApiFactory.getSpotifyService(authToken)
+    private val _playlists: MutableLiveData<List<Playlist>> = MutableLiveData()
 
-    val user: LiveData<User>
-        get() = _user
+    val playlists: LiveData<List<Playlist>> = _playlists
 
-    fun fetchUserClicked() {
+    fun fetchPlaylistsClicked() {
         viewModelScope.launch {
-            _user.value = spotifyService.getCurrentUser()
+            _playlists.value = spotifyService.getUsersPlaylists().items
         }
     }
-
-
-
     class ApiViewModelFactory(private val authToken: String) : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return ApiViewModel(authToken) as T
+            return PlaylistViewModel(authToken) as T
         }
     }
 }
