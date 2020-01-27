@@ -9,16 +9,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mfriend.djapp.AuthFragment
 import com.mfriend.djapp.R
 import com.mfriend.djapp.spotifyapi.models.User
 import kotlinx.android.synthetic.main.api_fragment.*
 
 class ApiFragment : Fragment() {
-
+    val args: ApiFragmentArgs by navArgs()
 
     private val viewModel: ApiViewModel by viewModels {
-        ApiViewModel.ApiViewModelFactory(requireArguments()[API_TOKEN] as String)
+        ApiViewModel.ApiViewModelFactory(args.authToken)
     }
 
     override fun onCreateView(
@@ -37,18 +39,12 @@ class ApiFragment : Fragment() {
         }
 
         btn_fetch_playlists.setOnClickListener {
-            val action = ApiFragmentDirections.actionApiFragmentToPlaylistFragment(requireArguments()[API_TOKEN] as String)
+            val action =
+                ApiFragmentDirections.actionApiFragmentToPlaylistFragment(args.authToken)
             findNavController().navigate(action)
         }
         viewModel.user.observe(this) { user: User ->
             tv_user.text = user.displayName
-        }
-    }
-
-    companion object {
-        private const val API_TOKEN = "api_token"
-        fun newInstance(apiToken: String) = ApiFragment().apply {
-            arguments = bundleOf(API_TOKEN to apiToken)
         }
     }
 }
