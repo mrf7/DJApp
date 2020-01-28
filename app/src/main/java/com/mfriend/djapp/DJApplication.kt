@@ -7,19 +7,18 @@
 package com.mfriend.djapp
 
 import android.app.Application
-import com.mfriend.djapp.spotifyapi.ApiFactory
+import com.mfriend.djapp.spotifyapi.SpotifyModule
+import org.koin.android.ext.koin.androidContext
+import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
-import org.koin.dsl.module
 
 class DJApplication : Application() {
-    private val appModule = module {
-        single {
-            ApiFactory.getSpotifyService(get())
-        }
-    }
-
     override fun onCreate() {
         super.onCreate()
-        startKoin { }
+        startKoin {
+            androidContext(this@DJApplication)
+            androidLogger()
+            modules(listOf(SpotifyModule.get(), appModule))
+        }
     }
 }

@@ -1,6 +1,7 @@
 package com.mfriend.djapp.spotifyapi
 
 import okhttp3.OkHttpClient
+import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
@@ -10,7 +11,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  * Created by MFriend on 2020-01-05.
  * Copyright (c) 2020 Lutron. All rights reserved.
  */
-object ApiFactory {
+object SpotifyModule {
     private const val SPOTIFY_WEB_ABI_URL = "https://api.spotify.com/v1/"
     private fun retrofit(authToken: String): Retrofit = Retrofit.Builder().apply {
         client(getClient(authToken))
@@ -29,6 +30,11 @@ object ApiFactory {
         }.build()
     }
 
-    fun getSpotifyService(authToken: String): SpotifyService =
-        retrofit(authToken).create(SpotifyService::class.java)
+    fun get() = module {
+        single {
+            val authToken: String = getKoin().getProperty("authToken")
+                ?: throw IllegalStateException("Auth token not set")
+            retrofit(authToken).create(SpotifyService::class.java)
+        }
+    }
 }

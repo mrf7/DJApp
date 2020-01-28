@@ -4,16 +4,17 @@ package com.mfriend.djapp
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.mfriend.djapp.tempUi.ApiActivity
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
 import kotlinx.android.synthetic.main.fragment_auth.*
+import org.koin.android.ext.android.getKoin
+import org.koin.core.logger.KOIN_TAG
 
 /**
  * A simple [Fragment] subclass.
@@ -76,7 +77,9 @@ class AuthFragment : Fragment() {
 
     private fun handleResponseSuccess(response: AuthenticationResponse) {
         Log.d(LOGGER_TAG, "response: ${response.accessToken} expires ${response.expiresIn}")
-        val action = AuthFragmentDirections.actionAuthFragmentToApiFragment(response.accessToken)
+        Log.d(KOIN_TAG, "Setting koin property for auth token")
+        getKoin().setProperty("authToken", response.accessToken)
+        val action = AuthFragmentDirections.actionAuthFragmentToApiFragment()
         Log.d("MRF", "Navigating to api fragment")
         findNavController().navigate(action)
     }

@@ -4,24 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.mfriend.djapp.AuthFragment
 import com.mfriend.djapp.R
 import com.mfriend.djapp.spotifyapi.models.User
 import kotlinx.android.synthetic.main.api_fragment.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ApiFragment : Fragment() {
-    val args: ApiFragmentArgs by navArgs()
-
-    private val viewModel: ApiViewModel by viewModels {
-        ApiViewModel.ApiViewModelFactory(args.authToken)
-    }
+    private val apiViewModel: ApiViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,15 +27,15 @@ class ApiFragment : Fragment() {
 
 
         btn_fetch_user.setOnClickListener {
-            viewModel.fetchUserClicked()
+            apiViewModel.fetchUserClicked()
         }
 
         btn_fetch_playlists.setOnClickListener {
             val action =
-                ApiFragmentDirections.actionApiFragmentToPlaylistFragment(args.authToken)
+                ApiFragmentDirections.actionApiFragmentToPlaylistFragment()
             findNavController().navigate(action)
         }
-        viewModel.user.observe(this) { user: User ->
+        apiViewModel.user.observe(this) { user: User ->
             tv_user.text = user.displayName
         }
     }

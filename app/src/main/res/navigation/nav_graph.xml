@@ -9,29 +9,22 @@
             android:id="@+id/apiFragment"
             android:name="com.mfriend.djapp.tempUi.ApiFragment"
             android:label="api_fragment"
-            tools:layout="@layout/api_fragment" >
+            tools:layout="@layout/api_fragment">
         <action
                 android:id="@+id/action_apiFragment_to_playlistFragment"
                 app:destination="@id/playlistFragment"
                 app:popUpTo="@+id/apiFragment" />
-        <argument
-                android:name="authToken"
-                app:argType="string" />
     </fragment>
     <fragment
             android:id="@+id/playlistFragment"
-            android:name="com.mfriend.djapp.PlaylistFragment"
+            android:name="com.mfriend.djapp.tempUi.PlaylistFragment"
             android:label="fragment_playlist"
-            tools:layout="@layout/fragment_playlist" >
-        <argument
-                android:name="apiToken"
-                app:argType="string" />
-    </fragment>
+            tools:layout="@layout/fragment_playlist" />
     <fragment
             android:id="@+id/authFragment"
             android:name="com.mfriend.djapp.AuthFragment"
             android:label="fragment_auth"
-            tools:layout="@layout/fragment_auth" >
+            tools:layout="@layout/fragment_auth">
         <action
                 android:id="@+id/action_authFragment_to_apiFragment"
                 app:destination="@id/apiFragment"
