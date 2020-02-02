@@ -1,6 +1,5 @@
 /*
- * Copyright (c) 2020 Lutron. All rights reserved.
- */
+  */
 package com.mfriend.djapp.spotifyapi.models
 
 import com.squareup.moshi.Json
