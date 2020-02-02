@@ -3,6 +3,7 @@ package com.mfriend.djapp.spotifyapi.models
 
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
 data class Playlist(
@@ -18,4 +19,4 @@ data class Playlist(
     val `public`: Boolean,
     @Json(name = "uri")
     val uri: String
-)
+) : Serializable

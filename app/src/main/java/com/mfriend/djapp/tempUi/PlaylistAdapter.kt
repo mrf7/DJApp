@@ -14,7 +14,10 @@ import com.mfriend.djapp.spotifyapi.models.Playlist
  * Created by mfriend on 2020-01-05.
  * TODO mfriend WRITE CLASS HEADER
  */
-class PlaylistAdapter(var items: List<Playlist>) :
+class PlaylistAdapter(
+    var items: List<Playlist>,
+    private val onItemClickListener: ((Playlist) -> Unit)? = null
+) :
     RecyclerView.Adapter<PlaylistViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val inflatedView =
@@ -25,14 +28,19 @@ class PlaylistAdapter(var items: List<Playlist>) :
     override fun getItemCount(): Int = items.size
 
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
-        holder.bindPlaylist(items[position])
+        holder.bindPlaylist(items[position], onItemClickListener)
     }
 }
 
 class PlaylistViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
-    fun bindPlaylist(playlist: Playlist) {
-        view.findViewById<TextView>(R.id.PlaylistName).text = playlist.name
+    fun bindPlaylist(playlist: Playlist, onItemClickListener: ((Playlist) -> Unit)?) {
+        view.findViewById<TextView>(R.id.tv_playlist_name).text = playlist.name
         view.findViewById<TextView>(R.id.tv_description).text = playlist.description
+        view.setOnClickListener {
+            if (onItemClickListener != null) {
+                onItemClickListener(playlist)
+            }
+        }
     }
 
 }

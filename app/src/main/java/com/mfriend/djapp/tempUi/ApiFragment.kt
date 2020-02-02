@@ -32,7 +32,7 @@ class ApiFragment : Fragment() {
 
         btn_fetch_playlists.setOnClickListener {
             val action =
-                ApiFragmentDirections.actionApiFragmentToPlaylistFragment()
+                ApiFragmentDirections.actionShowPlaylists()
             findNavController().navigate(action)
         }
         apiViewModel.user.observe(this) { user: User ->
