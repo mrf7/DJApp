@@ -17,7 +17,7 @@ import com.mfriend.djapp.spotifyapi.models.User
 import kotlinx.android.synthetic.main.api_fragment.*
 
 class ApiFragment : Fragment() {
-    val args: ApiFragmentArgs by navArgs()
+    private val args: ApiFragmentArgs by navArgs()
 
     private val viewModel: ApiViewModel by viewModels {
         ApiViewModel.ApiViewModelFactory(args.authToken)

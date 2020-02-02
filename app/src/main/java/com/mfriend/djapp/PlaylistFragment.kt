@@ -15,14 +15,14 @@ import kotlinx.android.synthetic.main.fragment_playlist.*
 
 
 /**
-* TODO WRite Class header
+ * Fragment to display the current users playlists
  */
 class PlaylistFragment : Fragment() {
 
     private val args: PlaylistFragmentArgs by navArgs()
 
     private val viewModel: PlaylistViewModel by viewModels {
-       PlaylistViewModel.ApiViewModelFactory(args.apiToken)
+        PlaylistViewModel.ApiViewModelFactory(args.apiToken)
     }
 
     override fun onCreateView(
@@ -31,6 +31,7 @@ class PlaylistFragment : Fragment() {
     ): View {
         return inflater.inflate(R.layout.fragment_playlist, container, false)
     }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val playlistAdapter = PlaylistAdapter(listOf())
