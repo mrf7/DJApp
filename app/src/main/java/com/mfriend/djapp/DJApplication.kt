@@ -1,8 +1,7 @@
 /**
- * TODO MRF Write Class header
+ * Application to initialize app level things like Koin
  *
  * Created by MFriend on 2020-01-27.
- * Copyright (c) 2020 Lutron. All rights reserved.
  */
 package com.mfriend.djapp
 
