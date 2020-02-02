@@ -1,20 +1,36 @@
 package com.mfriend.djapp
 
+
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import com.mfriend.djapp.tempUi.ApiActivity
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
-import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_auth.*
 
-class AuthActivity : AppCompatActivity() {
+/**
+ * A simple [Fragment] subclass.
+ */
+class AuthFragment : Fragment() {
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_auth, container, false)
+
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         button.setOnClickListener {
             val authRequest: AuthenticationRequest =
                 AuthenticationRequest.Builder(
@@ -36,7 +52,9 @@ class AuthActivity : AppCompatActivity() {
                         )
                         build()
                     }
-            AuthenticationClient.openLoginActivity(this, REQUEST_CODE, authRequest)
+            val authIntent =
+                AuthenticationClient.createLoginActivityIntent(requireActivity(), authRequest)
+            startActivityForResult(authIntent, REQUEST_CODE)
         }
     }
 
@@ -58,10 +76,9 @@ class AuthActivity : AppCompatActivity() {
 
     private fun handleResponseSuccess(response: AuthenticationResponse) {
         Log.d(LOGGER_TAG, "response: ${response.accessToken} expires ${response.expiresIn}")
-        val intent = Intent(this, ApiActivity::class.java).apply {
-            putExtra(ApiActivity.KEY_API_TOKEN, response.accessToken)
-        }
-        startActivity(intent)
+        val action = AuthFragmentDirections.actionAuthFragmentToApiFragment(response.accessToken)
+        Log.d("MRF", "Navigating to api fragment")
+        findNavController().navigate(action)
     }
 
     private fun handleResponseError(response: AuthenticationResponse) {
@@ -72,6 +89,5 @@ class AuthActivity : AppCompatActivity() {
         const val REQUEST_CODE = 69
         const val REDIRECT_URI = "http://com.mfriend.djapp/callback"
         const val CLIENT_ID = "bc77027fdfd54c0091c11fcc1895c5dd"
-        const val CLIENT_SECRET = "3be165a3b18a42d8b6e48db65dea8a92"
     }
 }
