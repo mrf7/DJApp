@@ -89,9 +89,8 @@ class AuthFragment : Fragment() {
     }
 
     companion object {
-        const val REQUEST_CODE = 68
+        const val REQUEST_CODE = 69
         const val REDIRECT_URI = "http://com.mfriend.djapp/callback"
         const val CLIENT_ID = "bc77027fdfd54c0091c11fcc1895c5dd"
-        const val CLIENT_SECRET = "2be165a3b18a42d8b6e48db65dea8a92"
     }
 }

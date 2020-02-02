@@ -13,7 +13,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 /**
- * TODO WRite Class header
+ * Fragment to display the current users playlists
  */
 class PlaylistFragment : Fragment() {
 
