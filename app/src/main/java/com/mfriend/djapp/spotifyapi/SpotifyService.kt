@@ -3,7 +3,8 @@ package com.mfriend.djapp.spotifyapi
 import com.mfriend.djapp.spotifyapi.models.Playlist
 import com.mfriend.djapp.spotifyapi.models.Response
 import com.mfriend.djapp.spotifyapi.models.User
-import retrofit2.http.GET
+import okhttp3.RequestBody
+import retrofit2.http.*
 
 
 /**
@@ -17,4 +18,8 @@ interface SpotifyService {
 
     @GET("me/playlists")
     suspend fun getUsersPlaylists(): Response<Playlist>
+
+    @Headers("Content-Type: application/json", "Accept: application/json")
+    @POST("users/{user_id}/playlists")
+    suspend fun createPlaylist(@Body playlist: RequestBody, @Path("user_id") userId: String): Playlist
 }

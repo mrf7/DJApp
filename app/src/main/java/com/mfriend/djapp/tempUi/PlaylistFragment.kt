@@ -34,12 +34,20 @@ class PlaylistFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         // Create adapter and notify view model when an item is selected
         val playlistAdapter = PlaylistAdapter(listOf(), playlistViewModel::playlistSelected)
-        val dividerItemDecoration =
-            DividerItemDecoration(rv_playlists.context, LinearLayoutManager.VERTICAL)
+        // Add dividers
+        rv_playlists.apply {
+            val dividerItemDecoration =
+                DividerItemDecoration(rv_playlists.context, LinearLayoutManager.VERTICAL)
 
-        rv_playlists.layoutManager = LinearLayoutManager(requireContext())
-        rv_playlists.adapter = playlistAdapter
-        rv_playlists.addItemDecoration(dividerItemDecoration)
+            addItemDecoration(dividerItemDecoration)
+            layoutManager = LinearLayoutManager(requireContext())
+            adapter = playlistAdapter
+        }
+
+        btn_new_playlist.setOnClickListener {
+            playlistViewModel.newPlaylistPressed(et_playlist_name.text.toString())
+        }
+
         playlistViewModel.playlists.observe(this) {
             playlistAdapter.items = it
             playlistAdapter.notifyDataSetChanged()
