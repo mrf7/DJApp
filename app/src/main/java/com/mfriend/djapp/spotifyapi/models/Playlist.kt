@@ -20,3 +20,13 @@ data class Playlist(
     @Json(name = "uri")
     val uri: String
 ) : Serializable
+
+@JsonClass(generateAdapter = true)
+data class PlaylistDTO(
+    @Json(name = "name")
+    val name: String,
+    @Json(name = "description")
+    val description: String? = null,
+    @Json(name = "public")
+    val isPublic: Boolean = false
+)

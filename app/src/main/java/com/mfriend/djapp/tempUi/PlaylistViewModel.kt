@@ -4,9 +4,8 @@ import androidx.lifecycle.*
 import com.mfriend.djapp.Event
 import com.mfriend.djapp.spotifyapi.SpotifyService
 import com.mfriend.djapp.spotifyapi.models.Playlist
+import com.mfriend.djapp.spotifyapi.models.PlaylistDTO
 import kotlinx.coroutines.launch
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.HttpException
 
 class PlaylistViewModel(private val spotifyService: SpotifyService) : ViewModel() {
@@ -24,9 +23,10 @@ class PlaylistViewModel(private val spotifyService: SpotifyService) : ViewModel(
 
     fun newPlaylistPressed(playlistName: String) {
         viewModelScope.launch {
+            // Need user id for the request for some reason.
+            // TODO Cache it somewhere so we dont fetch it when creating a new playlist
             val userId = spotifyService.getCurrentUser().id
-            val newPlaylist =
-                """{"name": "$playlistName"}"""".toRequestBody("application/json".toMediaTypeOrNull())
+            val newPlaylist = PlaylistDTO(playlistName, "Playlist made by DJ App")
             val createdPlaylist = try {
                 spotifyService.createPlaylist(newPlaylist, userId)
             } catch (e: HttpException) {
