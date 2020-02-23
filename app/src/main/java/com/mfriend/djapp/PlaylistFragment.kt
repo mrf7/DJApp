@@ -1,4 +1,4 @@
-package com.mfriend.djapp.tempUi
+package com.mfriend.djapp
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +9,7 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mfriend.djapp.R
-import com.mfriend.djapp.observeEvent
+import com.mfriend.djapp.helper.observeEvent
 import kotlinx.android.synthetic.main.fragment_playlist.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -33,7 +32,10 @@ class PlaylistFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         // Create adapter and notify view model when an item is selected
-        val playlistAdapter = PlaylistAdapter(listOf(), playlistViewModel::playlistSelected)
+        val playlistAdapter = PlaylistAdapter(
+            listOf(),
+            playlistViewModel::playlistSelected
+        )
         // Add dividers
         rv_playlists.apply {
             val dividerItemDecoration =
@@ -52,8 +54,11 @@ class PlaylistFragment : Fragment() {
             playlistAdapter.items = it
             playlistAdapter.notifyDataSetChanged()
         }
-        playlistViewModel.selectedPlaylist.observeEvent(this) {
-            val action = PlaylistFragmentDirections.actionPlaylistSelected(it)
+        playlistViewModel.selectedPlaylistDto.observeEvent(this) {
+            val action =
+                PlaylistFragmentDirections.actionPlaylistSelected(
+                    it
+                )
             findNavController().navigate(action)
         }
     }

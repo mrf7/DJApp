@@ -1,9 +1,9 @@
 package com.mfriend.djapp.spotifyapi
 
-import com.mfriend.djapp.spotifyapi.models.Playlist
-import com.mfriend.djapp.spotifyapi.models.PlaylistDTO
+import com.mfriend.djapp.spotifyapi.models.PlaylistDto
+import com.mfriend.djapp.spotifyapi.models.PlaylistRequestDto
 import com.mfriend.djapp.spotifyapi.models.Response
-import com.mfriend.djapp.spotifyapi.models.User
+import com.mfriend.djapp.spotifyapi.models.UserDto
 import retrofit2.http.*
 
 
@@ -15,28 +15,28 @@ import retrofit2.http.*
 interface SpotifyService {
 
     /**
-     * Returns the currently authenticated [User]
+     * Returns the currently authenticated [UserDto]
      */
     @GET("me")
-    suspend fun getCurrentUser(): User
+    suspend fun getCurrentUser(): UserDto
 
     /**
      * Gets the playlists the currently authenticated user has on their account
      * TODO find a way to intercept the response and unwrap it into either [Response.items] or an error
      *
-     * @return A [Response] that contains a list of [Playlist] in [Response.items]
+     * @return A [Response] that contains a list of [PlaylistDto] in [Response.items]
      */
     @GET("me/playlists")
-    suspend fun getUsersPlaylists(): Response<Playlist>
+    suspend fun getUsersPlaylists(): Response<PlaylistDto>
 
     /**
-     * Creates a [Playlist] for the currently authenticated [User] from a given [PlaylistDTO] and returns it
+     * Creates a [PlaylistDto] for the currently authenticated [UserDto] from a given [PlaylistRequestDto] and returns it
      *
      * TODO cache userId so its not required
      */
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("users/{user_id}/playlists")
-    suspend fun createPlaylist(@Body playlist: PlaylistDTO, @Path("user_id") userId: String): Playlist
+    suspend fun createPlaylist(@Body playlist: PlaylistRequestDto, @Path("user_id") userId: String): PlaylistDto
 
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("playlists/{playlist_id}/tracks")

@@ -6,7 +6,7 @@ import com.squareup.moshi.JsonClass
 import java.io.Serializable
 
 @JsonClass(generateAdapter = true)
-data class Playlist(
+data class PlaylistDto(
     @Json(name = "description")
     val description: String?,
     @Json(name = "href")
@@ -22,7 +22,7 @@ data class Playlist(
 ) : Serializable
 
 @JsonClass(generateAdapter = true)
-data class PlaylistDTO(
+data class PlaylistRequestDto(
     @Json(name = "name")
     val name: String,
     @Json(name = "description")
