@@ -37,4 +37,8 @@ interface SpotifyService {
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("users/{user_id}/playlists")
     suspend fun createPlaylist(@Body playlist: PlaylistDTO, @Path("user_id") userId: String): Playlist
+
+    @Headers("Content-Type: application/json", "Accept: application/json")
+    @POST("playlists/{playlist_id}/tracks")
+    suspend fun addSong(@Path("playlist_id") playlistId: String, @Query("uris") songUri: String)
 }
