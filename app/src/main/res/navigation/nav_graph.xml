@@ -11,7 +11,7 @@
             android:label="api_fragment"
             tools:layout="@layout/api_fragment">
         <action
-                android:id="@+id/action_apiFragment_to_playlistFragment"
+                android:id="@+id/action_showPlaylists"
                 app:destination="@id/playlistFragment"
                 app:popUpTo="@+id/apiFragment" />
     </fragment>
@@ -19,15 +19,29 @@
             android:id="@+id/playlistFragment"
             android:name="com.mfriend.djapp.tempUi.PlaylistFragment"
             android:label="fragment_playlist"
-            tools:layout="@layout/fragment_playlist" />
+            tools:layout="@layout/fragment_playlist">
+        <action
+                android:id="@+id/action_playlistSelected"
+                app:destination="@id/addSongFragment"
+                app:popUpTo="@+id/playlistFragment" />
+    </fragment>
     <fragment
             android:id="@+id/authFragment"
             android:name="com.mfriend.djapp.AuthFragment"
             android:label="fragment_auth"
             tools:layout="@layout/fragment_auth">
         <action
-                android:id="@+id/action_authFragment_to_apiFragment"
+                android:id="@+id/action_showApiFragment"
                 app:destination="@id/apiFragment"
                 app:popUpTo="@+id/authFragment" />
+    </fragment>
+    <fragment
+            android:id="@+id/addSongFragment"
+            android:name="com.mfriend.djapp.AddSongFragment"
+            android:label="fragment_add_song"
+            tools:layout="@layout/fragment_add_song">
+        <argument
+                android:name="selectedPlaylist"
+                app:argType="com.mfriend.djapp.spotifyapi.models.Playlist" />
     </fragment>
 </navigation>
