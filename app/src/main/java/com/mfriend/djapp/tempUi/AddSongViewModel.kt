@@ -1,15 +1,13 @@
 package com.mfriend.djapp.tempUi
 
 import android.util.Log
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.mfriend.djapp.db.daos.TrackDao
 import com.mfriend.djapp.db.entities.Track
 import com.mfriend.djapp.spotifyapi.SpotifyService
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 /**
  * ViewModel for the screen to add a song to a slected playlist
@@ -30,10 +28,11 @@ class AddSongViewModel(
     /**
      *
      */
-    val songs: LiveData<List<Track>>
-        get() = _songs
+    val songs: LiveData<List<Track>> = liveData {
+        emit(emptyList())
+        emitSource(trackDao.getAllFlow().asLiveData())
+    }
 
-    private val _songs = MutableLiveData<List<Track>>()
 
     /**
      *  LiveData for result of request
@@ -47,22 +46,26 @@ class AddSongViewModel(
 
     fun fillRequestsList() {
         viewModelScope.launch {
-            trackDao.insert(
-                Track("1", "Song", "lil b", "the album"),
-                Track("2", "Song", "lil b", "the album"),
-                Track("3", "Song", "lil b", "the album"),
-                Track("4", "Song", "lil b", "the album"),
-                Track("4", "Song", "lil b", "the album"),
-                Track("5", "Song", "lil b", "the album"),
-                Track("6", "Song", "lil b", "the album"),
-                Track("7", "Song", "lil b", "the album"),
-                Track("8", "Song", "lil b", "the album"),
-                Track("9", "Song", "lil b", "the album"),
-                Track("10", "Song", "lil b", "the album"),
-                Track("11", "Song", "lil b", "the album")
-            )
-
-            _songs.value = trackDao.getAll()
+            val tracks = trackDao.getAll()
+            if (tracks.isEmpty()) {
+                trackDao.insert(
+                    Track("1", "Song", "lil b", "the album"),
+                    Track("2", "Song", "lil b", "the album"),
+                    Track("3", "Song", "lil b", "the album"),
+                    Track("4", "Song", "lil b", "the album"),
+                    Track("4", "Song", "lil b", "the album"),
+                    Track("5", "Song", "lil b", "the album"),
+                    Track("6", "Song", "lil b", "the album"),
+                    Track("7", "Song", "lil b", "the album"),
+                    Track("8", "Song", "lil b", "the album"),
+                    Track("9", "Song", "lil b", "the album"),
+                    Track("10", "Song", "lil b", "the album"),
+                    Track("11", "Song", "lil b", "the album")
+                )
+            } else {
+                val removeTrack = tracks[Random.nextInt(0, tracks.size)]
+                trackDao.delete(removeTrack)
+            }
         }
     }
 
