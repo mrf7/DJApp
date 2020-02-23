@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import com.mfriend.djapp.R
-import com.mfriend.djapp.spotifyapi.models.User
+import com.mfriend.djapp.spotifyapi.models.UserDto
 import kotlinx.android.synthetic.main.api_fragment.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -35,8 +35,8 @@ class ApiFragment : Fragment() {
                 ApiFragmentDirections.actionShowPlaylists()
             findNavController().navigate(action)
         }
-        apiViewModel.user.observe(this) { user: User ->
-            tv_user.text = user.displayName
+        apiViewModel.userDto.observe(this) { userDto: UserDto ->
+            tv_user.text = userDto.displayName
         }
     }
 }

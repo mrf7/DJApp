@@ -18,6 +18,7 @@ class DJApplication : Application() {
         startKoin {
             androidContext(this@DJApplication)
             androidLogger()
+
             modules(listOf(SpotifyModule.get(),
                 appModule
             ))

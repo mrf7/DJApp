@@ -42,6 +42,6 @@
             tools:layout="@layout/fragment_add_song">
         <argument
                 android:name="selectedPlaylist"
-                app:argType="com.mfriend.djapp.spotifyapi.models.Playlist" />
+                app:argType="com.mfriend.djapp.spotifyapi.models.PlaylistDto" />
     </fragment>
 </navigation>

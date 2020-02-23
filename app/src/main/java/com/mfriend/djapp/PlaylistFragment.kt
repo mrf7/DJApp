@@ -10,7 +10,6 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mfriend.djapp.helper.observeEvent
-import com.mfriend.djapp.tempUi.PlaylistFragmentDirections
 import kotlinx.android.synthetic.main.fragment_playlist.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -55,7 +54,7 @@ class PlaylistFragment : Fragment() {
             playlistAdapter.items = it
             playlistAdapter.notifyDataSetChanged()
         }
-        playlistViewModel.selectedPlaylist.observeEvent(this) {
+        playlistViewModel.selectedPlaylistDto.observeEvent(this) {
             val action =
                 PlaylistFragmentDirections.actionPlaylistSelected(
                     it

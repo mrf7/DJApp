@@ -5,20 +5,26 @@
  */
 package com.mfriend.djapp.servicelocator
 
-import com.mfriend.djapp.tempUi.AddSongViewModel
 import com.mfriend.djapp.PlaylistViewModel
-import com.mfriend.djapp.spotifyapi.models.Playlist
+import com.mfriend.djapp.db.AppDatabase
+import com.mfriend.djapp.spotifyapi.models.PlaylistDto
+import com.mfriend.djapp.tempUi.AddSongViewModel
 import com.mfriend.djapp.tempUi.ApiViewModel
+import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
     viewModel { ApiViewModel(get()) }
     viewModel { PlaylistViewModel(get()) }
-    viewModel { (playlist: Playlist) ->
+    viewModel { (playlistDto: PlaylistDto) ->
         AddSongViewModel(
             get(),
-            playlist
+            get(),
+            playlistDto
         )
     }
+    // DB dependencies
+    factory { AppDatabase.buildDb(androidApplication()) }
+    factory { get<AppDatabase>().trackDao() }
 }

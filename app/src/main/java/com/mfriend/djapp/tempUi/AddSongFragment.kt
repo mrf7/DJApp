@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
-import com.mfriend.djapp.AddSongFragmentArgs
 import com.mfriend.djapp.R
 import kotlinx.android.synthetic.main.fragment_add_song.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -37,10 +36,18 @@ class AddSongFragment : Fragment() {
             addSongViewModel.addSong(et_song_link.text.toString())
             et_song_link.text.clear()
         }
+
+        btn_populate.setOnClickListener {
+            addSongViewModel.fillRequestsList()
+        }
+
         addSongViewModel.requestResult.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), it, Toast.LENGTH_LONG).show()
         }
-    }
 
+        addSongViewModel.songs.observe(viewLifecycleOwner) {
+            tv_songs.text = it.joinToString(separator = "\n")
+        }
+    }
 
 }
