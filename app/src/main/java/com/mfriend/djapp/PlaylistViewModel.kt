@@ -1,7 +1,7 @@
-package com.mfriend.djapp.tempUi
+package com.mfriend.djapp
 
 import androidx.lifecycle.*
-import com.mfriend.djapp.Event
+import com.mfriend.djapp.helper.Event
 import com.mfriend.djapp.spotifyapi.SpotifyService
 import com.mfriend.djapp.spotifyapi.models.Playlist
 import com.mfriend.djapp.spotifyapi.models.PlaylistDTO
@@ -32,7 +32,8 @@ class PlaylistViewModel(private val spotifyService: SpotifyService) : ViewModel(
             } catch (e: HttpException) {
                 return@launch
             }
-            _selectPlaylist.value = Event(createdPlaylist)
+            _selectPlaylist.value =
+                Event(createdPlaylist)
         }
     }
 }

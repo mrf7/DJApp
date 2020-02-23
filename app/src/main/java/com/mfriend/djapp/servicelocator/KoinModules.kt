@@ -3,16 +3,22 @@
  *
  * Created by MFriend on 2020-01-27.
  */
-package com.mfriend.djapp
+package com.mfriend.djapp.servicelocator
 
+import com.mfriend.djapp.tempUi.AddSongViewModel
+import com.mfriend.djapp.PlaylistViewModel
 import com.mfriend.djapp.spotifyapi.models.Playlist
 import com.mfriend.djapp.tempUi.ApiViewModel
-import com.mfriend.djapp.tempUi.PlaylistViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
     viewModel { ApiViewModel(get()) }
     viewModel { PlaylistViewModel(get()) }
-    viewModel { (playlist: Playlist) -> AddSongViewModel(get(), playlist) }
+    viewModel { (playlist: Playlist) ->
+        AddSongViewModel(
+            get(),
+            playlist
+        )
+    }
 }

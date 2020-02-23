@@ -1,13 +1,12 @@
 /*
   */
-package com.mfriend.djapp.tempUi
+package com.mfriend.djapp
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.mfriend.djapp.R
 import com.mfriend.djapp.spotifyapi.models.Playlist
 
 /**

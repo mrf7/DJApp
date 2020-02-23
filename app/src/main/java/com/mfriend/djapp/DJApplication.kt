@@ -6,6 +6,7 @@
 package com.mfriend.djapp
 
 import android.app.Application
+import com.mfriend.djapp.servicelocator.appModule
 import com.mfriend.djapp.spotifyapi.SpotifyModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
@@ -17,7 +18,9 @@ class DJApplication : Application() {
         startKoin {
             androidContext(this@DJApplication)
             androidLogger()
-            modules(listOf(SpotifyModule.get(), appModule))
+            modules(listOf(SpotifyModule.get(),
+                appModule
+            ))
         }
     }
 }

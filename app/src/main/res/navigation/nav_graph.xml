@@ -17,7 +17,7 @@
     </fragment>
     <fragment
             android:id="@+id/playlistFragment"
-            android:name="com.mfriend.djapp.tempUi.PlaylistFragment"
+            android:name="com.mfriend.djapp.PlaylistFragment"
             android:label="fragment_playlist"
             tools:layout="@layout/fragment_playlist">
         <action
@@ -37,7 +37,7 @@
     </fragment>
     <fragment
             android:id="@+id/addSongFragment"
-            android:name="com.mfriend.djapp.AddSongFragment"
+            android:name="com.mfriend.djapp.tempUi.AddSongFragment"
             android:label="fragment_add_song"
             tools:layout="@layout/fragment_add_song">
         <argument
