@@ -63,6 +63,7 @@ class AddSongViewModel(
             )
 
             _songs.value = trackDao.getAll()
+
         }
     }
 
