@@ -19,7 +19,7 @@ class ApiFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val binding = ApiFragmentBinding.inflate(inflater, container, false)
+        binding = ApiFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
