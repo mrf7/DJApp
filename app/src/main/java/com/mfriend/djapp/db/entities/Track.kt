@@ -8,6 +8,9 @@ import androidx.room.PrimaryKey
 data class Track(
     @ColumnInfo(name = "name") val name: String,
     @ColumnInfo(name = "artist") val artist: String,
-    @ColumnInfo(name = "album") val album: String,
-    @PrimaryKey(autoGenerate = true) val id: Int = 0
-)
+    @ColumnInfo(name = "album") val album: String
+) {
+    // Auto generated  values so they dont get used in equals, toString, or hashCode
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
+}

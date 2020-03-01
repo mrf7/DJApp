@@ -6,6 +6,9 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 
 android {
     compileSdkVersion(29)
+    viewBinding {
+        enabled = true
+    }
     defaultConfig {
         applicationId = "com.mfriend.djapp"
         minSdkVersion(21)
