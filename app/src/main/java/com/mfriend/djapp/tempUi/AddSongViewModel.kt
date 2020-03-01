@@ -7,6 +7,7 @@ import com.mfriend.djapp.db.entities.Track
 import com.mfriend.djapp.spotifyapi.SpotifyService
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import kotlinx.coroutines.launch
+import kotlin.random.Random
 
 /**
  * ViewModel for the screen to add a song to a slected playlist
@@ -29,8 +30,9 @@ class AddSongViewModel(
      */
     val songs: LiveData<List<Track>> = liveData {
         emit(emptyList())
-        emitSource(trackDao.getAll().asLiveData())
+        emitSource(trackDao.getAllFlow().asLiveData())
     }
+
 
     /**
      *  LiveData for result of request
@@ -44,7 +46,7 @@ class AddSongViewModel(
 
     fun fillRequestsList() {
         viewModelScope.launch {
-            val tracks = songs.value ?: emptyList()
+            val tracks = trackDao.getAll()
             if (tracks.isEmpty()) {
                 trackDao.insert(
                     Track("Song", "lil b", "the album"),
