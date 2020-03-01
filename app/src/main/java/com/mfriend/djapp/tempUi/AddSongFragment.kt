@@ -9,8 +9,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
-import com.mfriend.djapp.R
-import kotlinx.android.synthetic.main.fragment_add_song.*
+import com.mfriend.djapp.databinding.FragmentAddSongBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -18,6 +17,7 @@ import org.koin.core.parameter.parametersOf
  * A simple [Fragment] subclass.
  */
 class AddSongFragment : Fragment() {
+    private lateinit var binding: FragmentAddSongBinding
     private val args by navArgs<AddSongFragmentArgs>()
 
     private val addSongViewModel: AddSongViewModel by viewModel { parametersOf(args.selectedPlaylist) }
@@ -27,17 +27,18 @@ class AddSongFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_song, container, false)
+        binding = FragmentAddSongBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_add_song.setOnClickListener {
-            addSongViewModel.addSong(et_song_link.text.toString())
-            et_song_link.text.clear()
+        binding.btnAddSong.setOnClickListener {
+            addSongViewModel.addSong(binding.etSongLink.text.toString())
+            binding.etSongLink.text.clear()
         }
 
-        btn_populate.setOnClickListener {
+        binding.btnPopulate.setOnClickListener {
             addSongViewModel.fillRequestsList()
         }
 
@@ -46,7 +47,7 @@ class AddSongFragment : Fragment() {
         }
 
         addSongViewModel.songs.observe(viewLifecycleOwner) {
-            tv_songs.text = it.joinToString(separator = "\n")
+            binding.tvSongs.text = it.joinToString(separator = "\n")
         }
     }
 

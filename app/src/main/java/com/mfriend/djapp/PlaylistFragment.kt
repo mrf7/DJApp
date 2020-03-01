@@ -9,8 +9,8 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mfriend.djapp.databinding.FragmentPlaylistBinding
 import com.mfriend.djapp.helper.observeEvent
-import kotlinx.android.synthetic.main.fragment_playlist.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -19,6 +19,7 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
  */
 class PlaylistFragment : Fragment() {
 
+    private lateinit var binding: FragmentPlaylistBinding
 
     private val playlistViewModel: PlaylistViewModel by viewModel()
 
@@ -26,7 +27,8 @@ class PlaylistFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return inflater.inflate(R.layout.fragment_playlist, container, false)
+        binding = FragmentPlaylistBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -37,17 +39,17 @@ class PlaylistFragment : Fragment() {
             playlistViewModel::playlistSelected
         )
         // Add dividers
-        rv_playlists.apply {
+        binding.rvPlaylists.apply {
             val dividerItemDecoration =
-                DividerItemDecoration(rv_playlists.context, LinearLayoutManager.VERTICAL)
+                DividerItemDecoration(binding.rvPlaylists.context, LinearLayoutManager.VERTICAL)
 
             addItemDecoration(dividerItemDecoration)
             layoutManager = LinearLayoutManager(requireContext())
             adapter = playlistAdapter
         }
 
-        btn_new_playlist.setOnClickListener {
-            playlistViewModel.newPlaylistPressed(et_playlist_name.text.toString())
+        binding.btnNewPlaylist.setOnClickListener {
+            playlistViewModel.newPlaylistPressed(binding.etPlaylistName.text.toString())
         }
 
         playlistViewModel.playlists.observe(this) {
