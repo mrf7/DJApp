@@ -11,5 +11,6 @@ data class Track(
     @ColumnInfo(name = "album") val album: String
 ) {
     // Auto generated  values so they dont get used in equals, toString, or hashCode
-    @PrimaryKey(autoGenerate = true) val id: Int = 0
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0
 }
