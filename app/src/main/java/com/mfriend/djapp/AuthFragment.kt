@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.mfriend.djapp.helper.extensions.LOGGER_TAG
+import com.mfriend.djapp.spotifyapi.SpotifyModule
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
@@ -34,26 +35,7 @@ class AuthFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         button.setOnClickListener {
-            val authRequest: AuthenticationRequest =
-                AuthenticationRequest.Builder(
-                    CLIENT_ID,
-                    AuthenticationResponse.Type.TOKEN,
-                    REDIRECT_URI
-                )
-                    .run {
-                        setScopes(
-                            arrayOf(
-                                "user-library-modify",
-                                "user-library-read",
-                                "app-remote-control",
-                                "playlist-read-collaborative",
-                                "playlist-read-private",
-                                "playlist-modify-public",
-                                "playlist-modify-private"
-                            )
-                        )
-                        build()
-                    }
+            val authRequest = SpotifyModule.getRequest()
             val authIntent =
                 AuthenticationClient.createLoginActivityIntent(requireActivity(), authRequest)
             startActivityForResult(authIntent, REQUEST_CODE)
@@ -81,7 +63,7 @@ class AuthFragment : Fragment() {
         Log.d(KOIN_TAG, "Setting koin property for auth token")
         getKoin().setProperty("authToken", response.accessToken)
         val action = AuthFragmentDirections.actionShowApiFragment()
-        Log.d("MRF", "Navigating to api fragment")
+        Log.d("MRF", "Navigating to API fragment.")
         findNavController().navigate(action)
     }
 
@@ -91,7 +73,5 @@ class AuthFragment : Fragment() {
 
     companion object {
         const val REQUEST_CODE = 69
-        const val REDIRECT_URI = "http://com.mfriend.djapp/callback"
-        const val CLIENT_ID = "bc77027fdfd54c0091c11fcc1895c5dd"
     }
 }
