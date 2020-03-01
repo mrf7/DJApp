@@ -8,8 +8,6 @@ data class UserDto(
     @Json(name = "display_name")
     val displayName: String,
     @Json(name = "id")
-    val id: String,
-    @Json(name = "images")
-    val images: List<String>
+    val id: String
 )
 

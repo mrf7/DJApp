@@ -11,10 +11,10 @@ import retrofit2.converter.moshi.MoshiConverterFactory
  * Created by MFriend on 2020-01-05.
  */
 object SpotifyModule {
-    private const val SPOTIFY_WEB_ABI_URL = "https://api.spotify.com/v1/"
+    private const val SPOTIFY_WEB_API_URL = "https://api.spotify.com/v1/"
     private fun retrofit(authToken: String): Retrofit = Retrofit.Builder().apply {
         client(getClient(authToken))
-        baseUrl(SPOTIFY_WEB_ABI_URL)
+        baseUrl(SPOTIFY_WEB_API_URL)
         addConverterFactory(MoshiConverterFactory.create())
     }.build()
 

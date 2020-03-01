@@ -1,47 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/nav_graph"
-        app:startDestination="@id/authFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/authFragment"
+    tools:ignore="UnusedNavigation">
 
     <fragment
-            android:id="@+id/apiFragment"
-            android:name="com.mfriend.djapp.tempUi.ApiFragment"
-            android:label="api_fragment"
-            tools:layout="@layout/api_fragment">
+        android:id="@+id/authFragment"
+        android:name="com.mfriend.djapp.AuthFragment"
+        android:label="fragment_auth"
+        tools:layout="@layout/fragment_auth">
         <action
-                android:id="@+id/action_showPlaylists"
-                app:destination="@id/playlistFragment"
-                app:popUpTo="@+id/apiFragment" />
+            android:id="@+id/action_showApiFragment"
+            app:destination="@id/apiFragment"
+            app:popUpTo="@+id/authFragment" />
     </fragment>
+
     <fragment
-            android:id="@+id/playlistFragment"
-            android:name="com.mfriend.djapp.PlaylistFragment"
-            android:label="fragment_playlist"
-            tools:layout="@layout/fragment_playlist">
+        android:id="@+id/apiFragment"
+        android:name="com.mfriend.djapp.tempUi.ApiFragment"
+        android:label="api_fragment"
+        tools:layout="@layout/api_fragment">
         <action
-                android:id="@+id/action_playlistSelected"
-                app:destination="@id/addSongFragment"
-                app:popUpTo="@+id/playlistFragment" />
+            android:id="@+id/action_showPlaylists"
+            app:destination="@id/playlistFragment"
+            app:popUpTo="@+id/apiFragment" />
     </fragment>
+
     <fragment
-            android:id="@+id/authFragment"
-            android:name="com.mfriend.djapp.AuthFragment"
-            android:label="fragment_auth"
-            tools:layout="@layout/fragment_auth">
+        android:id="@+id/playlistFragment"
+        android:name="com.mfriend.djapp.PlaylistFragment"
+        android:label="fragment_playlist"
+        tools:layout="@layout/fragment_playlist">
         <action
-                android:id="@+id/action_showApiFragment"
-                app:destination="@id/apiFragment"
-                app:popUpTo="@+id/authFragment" />
+            android:id="@+id/action_playlistSelected"
+            app:destination="@id/addSongFragment"
+            app:popUpTo="@+id/playlistFragment" />
     </fragment>
+
     <fragment
-            android:id="@+id/addSongFragment"
-            android:name="com.mfriend.djapp.tempUi.AddSongFragment"
-            android:label="fragment_add_song"
-            tools:layout="@layout/fragment_add_song">
+        android:id="@+id/addSongFragment"
+        android:name="com.mfriend.djapp.tempUi.AddSongFragment"
+        android:label="fragment_add_song"
+        tools:layout="@layout/fragment_add_song">
         <argument
-                android:name="selectedPlaylist"
-                app:argType="com.mfriend.djapp.spotifyapi.models.PlaylistDto" />
+            android:name="selectedPlaylist"
+            app:argType="com.mfriend.djapp.spotifyapi.models.PlaylistDto" />
     </fragment>
+
 </navigation>
