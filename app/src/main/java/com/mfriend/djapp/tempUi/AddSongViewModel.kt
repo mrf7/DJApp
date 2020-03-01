@@ -49,22 +49,20 @@ class AddSongViewModel(
             val tracks = trackDao.getAll()
             if (tracks.isEmpty()) {
                 trackDao.insert(
-                    Track("1", "Song", "lil b", "the album"),
-                    Track("2", "Song", "lil b", "the album"),
-                    Track("3", "Song", "lil b", "the album"),
-                    Track("4", "Song", "lil b", "the album"),
-                    Track("4", "Song", "lil b", "the album"),
-                    Track("5", "Song", "lil b", "the album"),
-                    Track("6", "Song", "lil b", "the album"),
-                    Track("7", "Song", "lil b", "the album"),
-                    Track("8", "Song", "lil b", "the album"),
-                    Track("9", "Song", "lil b", "the album"),
-                    Track("10", "Song", "lil b", "the album"),
-                    Track("11", "Song", "lil b", "the album")
+                    Track("Song", "lil b", "the album"),
+                    Track("Song", "lil b", "the album"),
+                    Track("Song", "lil b", "the album"),
+                    Track("Song", "lil b", "the album"),
+                    Track("Song", "lil b", "the album"),
+                    Track("Song", "lil b", "the album"),
+                    Track("Song", "lil b", "the album"),
+                    Track("Song", "lil b", "the album"),
+                    Track("Song", "lil b", "the album"),
+                    Track("Song", "lil b", "the album"),
+                    Track("Song", "lil b", "the album")
                 )
             } else {
-                val removeTrack = tracks[Random.nextInt(0, tracks.size)]
-                trackDao.delete(removeTrack)
+                trackDao.delete(tracks.random())
             }
         }
     }

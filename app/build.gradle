@@ -82,6 +82,9 @@ dependencies {
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
 
+    // Store for data caching
+    def store_version = "4.0.0-alpha03"
+    implementation "com.dropbox.mobile.store:store4:${store_version}"
 
 
     // Test stuff
