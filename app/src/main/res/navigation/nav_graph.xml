@@ -34,19 +34,18 @@
         android:label="fragment_playlist"
         tools:layout="@layout/fragment_playlist">
         <action
-            android:id="@+id/action_playlistSelected"
-            app:destination="@id/addSongFragment"
-            app:popUpTo="@+id/playlistFragment" />
+                android:id="@+id/action_playlistFragment_to_reviewRequestsFragment"
+                app:destination="@id/reviewRequestsFragment"
+                app:popUpTo="@id/playlistFragment" />
     </fragment>
-
     <fragment
-        android:id="@+id/addSongFragment"
-        android:name="com.mfriend.djapp.tempUi.AddSongFragment"
-        android:label="fragment_add_song"
-        tools:layout="@layout/fragment_add_song">
+            android:id="@+id/reviewRequestsFragment"
+            android:name="com.mfriend.djapp.ReviewRequestsFragment"
+            android:label="fragment_review_requests"
+            tools:layout="@layout/fragment_review_requests">
         <argument
-            android:name="selectedPlaylist"
-            app:argType="com.mfriend.djapp.spotifyapi.models.PlaylistDto" />
+                android:name="selectedPlaylist"
+                app:argType="com.mfriend.djapp.spotifyapi.models.PlaylistDto" />
     </fragment>
 
 </navigation>

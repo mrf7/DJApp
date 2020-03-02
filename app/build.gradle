@@ -64,6 +64,7 @@ dependencies {
     implementation(project(":spotify-auth"))
     implementation("com.google.code.gson:gson:2.8.5")
     implementation("com.squareup.moshi:moshi-kotlin:1.8.0")
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.8.0")
     implementation("androidx.navigation:navigation-fragment:2.2.0-rc04")
 
