@@ -3,8 +3,14 @@ package com.mfriend.djapp.spotifyapi
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import com.mfriend.djapp.spotifyapi.models.PlaylistRequestDto
 import com.mfriend.djapp.spotifyapi.models.Response
+import com.mfriend.djapp.spotifyapi.models.TrackDTO
 import com.mfriend.djapp.spotifyapi.models.UserDto
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Headers
+import retrofit2.http.POST
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 
 /**
@@ -41,4 +47,7 @@ interface SpotifyService {
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("playlists/{playlist_id}/tracks")
     suspend fun addSong(@Path("playlist_id") playlistId: String, @Query("uris") songUri: String)
+
+    @GET("https://api.spotify.com/v1/me/top/tracks")
+    suspend fun getUsersTopTracks(): Response<TrackDTO>
 }

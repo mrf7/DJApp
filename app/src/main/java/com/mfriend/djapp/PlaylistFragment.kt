@@ -57,10 +57,7 @@ class PlaylistFragment : Fragment() {
             playlistAdapter.notifyDataSetChanged()
         }
         playlistViewModel.selectedPlaylistDto.observeEvent(this) {
-            val action =
-                PlaylistFragmentDirections.actionPlaylistSelected(
-                    it
-                )
+            val action = PlaylistFragmentDirections.actionReviewRequests(it)
             findNavController().navigate(action)
         }
     }
