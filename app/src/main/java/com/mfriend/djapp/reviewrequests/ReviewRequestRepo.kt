@@ -9,10 +9,16 @@ import com.mfriend.djapp.spotifyapi.models.TrackDTO
  */
 class ReviewRequestRepo(private val spotifyService: SpotifyService) {
 
+    /**
+     * Adds [trackDTO] to [playlistDto]
+     */
     suspend fun addSongToPlaylist(trackDTO: TrackDTO, playlistDto: PlaylistDto) {
         spotifyService.addSong(playlistDto.id, trackDTO.uri)
     }
 
+    /**
+     * Fetches the users most listened to tracks
+     */
     suspend fun getUsersTopTracks(): List<TrackDTO> {
         return spotifyService.getUsersTopTracks().items
     }

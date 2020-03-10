@@ -29,25 +29,43 @@ class ReviewRequestsViewModel(
         }
     }
 
+    /**
+     * Called when the user presses the add song button. Adds the current song to the selected playlist
+     * then moves to the next song
+     */
     fun addSongPressed() {
         val trackToAdd = _currentTrack.value ?: return
         viewModelScope.launch {
             reviewRequestRepo.addSongToPlaylist(trackToAdd, playlist)
-
-            if (songsStack.peekFirst() == null) {
-                refreshSongs()
-            } else {
-                _currentTrack.value = songsStack.pop()
-            }
+            nextSong()
         }
     }
 
-    private suspend fun refreshSongs() {
-        reviewRequestRepo.getUsersTopTracks().forEach { songsStack.push(it) }
-        _currentTrack.value = songsStack.pop()
+    /**
+     * Call when the user presses the decline song button. Moves to the next song without adding
+     * anything to the selected playlist
+     */
+    fun declineSongPressed() {
+        nextSong()
     }
 
-    fun declineSongPressed() {
+    /**
+     * Moves to the next song, loading new songs from the api if there is no next
+     */
+    private fun nextSong() {
+        if (songsStack.peekFirst() == null) {
+            _currentTrack.value = null
+            viewModelScope.launch { refreshSongs() }
+        } else {
+            _currentTrack.value = songsStack.pop()
+        }
+    }
+
+    /**
+     * Fetches the users top songs from the api and adds them to the back of the stack
+     */
+    private suspend fun refreshSongs() {
+        reviewRequestRepo.getUsersTopTracks().forEach { songsStack.push(it) }
         _currentTrack.value = songsStack.pop()
     }
 

@@ -3,7 +3,6 @@ package com.mfriend.djapp.spotifyapi
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -32,9 +31,9 @@ object SpotifyModule {
                     .build()
                 chain.proceed(request)
             }
-            val logger =
-                HttpLoggingInterceptor().also { it.level = HttpLoggingInterceptor.Level.BODY }
-            addInterceptor(logger)
+//            val logger =
+//                HttpLoggingInterceptor().also { it.level = HttpLoggingInterceptor.Level.BODY }
+//            addInterceptor(logger)
         }.build()
     }
 

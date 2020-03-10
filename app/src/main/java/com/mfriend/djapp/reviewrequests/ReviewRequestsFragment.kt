@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.navArgs
+import coil.api.load
 import com.mfriend.djapp.databinding.FragmentReviewRequestsBinding
 import com.mfriend.djapp.spotifyapi.models.TrackDTO
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -40,6 +41,11 @@ class ReviewRequestsFragment : Fragment() {
                 tvSongName.text = track.name
                 tvAlbumName.text = track.album.name
                 tvArtistName.text = track.artists.firstOrNull()?.name ?: ""
+                tvAlbumArtwork.load(track.album.images.first().url) {
+                    lifecycle(this@ReviewRequestsFragment)
+                    crossfade(true)
+                    fallback(android.R.drawable.ic_media_play)
+                }
             }
         }
         binding.btnAddSong.setOnClickListener {
