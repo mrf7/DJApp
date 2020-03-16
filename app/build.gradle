@@ -87,6 +87,12 @@ dependencies {
     // Room ktx and coroutines
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
+    
+    // Functional bb
+    def arrow_version = "0.10.4"
+    implementation "io.arrow-kt:arrow-core:$arrow_version"
+    implementation "io.arrow-kt:arrow-syntax:$arrow_version"
+    kapt    "io.arrow-kt:arrow-meta:$arrow_version"
 
     // Store for data caching
     def store_version = "4.0.0-alpha03"
