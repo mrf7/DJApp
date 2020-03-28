@@ -19,9 +19,12 @@ class DJApplication : Application() {
             androidContext(this@DJApplication)
             androidLogger()
 
-            modules(listOf(SpotifyModule.get(),
-                appModule
-            ))
+            modules(
+                listOf(
+                    SpotifyModule.get(),
+                    appModule
+                )
+            )
         }
     }
 }

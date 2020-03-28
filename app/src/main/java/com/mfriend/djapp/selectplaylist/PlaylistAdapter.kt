@@ -11,14 +11,14 @@ import com.mfriend.djapp.R
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 
 /**
+ * Simple adapter for a playlist recylcer view
+ *
  * Created by mfriend on 2020-01-05.
- * TODO mfriend WRITE CLASS HEADER
  */
 class PlaylistAdapter(
     var items: List<PlaylistDto>,
     private val onItemClickListener: ((PlaylistDto) -> Unit)? = null
-) :
-    RecyclerView.Adapter<PlaylistViewHolder>() {
+) : RecyclerView.Adapter<PlaylistViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val inflatedView =
             LayoutInflater.from(parent.context).inflate(R.layout.playlist_item, parent, false)

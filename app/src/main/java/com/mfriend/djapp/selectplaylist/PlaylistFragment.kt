@@ -9,9 +9,8 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mfriend.djapp.PlaylistFragmentDirections
-import com.mfriend.djapp.databinding.FragmentPlaylistBinding
 import com.mfriend.djapp.common.helper.observeEvent
+import com.mfriend.djapp.databinding.FragmentPlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -53,7 +52,7 @@ class PlaylistFragment : Fragment() {
             playlistViewModel.newPlaylistPressed(binding.etPlaylistName.text.toString())
         }
 
-        playlistViewModel.playlists.observe(this) {
+        playlistViewModel.playlists.observe(viewLifecycleOwner) {
             playlistAdapter.items = it
             playlistAdapter.notifyDataSetChanged()
         }

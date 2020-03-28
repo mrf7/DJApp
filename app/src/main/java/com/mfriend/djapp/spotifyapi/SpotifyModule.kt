@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 /**
- * TODO MRF Write Class header
+ * Koin module to provide the spotify api via the [SpotifyService] interface
  *
  * Created by MFriend on 2020-01-05.
  */
@@ -62,8 +62,8 @@ object SpotifyModule {
 
     fun get() = module {
         single {
-            val authToken: String = getKoin().getProperty("authToken")
-                ?: throw IllegalStateException("Auth token not set")
+            val authToken: String =
+                requireNotNull(getKoin().getProperty("authToken")) { " Auth token not set" }
             retrofit(authToken).create(SpotifyService::class.java)
         }
     }

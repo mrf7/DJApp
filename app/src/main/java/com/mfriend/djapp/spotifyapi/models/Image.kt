@@ -1,6 +1,5 @@
 package com.mfriend.djapp.spotifyapi.models
 
-
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 

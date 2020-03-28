@@ -19,8 +19,6 @@ class ReviewRequestRepo(private val spotifyService: SpotifyService) {
     /**
      * Fetches the users most listened to tracks
      */
-    suspend fun getUsersTopTracks(): List<TrackDTO> {
-        return spotifyService.getUsersTopTracks().items
-    }
+    suspend fun getUsersTopTracks(): List<TrackDTO> = spotifyService.getUsersTopTracks().items
 
 }

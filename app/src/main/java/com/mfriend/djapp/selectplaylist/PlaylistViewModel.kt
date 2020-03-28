@@ -1,7 +1,13 @@
 package com.mfriend.djapp.selectplaylist
 
-import androidx.lifecycle.*
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.liveData
+import androidx.lifecycle.viewModelScope
 import com.mfriend.djapp.common.helper.Event
+import com.mfriend.djapp.common.helper.extensions.LOGGER_TAG
 import com.mfriend.djapp.spotifyapi.SpotifyService
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import com.mfriend.djapp.spotifyapi.models.PlaylistRequestDto
@@ -30,6 +36,11 @@ class PlaylistViewModel(private val spotifyService: SpotifyService) : ViewModel(
             val createdPlaylist = try {
                 spotifyService.createPlaylist(newPlaylist, userId)
             } catch (e: HttpException) {
+                Log.e(
+                    this@PlaylistViewModel.LOGGER_TAG,
+                    "Got an http exception trying to create playlist",
+                    e
+                )
                 return@launch
             }
             _selectPlaylistDto.value =

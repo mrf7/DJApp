@@ -7,7 +7,7 @@ import com.mfriend.djapp.R
 /**
  * Activity for all the fragments
  */
-class ApiActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

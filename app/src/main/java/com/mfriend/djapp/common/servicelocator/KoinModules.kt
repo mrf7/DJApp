@@ -5,10 +5,10 @@
  */
 package com.mfriend.djapp.common.servicelocator
 
-import com.mfriend.djapp.selectplaylist.PlaylistViewModel
 import com.mfriend.djapp.common.db.AppDatabase
 import com.mfriend.djapp.reviewrequests.ReviewRequestRepo
 import com.mfriend.djapp.reviewrequests.ReviewRequestsViewModel
+import com.mfriend.djapp.selectplaylist.PlaylistViewModel
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
