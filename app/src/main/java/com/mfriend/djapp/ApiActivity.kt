@@ -1,8 +1,7 @@
-package com.mfriend.djapp.tempUi
+package com.mfriend.djapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.mfriend.djapp.R
 
 
 class ApiActivity : AppCompatActivity() {

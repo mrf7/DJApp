@@ -60,7 +60,7 @@ class AuthFragment : Fragment() {
         Log.d(LOGGER_TAG, "response: ${response.accessToken} expires ${response.expiresIn}")
         Log.d(KOIN_TAG, "Setting koin property for auth token")
         getKoin().setProperty("authToken", response.accessToken)
-        val action = AuthFragmentDirections.actionShowApiFragment()
+        val action = AuthFragmentDirections.showUsersPlaylists()
         Log.d("MRF", "Navigating to API fragment.")
         findNavController().navigate(action)
     }
