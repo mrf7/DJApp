@@ -8,7 +8,7 @@
 
     <fragment
             android:id="@+id/authFragment"
-            android:name="com.mfriend.djapp.AuthFragment"
+            android:name="com.mfriend.djapp.authentication.AuthFragment"
             android:label="fragment_auth"
             tools:layout="@layout/fragment_auth">
         <action
@@ -18,7 +18,7 @@
 
     <fragment
             android:id="@+id/playlistFragment"
-            android:name="com.mfriend.djapp.PlaylistFragment"
+            android:name="com.mfriend.djapp.selectplaylist.PlaylistFragment"
             android:label="fragment_playlist"
             tools:layout="@layout/fragment_playlist">
         <action

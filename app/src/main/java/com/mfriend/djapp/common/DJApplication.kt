@@ -3,10 +3,10 @@
  *
  * Created by MFriend on 2020-01-27.
  */
-package com.mfriend.djapp
+package com.mfriend.djapp.common
 
 import android.app.Application
-import com.mfriend.djapp.servicelocator.appModule
+import com.mfriend.djapp.common.servicelocator.appModule
 import com.mfriend.djapp.spotifyapi.SpotifyModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

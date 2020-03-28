@@ -1,4 +1,4 @@
-package com.mfriend.djapp.helper
+package com.mfriend.djapp.common.helper
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData

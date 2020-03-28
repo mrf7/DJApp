@@ -1,4 +1,4 @@
-package com.mfriend.djapp
+package com.mfriend.djapp.authentication
 
 
 import android.content.Intent
@@ -9,8 +9,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.mfriend.djapp.AuthFragmentDirections
 import com.mfriend.djapp.databinding.FragmentAuthBinding
-import com.mfriend.djapp.helper.extensions.LOGGER_TAG
+import com.mfriend.djapp.common.helper.extensions.LOGGER_TAG
 import com.mfriend.djapp.spotifyapi.SpotifyModule
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationResponse
@@ -39,7 +40,9 @@ class AuthFragment : Fragment() {
             val authRequest = SpotifyModule.getRequest()
             val authIntent =
                 AuthenticationClient.createLoginActivityIntent(requireActivity(), authRequest)
-            startActivityForResult(authIntent, REQUEST_CODE)
+            startActivityForResult(authIntent,
+                REQUEST_CODE
+            )
         }
     }
 

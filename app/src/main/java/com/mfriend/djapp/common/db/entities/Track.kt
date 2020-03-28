@@ -1,4 +1,4 @@
-package com.mfriend.djapp.db.entities
+package com.mfriend.djapp.common.db.entities
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

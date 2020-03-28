@@ -1,11 +1,11 @@
-package com.mfriend.djapp.db.daos
+package com.mfriend.djapp.common.db.daos
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.mfriend.djapp.db.entities.Track
+import com.mfriend.djapp.common.db.entities.Track
 import kotlinx.coroutines.flow.Flow
 
 @Dao

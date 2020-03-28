@@ -3,10 +3,10 @@
  *
  * Created by MFriend on 2020-01-27.
  */
-package com.mfriend.djapp.servicelocator
+package com.mfriend.djapp.common.servicelocator
 
-import com.mfriend.djapp.PlaylistViewModel
-import com.mfriend.djapp.db.AppDatabase
+import com.mfriend.djapp.selectplaylist.PlaylistViewModel
+import com.mfriend.djapp.common.db.AppDatabase
 import com.mfriend.djapp.reviewrequests.ReviewRequestRepo
 import com.mfriend.djapp.reviewrequests.ReviewRequestsViewModel
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto

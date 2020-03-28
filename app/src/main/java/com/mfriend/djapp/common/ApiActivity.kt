@@ -1,7 +1,8 @@
-package com.mfriend.djapp
+package com.mfriend.djapp.common
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.mfriend.djapp.R
 
 /**
  * Activity for all the fragments

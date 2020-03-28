@@ -1,7 +1,7 @@
-package com.mfriend.djapp
+package com.mfriend.djapp.selectplaylist
 
 import androidx.lifecycle.*
-import com.mfriend.djapp.helper.Event
+import com.mfriend.djapp.common.helper.Event
 import com.mfriend.djapp.spotifyapi.SpotifyService
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import com.mfriend.djapp.spotifyapi.models.PlaylistRequestDto
