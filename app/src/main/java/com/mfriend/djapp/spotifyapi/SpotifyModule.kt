@@ -52,7 +52,8 @@ object SpotifyModule {
                         "playlist-read-collaborative",
                         "playlist-read-private",
                         "playlist-modify-public",
-                        "playlist-modify-private"
+                        "playlist-modify-private",
+                        "user-top-read"
                     )
                 )
                 build()

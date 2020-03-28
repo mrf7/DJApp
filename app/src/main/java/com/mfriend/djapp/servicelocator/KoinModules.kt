@@ -7,6 +7,8 @@ package com.mfriend.djapp.servicelocator
 
 import com.mfriend.djapp.PlaylistViewModel
 import com.mfriend.djapp.db.AppDatabase
+import com.mfriend.djapp.reviewrequests.ReviewRequestRepo
+import com.mfriend.djapp.reviewrequests.ReviewRequestsViewModel
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import com.mfriend.djapp.tempUi.AddSongViewModel
 import com.mfriend.djapp.tempUi.ApiViewModel
@@ -24,7 +26,11 @@ val appModule = module {
             playlistDto
         )
     }
+    viewModel { (playlistDto: PlaylistDto) ->
+        ReviewRequestsViewModel(get(), playlistDto)
+    }
     // DB dependencies
     factory { AppDatabase.buildDb(androidApplication()) }
     factory { get<AppDatabase>().trackDao() }
+    single { ReviewRequestRepo(get()) }
 }
