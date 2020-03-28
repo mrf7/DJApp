@@ -18,14 +18,17 @@ import org.koin.android.ext.android.getKoin
 import org.koin.core.logger.KOIN_TAG
 
 /**
- * A simple [Fragment] subclass.
+ * Fragment to allow the user to sign in to their spotify account to perform requests that require
+ * an auth token
  */
 class AuthFragment : Fragment() {
     private lateinit var binding: FragmentAuthBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Set up the binding
         binding = FragmentAuthBinding.inflate(inflater, container, false)
         return binding.root
     }
