@@ -8,7 +8,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Kotlin Linter 
-        uses: vroy/gha-kotlin-linter@v2
-      - name: setup-android
-        uses: msfjarvis/setup-android@0.2
+      - uses: actions/checkout@v1
+      - name: Build
+        run: ./gradlew assembleRelease
+      - name: Run Tests
+        run: ./gradlew test
+      - name: Run Detekt
+        run: ./gradlew detekt
