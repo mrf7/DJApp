@@ -10,4 +10,3 @@ data class UserDto(
     @Json(name = "id")
     val id: String
 )
-

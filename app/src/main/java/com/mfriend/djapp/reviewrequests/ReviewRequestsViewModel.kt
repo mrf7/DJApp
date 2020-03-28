@@ -7,7 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import com.mfriend.djapp.spotifyapi.models.TrackDTO
 import kotlinx.coroutines.launch
-import java.util.*
+import java.util.Deque
+import java.util.LinkedList
 
 class ReviewRequestsViewModel(
     private val reviewRequestRepo: ReviewRequestRepo,
@@ -68,5 +69,4 @@ class ReviewRequestsViewModel(
         reviewRequestRepo.getUsersTopTracks().forEach { songsStack.push(it) }
         _currentTrack.value = songsStack.pop()
     }
-
 }

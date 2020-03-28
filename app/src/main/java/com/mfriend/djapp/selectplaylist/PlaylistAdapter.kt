@@ -42,5 +42,4 @@ class PlaylistViewHolder(private val view: View) : RecyclerView.ViewHolder(view)
             }
         }
     }
-
 }
