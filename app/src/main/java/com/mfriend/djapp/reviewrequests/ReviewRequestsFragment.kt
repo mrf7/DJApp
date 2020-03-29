@@ -35,47 +35,68 @@ class ReviewRequestsFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
 
         viewModel.currentTrack.observe(viewLifecycleOwner) { state: Either<TrackReviewErrors, TrackDTO> ->
+            // Handle Either.Left (error) and Either.Right (success) values.
+            // The a and b properties are members of Either.Left and Either.Right respectively which
+            // reference the left/right values in a type safe way after an Either has been smart casted
+            // to a Left or Right.
             when (state) {
-                is Either.Left -> when (state.a) {
-                    TrackReviewErrors.LoadingSongs -> {
-                        Toast.makeText(context, "Loading songs", Toast.LENGTH_SHORT).show()
-                        showBlankUI()
-                    }
-                    TrackReviewErrors.CommunicationError -> Toast.makeText(
-                        context,
-                        "CommError",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    TrackReviewErrors.NoMoreSongs -> {
-                        // If there are no more songs, show a message to the user and return to the
-                        // playlist selection screen for now
-                        Toast.makeText(context, "Nore More Songs", Toast.LENGTH_SHORT).show()
-                        findNavController().popBackStack()
-                    }
-                }
-                is Either.Right -> {
-                    val track = state.b
-                    binding.tvSongName.text = track.name
-                    binding.tvAlbumName.text = track.album.name
-                    binding.tvArtistName.text = track.artists.firstOrNull()?.name ?: ""
-                    binding.tvAlbumArtwork.load(track.album.images.first().url) {
-                        lifecycle(viewLifecycleOwner)
-                        crossfade(true)
-                        fallback(android.R.drawable.ic_media_play)
-                    }
-                }
-            }
+                is Either.Left -> handleError(state.a)
+                is Either.Right -> handleNewTrack(state.b)
 
+            }
         }
+
         binding.btnAddSong.setOnClickListener {
             viewModel.addSongPressed()
         }
+
         binding.btnDecline.setOnClickListener {
             viewModel.declineSongPressed()
         }
     }
 
-    private fun showBlankUI() {
+    /**
+     * Handle all error statuses from [TrackReviewErrors]
+     *
+     * @param error the error to handle
+     */
+    private fun handleError(error: TrackReviewErrors) {
+        when (error) {
+            TrackReviewErrors.LoadingSongs -> showLoadingState()
+            TrackReviewErrors.CommunicationError -> Toast.makeText(
+                context,
+                "CommError",
+                Toast.LENGTH_LONG
+            ).show()
+            TrackReviewErrors.NoMoreSongs -> {
+                // If there are no more songs, show a message to the user and return to the
+                // playlist selection screen for now
+                Toast.makeText(context, "Nore More Songs", Toast.LENGTH_SHORT).show()
+                findNavController().popBackStack()
+                return
+            }
+        }
+    }
+
+    /**
+     * Display the current [track] to the user
+     */
+    private fun handleNewTrack(track: TrackDTO) {
+        Toast.makeText(context, "Loading songs", Toast.LENGTH_SHORT).show()
+        binding.tvSongName.text = track.name
+        binding.tvAlbumName.text = track.album.name
+        binding.tvArtistName.text = track.artists.firstOrNull()?.name ?: ""
+        binding.tvAlbumArtwork.load(track.album.images.first().url) {
+            lifecycle(viewLifecycleOwner)
+            crossfade(true)
+            fallback(android.R.drawable.ic_media_play)
+        }
+    }
+
+    /**
+     * Show a UI to  tell the user that we are loading more tracks
+     */
+    private fun showLoadingState() {
         binding.tvSongName.text = ""
         binding.tvAlbumName.text = ""
         binding.tvArtistName.text = ""
