@@ -1,11 +1,13 @@
-package com.mfriend.djapp.tempUi
+package com.mfriend.djapp.common
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.mfriend.djapp.R
 
-
-class ApiActivity : AppCompatActivity() {
+/**
+ * Activity for all the fragments
+ */
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

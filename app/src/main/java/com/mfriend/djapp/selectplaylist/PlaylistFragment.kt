@@ -1,4 +1,4 @@
-package com.mfriend.djapp
+package com.mfriend.djapp.selectplaylist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +9,8 @@ import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.mfriend.djapp.common.helper.observeEvent
 import com.mfriend.djapp.databinding.FragmentPlaylistBinding
-import com.mfriend.djapp.helper.observeEvent
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -52,12 +52,15 @@ class PlaylistFragment : Fragment() {
             playlistViewModel.newPlaylistPressed(binding.etPlaylistName.text.toString())
         }
 
-        playlistViewModel.playlists.observe(this) {
+        playlistViewModel.playlists.observe(viewLifecycleOwner) {
             playlistAdapter.items = it
             playlistAdapter.notifyDataSetChanged()
         }
         playlistViewModel.selectedPlaylistDto.observeEvent(this) {
-            val action = PlaylistFragmentDirections.actionReviewRequests(it)
+            val action =
+                PlaylistFragmentDirections.actionReviewRequests(
+                    it
+                )
             findNavController().navigate(action)
         }
     }

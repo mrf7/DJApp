@@ -1,23 +1,24 @@
 /*
   */
-package com.mfriend.djapp
+package com.mfriend.djapp.selectplaylist
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.mfriend.djapp.R
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 
 /**
+ * Simple adapter for a playlist recylcer view
+ *
  * Created by mfriend on 2020-01-05.
- * TODO mfriend WRITE CLASS HEADER
  */
 class PlaylistAdapter(
     var items: List<PlaylistDto>,
     private val onItemClickListener: ((PlaylistDto) -> Unit)? = null
-) :
-    RecyclerView.Adapter<PlaylistViewHolder>() {
+) : RecyclerView.Adapter<PlaylistViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistViewHolder {
         val inflatedView =
             LayoutInflater.from(parent.context).inflate(R.layout.playlist_item, parent, false)
@@ -41,5 +42,4 @@ class PlaylistViewHolder(private val view: View) : RecyclerView.ViewHolder(view)
             }
         }
     }
-
 }

@@ -12,14 +12,12 @@ import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-
 /**
  * Interface for methods to interact with the spotify web api.
  *
  * Created by mfriend on 2020-01-05.
  */
 interface SpotifyService {
-
     /**
      * Returns the currently authenticated [UserDto]
      */
@@ -42,7 +40,10 @@ interface SpotifyService {
      */
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("users/{user_id}/playlists")
-    suspend fun createPlaylist(@Body playlist: PlaylistRequestDto, @Path("user_id") userId: String): PlaylistDto
+    suspend fun createPlaylist(
+        @Body playlist: PlaylistRequestDto,
+        @Path("user_id") userId: String
+    ): PlaylistDto
 
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("playlists/{playlist_id}/tracks")

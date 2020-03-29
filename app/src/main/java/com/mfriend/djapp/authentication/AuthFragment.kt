@@ -1,4 +1,4 @@
-package com.mfriend.djapp
+package com.mfriend.djapp.authentication
 
 
 import android.content.Intent
@@ -9,8 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.mfriend.djapp.common.helper.extensions.LOGGER_TAG
 import com.mfriend.djapp.databinding.FragmentAuthBinding
-import com.mfriend.djapp.helper.extensions.LOGGER_TAG
 import com.mfriend.djapp.spotifyapi.SpotifyModule
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationResponse
@@ -18,14 +18,17 @@ import org.koin.android.ext.android.getKoin
 import org.koin.core.logger.KOIN_TAG
 
 /**
- * A simple [Fragment] subclass.
+ * Fragment to allow the user to sign in to their spotify account to perform requests that require
+ * an auth token
  */
 class AuthFragment : Fragment() {
     private lateinit var binding: FragmentAuthBinding
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        // Set up the binding
         binding = FragmentAuthBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -36,7 +39,10 @@ class AuthFragment : Fragment() {
             val authRequest = SpotifyModule.getRequest()
             val authIntent =
                 AuthenticationClient.createLoginActivityIntent(requireActivity(), authRequest)
-            startActivityForResult(authIntent, REQUEST_CODE)
+            startActivityForResult(
+                authIntent,
+                REQUEST_CODE
+            )
         }
     }
 
@@ -60,7 +66,7 @@ class AuthFragment : Fragment() {
         Log.d(LOGGER_TAG, "response: ${response.accessToken} expires ${response.expiresIn}")
         Log.d(KOIN_TAG, "Setting koin property for auth token")
         getKoin().setProperty("authToken", response.accessToken)
-        val action = AuthFragmentDirections.actionShowApiFragment()
+        val action = AuthFragmentDirections.showUsersPlaylists()
         Log.d("MRF", "Navigating to API fragment.")
         findNavController().navigate(action)
     }

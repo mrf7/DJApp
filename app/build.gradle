@@ -45,7 +45,7 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.1.0")
 
     // Ktx
-    implementation("androidx.fragment:fragment-ktx:1.2.2")
+    implementation("androidx.fragment:fragment-ktx:1.2.3")
     implementation("androidx.collection:collection-ktx:1.1.0")
     implementation("androidx.activity:activity-ktx:1.1.0")
     implementation("androidx.core:core-ktx:1.2.0")
@@ -58,7 +58,7 @@ dependencies {
     implementation("androidx.navigation:navigation-runtime-ktx:$navVersion")
     implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
     implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
-    implementation("androidx.room:room-ktx:2.2.4")
+    implementation("androidx.room:room-ktx:2.2.5")
     implementation "androidx.navigation:navigation-fragment-ktx:2.2.1"
     implementation "androidx.navigation:navigation-ui-ktx:2.2.1"
 
@@ -67,14 +67,16 @@ dependencies {
     implementation("com.google.code.gson:gson:2.8.6")
     implementation("com.squareup.moshi:moshi-kotlin:1.8.0")
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    // Dont update to 1.9.2 it breaks the build :(
+    //noinspection GradleDependency
     kapt("com.squareup.moshi:moshi-kotlin-codegen:1.8.0")
-    implementation("androidx.navigation:navigation-fragment:2.3.0-alpha03")
+    implementation("androidx.navigation:navigation-fragment:2.3.0-alpha04")
 
     // Web request dependencies (Retrofit+MOSHI)
-    implementation("com.squareup.retrofit2:retrofit:2.6.2")
+    implementation("com.squareup.retrofit2:retrofit:2.7.2")
     // TODO Make a build variant that adds logs
     implementation 'com.squareup.okhttp3:logging-interceptor:4.2.1'
-    implementation "com.squareup.retrofit2:converter-moshi:2.4.0"
+    implementation "com.squareup.retrofit2:converter-moshi:2.7.2"
     // Koin
     // Koin AndroidX Scope feature
     implementation "org.koin:koin-androidx-scope:$koin_version"
@@ -87,12 +89,12 @@ dependencies {
     // Room ktx and coroutines
     implementation "androidx.room:room-ktx:$room_version"
     implementation "androidx.room:room-runtime:$room_version"
-    
+
     // Functional bb
     def arrow_version = "0.10.4"
     implementation "io.arrow-kt:arrow-core:$arrow_version"
     implementation "io.arrow-kt:arrow-syntax:$arrow_version"
-    kapt    "io.arrow-kt:arrow-meta:$arrow_version"
+    kapt "io.arrow-kt:arrow-meta:$arrow_version"
 
     // Store for data caching
     def store_version = "4.0.0-alpha03"
