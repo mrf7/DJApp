@@ -56,10 +56,15 @@ class ReviewRequestsViewModel(
     private fun nextSong() {
         if (songsStack.peekFirst() == null) {
             _currentTrack.value = null
-            viewModelScope.launch { refreshSongs() }
+            viewModelScope.launch { getMoreSongs() }
         } else {
             _currentTrack.value = songsStack.pop()
         }
+    }
+
+    private suspend fun getMoreSongs() {
+        reviewRequestRepo.getMoreSongs().forEach { songsStack.push(it) }
+        _currentTrack.value = songsStack.poll()
     }
 
     /**

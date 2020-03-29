@@ -9,6 +9,8 @@ import com.mfriend.djapp.spotifyapi.models.TrackDTO
  */
 class ReviewRequestRepo(private val spotifyService: SpotifyService) {
 
+    private var nextPage: String? = null
+
     /**
      * Adds [trackDTO] to [playlistDto]
      */
@@ -19,5 +21,19 @@ class ReviewRequestRepo(private val spotifyService: SpotifyService) {
     /**
      * Fetches the users most listened to tracks
      */
-    suspend fun getUsersTopTracks(): List<TrackDTO> = spotifyService.getUsersTopTracks().items
+    suspend fun getUsersTopTracks(): List<TrackDTO> {
+        val newPage = spotifyService.getUsersTopTracks()
+        nextPage = newPage.next
+        return newPage.items
+    }
+
+    /**
+     * Gets the next page of songs
+     */
+    suspend fun getMoreSongs(): List<TrackDTO> {
+        val nextPageGuard = nextPage ?: return emptyList()
+        val newPage = spotifyService.getMoreTracks(nextPageGuard)
+        nextPage = newPage.next
+        return newPage.items
+    }
 }

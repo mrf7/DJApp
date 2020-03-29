@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import coil.api.load
 import com.mfriend.djapp.databinding.FragmentReviewRequestsBinding
@@ -36,6 +37,7 @@ class ReviewRequestsFragment : Fragment() {
             binding.apply {
                 if (track == null) {
                     Toast.makeText(context, "No More songs", Toast.LENGTH_LONG).show()
+                    findNavController().popBackStack()
                     return@observe
                 }
                 tvSongName.text = track.name

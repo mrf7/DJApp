@@ -17,11 +17,13 @@ object SpotifyModule {
     private const val REDIRECT_URI = "http://com.mfriend.djapp/callback"
     private const val CLIENT_ID = "bc77027fdfd54c0091c11fcc1895c5dd"
 
-    private fun retrofit(authToken: String): Retrofit = Retrofit.Builder().apply {
-        client(getClient(authToken))
-        baseUrl(SPOTIFY_WEB_API_URL)
-        addConverterFactory(MoshiConverterFactory.create())
-    }.build()
+    private fun retrofit(authToken: String): Retrofit {
+        return Retrofit.Builder()
+            .client(getClient(authToken))
+            .baseUrl(SPOTIFY_WEB_API_URL)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
+    }
 
     private fun getClient(authToken: String): OkHttpClient {
         return OkHttpClient.Builder().apply {
