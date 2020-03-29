@@ -13,7 +13,5 @@ jobs:
       uses: actions/setup-java@v1
       with:
         java-version: 1.8
-    - name: Build with Gradle
+    - name: Build, Test, Static analysis 
       run: ./gradlew build
-    - name: Run Detekt
-      run: ./gradlew detekt
