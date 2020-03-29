@@ -1,13 +1,14 @@
 package com.mfriend.djapp.reviewrequests
 
-import com.mfriend.djapp.spotifyapi.SpotifyService
+import arrow.core.Either
+import com.mfriend.djapp.spotifyapi.SpotifyApi
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import com.mfriend.djapp.spotifyapi.models.TrackDTO
 
 /**
  * Repository for interactions with the network and db related to reviewing song request
  */
-class ReviewRequestRepo(private val spotifyService: SpotifyService) {
+class ReviewRequestRepo(private val spotifyApi: SpotifyApi) {
 
     private var nextPage: String? = null
 
@@ -15,16 +16,22 @@ class ReviewRequestRepo(private val spotifyService: SpotifyService) {
      * Adds [trackDTO] to [playlistDto]
      */
     suspend fun addSongToPlaylist(trackDTO: TrackDTO, playlistDto: PlaylistDto) {
-        spotifyService.addSong(playlistDto.id, trackDTO.uri)
+        spotifyApi.addSong(playlistDto.id, trackDTO.uri)
     }
 
     /**
      * Fetches the users most listened to tracks
      */
     suspend fun getUsersTopTracks(): List<TrackDTO> {
-        val newPage = spotifyService.getUsersTopTracks()
+        val newPage = spotifyApi.getUsersTopTracks()
         nextPage = newPage.next
         return newPage.items
+    }
+
+    suspend fun getUsersTopEither(): Either<Throwable, List<TrackDTO>> = Either.catch {
+        spotifyApi.getUsersTopTracks()
+    }.map { trackPager ->
+        trackPager.items
     }
 
     /**
@@ -32,7 +39,7 @@ class ReviewRequestRepo(private val spotifyService: SpotifyService) {
      */
     suspend fun getMoreSongs(): List<TrackDTO> {
         val nextPageGuard = nextPage ?: return emptyList()
-        val newPage = spotifyService.getMoreTracks(nextPageGuard)
+        val newPage = spotifyApi.getMoreTracks(nextPageGuard)
         nextPage = newPage.next
         return newPage.items
     }

@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.observe
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import arrow.core.Either
 import coil.api.load
 import com.mfriend.djapp.databinding.FragmentReviewRequestsBinding
 import com.mfriend.djapp.spotifyapi.models.TrackDTO
@@ -33,22 +34,38 @@ class ReviewRequestsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.currentTrack.observe(viewLifecycleOwner) { track: TrackDTO? ->
-            binding.apply {
-                if (track == null) {
-                    Toast.makeText(context, "No More songs", Toast.LENGTH_LONG).show()
-                    findNavController().popBackStack()
-                    return@observe
+        viewModel.currentTrack.observe(viewLifecycleOwner) { state: Either<TrackReviewErrors, TrackDTO> ->
+            when (state) {
+                is Either.Left -> when (state.a) {
+                    TrackReviewErrors.LoadingSongs -> {
+                        Toast.makeText(context, "Loading songs", Toast.LENGTH_SHORT).show()
+                        showBlankUI()
+                    }
+                    TrackReviewErrors.CommunicationError -> Toast.makeText(
+                        context,
+                        "CommError",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    TrackReviewErrors.NoMoreSongs -> {
+                        // If there are no more songs, show a message to the user and return to the
+                        // playlist selection screen for now
+                        Toast.makeText(context, "Nore More Songs", Toast.LENGTH_SHORT).show()
+                        findNavController().popBackStack()
+                    }
                 }
-                tvSongName.text = track.name
-                tvAlbumName.text = track.album.name
-                tvArtistName.text = track.artists.firstOrNull()?.name ?: ""
-                tvAlbumArtwork.load(track.album.images.first().url) {
-                    lifecycle(this@ReviewRequestsFragment)
-                    crossfade(true)
-                    fallback(android.R.drawable.ic_media_play)
+                is Either.Right -> {
+                    val track = state.b
+                    binding.tvSongName.text = track.name
+                    binding.tvAlbumName.text = track.album.name
+                    binding.tvArtistName.text = track.artists.firstOrNull()?.name ?: ""
+                    binding.tvAlbumArtwork.load(track.album.images.first().url) {
+                        lifecycle(viewLifecycleOwner)
+                        crossfade(true)
+                        fallback(android.R.drawable.ic_media_play)
+                    }
                 }
             }
+
         }
         binding.btnAddSong.setOnClickListener {
             viewModel.addSongPressed()
@@ -58,4 +75,10 @@ class ReviewRequestsFragment : Fragment() {
         }
     }
 
+    private fun showBlankUI() {
+        binding.tvSongName.text = ""
+        binding.tvAlbumName.text = ""
+        binding.tvArtistName.text = ""
+        binding.tvAlbumArtwork.load(android.R.drawable.btn_star)
+    }
 }

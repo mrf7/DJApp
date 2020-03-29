@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 /**
- * Koin module to provide the spotify api via the [SpotifyService] interface
+ * Koin module to provide the spotify api via the [SpotifyApi] interface
  *
  * Created by MFriend on 2020-01-05.
  */
@@ -66,7 +66,7 @@ object SpotifyModule {
         single {
             val authToken: String =
                 requireNotNull(getKoin().getProperty("authToken")) { " Auth token not set" }
-            retrofit(authToken).create(SpotifyService::class.java)
+            retrofit(authToken).create(SpotifyApi::class.java)
         }
     }
 }

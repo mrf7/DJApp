@@ -8,19 +8,19 @@ import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.mfriend.djapp.common.helper.Event
 import com.mfriend.djapp.common.helper.extensions.LOGGER_TAG
-import com.mfriend.djapp.spotifyapi.SpotifyService
+import com.mfriend.djapp.spotifyapi.SpotifyApi
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import com.mfriend.djapp.spotifyapi.models.PlaylistRequestDto
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
 
-class PlaylistViewModel(private val spotifyService: SpotifyService) : ViewModel() {
+class PlaylistViewModel(private val spotifyApi: SpotifyApi) : ViewModel() {
     private val _selectPlaylistDto: MutableLiveData<Event<PlaylistDto>> = MutableLiveData()
     val selectedPlaylistDto: LiveData<Event<PlaylistDto>> = _selectPlaylistDto
 
     val playlists: LiveData<List<PlaylistDto>> = liveData {
         emit(emptyList())
-        emit(spotifyService.getUsersPlaylists().items)
+        emit(spotifyApi.getUsersPlaylists().items)
     }
 
     fun playlistSelected(selectedPlaylistDto: PlaylistDto) {
@@ -31,10 +31,10 @@ class PlaylistViewModel(private val spotifyService: SpotifyService) : ViewModel(
         viewModelScope.launch {
             // Need user id for the request for some reason.
             // TODO Cache it somewhere so we dont fetch it when creating a new playlist
-            val userId = spotifyService.getCurrentUser().id
+            val userId = spotifyApi.getCurrentUser().id
             val newPlaylist = PlaylistRequestDto(playlistName, "Playlist made by DJ App")
             val createdPlaylist = try {
-                spotifyService.createPlaylist(newPlaylist, userId)
+                spotifyApi.createPlaylist(newPlaylist, userId)
             } catch (e: HttpException) {
                 Log.e(
                     this@PlaylistViewModel.LOGGER_TAG,
