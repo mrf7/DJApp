@@ -74,7 +74,7 @@ class ReviewRequestsViewModel(
      * Fetches the users top songs from the api and adds them to the back of the stack
      */
     private suspend fun refreshSongs() {
-        reviewRequestRepo.getUsersTopTracks().forEach { songsStack.push(it) }
+        reviewRequestRepo.getUsersTopTracks().map { songsStack.addAll(it) }
         // Set the value to a Right value if poll returns non null, or a Left of NoMoreSongs if there
         // is nothing in the stack
         _currentTrack.value = songsStack.poll().rightIfNotNull { TrackReviewErrors.NoMoreSongs }

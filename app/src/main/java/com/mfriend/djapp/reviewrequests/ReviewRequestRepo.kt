@@ -22,13 +22,7 @@ class ReviewRequestRepo(private val spotifyApi: SpotifyApi) {
     /**
      * Fetches the users most listened to tracks
      */
-    suspend fun getUsersTopTracks(): List<TrackDTO> {
-        val newPage = spotifyApi.getUsersTopTracks()
-        nextPage = newPage.next
-        return newPage.items
-    }
-
-    suspend fun getUsersTopEither(): Either<Throwable, List<TrackDTO>> = Either.catch {
+    suspend fun getUsersTopTracks(): Either<Throwable, List<TrackDTO>> = Either.catch {
         spotifyApi.getUsersTopTracks()
     }.map { trackPager ->
         trackPager.items
