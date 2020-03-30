@@ -42,7 +42,7 @@ class ReviewRequestsFragment : Fragment() {
                 }
                 tvSongName.text = track.name
                 tvAlbumName.text = track.album.name
-                tvArtistName.text = track.artists.firstOrNull()?.name ?: ""
+                tvArtistName.text = track.artists.joinToString(separator = ", ") { it.name }
                 tvAlbumArtwork.load(track.album.images.first().url) {
                     lifecycle(this@ReviewRequestsFragment)
                     crossfade(true)
@@ -50,6 +50,7 @@ class ReviewRequestsFragment : Fragment() {
                 }
             }
         }
+        // Set the onclick listeners
         binding.btnAddSong.setOnClickListener {
             viewModel.addSongPressed()
         }
