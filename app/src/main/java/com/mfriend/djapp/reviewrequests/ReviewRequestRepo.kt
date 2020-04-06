@@ -12,7 +12,6 @@ import com.mfriend.djapp.spotifyapi.models.TrackDTO
  */
 class ReviewRequestRepo(private val spotifyApi: SpotifyApi, private val trackDao: TrackDao) {
 
-
     /**
      * Adds [trackDTO] to [playlistDto]
      */
@@ -25,8 +24,9 @@ class ReviewRequestRepo(private val spotifyApi: SpotifyApi, private val trackDao
      */
     suspend fun getRequests(): Either<Throwable, List<Track>> = Either.catch {
         if (trackDao.getAll().isEmpty()) {
-            val topTracks = spotifyApi.getUsersTopTracks(-1).items.map { it.toTrack() }
-            trackDao.insert(*topTracks.toTypedArray())
+            spotifyApi.getUsersTopTracks(-1).items.map { trackDTO ->
+                trackDao.insert(trackDTO.toTrack())
+            }
         }
         trackDao.getAll()
     }

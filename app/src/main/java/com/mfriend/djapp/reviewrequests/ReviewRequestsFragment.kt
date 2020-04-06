@@ -16,7 +16,6 @@ import com.mfriend.djapp.databinding.FragmentReviewRequestsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
-
 class ReviewRequestsFragment : Fragment() {
     private lateinit var binding: FragmentReviewRequestsBinding
     private val args by navArgs<ReviewRequestsFragmentArgs>()
@@ -24,7 +23,8 @@ class ReviewRequestsFragment : Fragment() {
     private val viewModel: ReviewRequestsViewModel by viewModel { parametersOf(args.selectedPlaylist) }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentReviewRequestsBinding.inflate(inflater, container, false)
@@ -42,7 +42,6 @@ class ReviewRequestsFragment : Fragment() {
             when (state) {
                 is Either.Left -> handleError(state.a)
                 is Either.Right -> handleNewTrack(state.b)
-
             }
         }
 

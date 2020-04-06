@@ -1,6 +1,5 @@
 package com.mfriend.djapp.authentication
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -25,7 +24,8 @@ class AuthFragment : Fragment() {
     private lateinit var binding: FragmentAuthBinding
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Set up the binding

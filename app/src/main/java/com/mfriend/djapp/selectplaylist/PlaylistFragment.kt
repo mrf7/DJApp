@@ -13,7 +13,6 @@ import com.mfriend.djapp.common.helper.observeEvent
 import com.mfriend.djapp.databinding.FragmentPlaylistBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-
 /**
  * Fragment to display the current users playlists
  */
@@ -24,7 +23,8 @@ class PlaylistFragment : Fragment() {
     private val playlistViewModel: PlaylistViewModel by viewModel()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentPlaylistBinding.inflate(inflater, container, false)
