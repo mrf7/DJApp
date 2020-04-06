@@ -5,9 +5,10 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import arrow.core.Either
+import arrow.core.left
 import arrow.core.rightIfNotNull
+import com.mfriend.djapp.common.db.entities.Track
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
-import com.mfriend.djapp.spotifyapi.models.TrackDTO
 import kotlinx.coroutines.launch
 import java.util.Deque
 import java.util.LinkedList
@@ -20,15 +21,18 @@ class ReviewRequestsViewModel(
     /**
      *  Shows the currently seclect track
      */
-    val currentTrack: LiveData<Either<TrackReviewErrors, TrackDTO>>
+    val currentTrack: LiveData<Either<TrackReviewErrors, Track>>
         get() = _currentTrack
 
-    private val _currentTrack = MutableLiveData<Either<TrackReviewErrors, TrackDTO>>()
-    private val songsStack: Deque<TrackDTO> = LinkedList()
+    private val _currentTrack = MutableLiveData<Either<TrackReviewErrors, Track>>()
+    private val songsStack: Deque<Track> = LinkedList()
 
     init {
         viewModelScope.launch {
-            refreshSongs()
+            _currentTrack.value = TrackReviewErrors.LoadingSongs.left()
+            val requests = reviewRequestRepo.getRequests()
+            songsStack.addAll(requests)
+            _currentTrack.value = songsStack.poll().rightIfNotNull { TrackReviewErrors.NoMoreSongs }
         }
     }
 
@@ -57,26 +61,11 @@ class ReviewRequestsViewModel(
      * Moves to the next song, loading new songs from the api if there is no next
      */
     private fun nextSong() {
-        if (songsStack.peekFirst() == null) {
-            _currentTrack.value = Either.left(TrackReviewErrors.LoadingSongs)
-            viewModelScope.launch { getMoreSongs() }
-        } else {
-            _currentTrack.value = Either.right(songsStack.pop())
+        _currentTrack.value?.map { track ->
+            viewModelScope.launch {
+                reviewRequestRepo.clearRequest(track)
+            }
         }
-    }
-
-    private suspend fun getMoreSongs() {
-        reviewRequestRepo.getMoreSongs().forEach { songsStack.push(it) }
-        _currentTrack.value = songsStack.poll().rightIfNotNull { TrackReviewErrors.NoMoreSongs }
-    }
-
-    /**
-     * Fetches the users top songs from the api and adds them to the back of the stack
-     */
-    private suspend fun refreshSongs() {
-        reviewRequestRepo.getUsersTopTracks().map { songsStack.addAll(it) }
-        // Set the value to a Right value if poll returns non null, or a Left of NoMoreSongs if there
-        // is nothing in the stack
         _currentTrack.value = songsStack.poll().rightIfNotNull { TrackReviewErrors.NoMoreSongs }
     }
 }

@@ -1,6 +1,7 @@
 package com.mfriend.djapp.reviewrequests
 
-import arrow.core.Either
+import com.mfriend.djapp.common.db.daos.TrackDao
+import com.mfriend.djapp.common.db.entities.Track
 import com.mfriend.djapp.spotifyapi.SpotifyApi
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import com.mfriend.djapp.spotifyapi.models.TrackDTO
@@ -8,33 +9,35 @@ import com.mfriend.djapp.spotifyapi.models.TrackDTO
 /**
  * Repository for interactions with the network and db related to reviewing song request
  */
-class ReviewRequestRepo(private val spotifyApi: SpotifyApi) {
+class ReviewRequestRepo(private val spotifyApi: SpotifyApi, private val trackDao: TrackDao) {
 
-    private var nextPage: String? = null
 
     /**
      * Adds [trackDTO] to [playlistDto]
      */
-    suspend fun addSongToPlaylist(trackDTO: TrackDTO, playlistDto: PlaylistDto) {
-        spotifyApi.addSong(playlistDto.id, trackDTO.uri)
+    suspend fun addSongToPlaylist(trackDTO: Track, playlistDto: PlaylistDto) {
+        spotifyApi.addSong(playlistDto.id, trackDTO.spotifyUri)
     }
 
     /**
-     * Fetches the users most listened to tracks
+     * Gets the list of songs requested to add to the playlist
      */
-    suspend fun getUsersTopTracks(): Either<Throwable, List<TrackDTO>> = Either.catch {
-        spotifyApi.getUsersTopTracks()
-    }.map { trackPager ->
-        trackPager.items
+    suspend fun getRequests(): List<Track> {
+        if (trackDao.getAll().isEmpty()) {
+            val topTracks = spotifyApi.getUsersTopTracks(100).items.map { it.toTrack() }
+            trackDao.insert(*topTracks.toTypedArray())
+        }
+        return trackDao.getAll()
     }
 
-    /**
-     * Gets the next page of songs
-     */
-    suspend fun getMoreSongs(): List<TrackDTO> {
-        val nextPageGuard = nextPage ?: return emptyList()
-        val newPage = spotifyApi.getMoreTracks(nextPageGuard)
-        nextPage = newPage.next
-        return newPage.items
+    suspend fun clearRequest(track: Track) {
+        trackDao.delete(track)
     }
 }
+
+/**
+ * Convert a [TrackDTO] to a [Track] db object
+ * TODO Put this somewhere else where it belongs
+ */
+fun TrackDTO.toTrack(): Track =
+    Track(name, artists.first().name, album.name, uri, album.images.first().url)

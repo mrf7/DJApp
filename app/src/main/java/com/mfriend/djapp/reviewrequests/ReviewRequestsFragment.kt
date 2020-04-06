@@ -11,8 +11,8 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import arrow.core.Either
 import coil.api.load
+import com.mfriend.djapp.common.db.entities.Track
 import com.mfriend.djapp.databinding.FragmentReviewRequestsBinding
-import com.mfriend.djapp.spotifyapi.models.TrackDTO
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
@@ -34,7 +34,7 @@ class ReviewRequestsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        viewModel.currentTrack.observe(viewLifecycleOwner) { state: Either<TrackReviewErrors, TrackDTO> ->
+        viewModel.currentTrack.observe(viewLifecycleOwner) { state: Either<TrackReviewErrors, Track> ->
             // Handle Either.Left (error) and Either.Right (success) values.
             // The a and b properties are members of Either.Left and Either.Right respectively which
             // reference the left/right values in a type safe way after an Either has been smart casted
@@ -81,12 +81,11 @@ class ReviewRequestsFragment : Fragment() {
     /**
      * Display the current [track] to the user
      */
-    private fun handleNewTrack(track: TrackDTO) {
-        Toast.makeText(context, "Loading songs", Toast.LENGTH_SHORT).show()
+    private fun handleNewTrack(track: Track) {
         binding.tvSongName.text = track.name
-        binding.tvAlbumName.text = track.album.name
-        binding.tvArtistName.text = track.artists.firstOrNull()?.name ?: ""
-        binding.tvAlbumArtwork.load(track.album.images.first().url) {
+        binding.tvAlbumName.text = track.album
+        binding.tvArtistName.text = track.artist
+        binding.tvAlbumArtwork.load(track.imageUrl) {
             lifecycle(viewLifecycleOwner)
             crossfade(true)
             fallback(android.R.drawable.ic_media_play)

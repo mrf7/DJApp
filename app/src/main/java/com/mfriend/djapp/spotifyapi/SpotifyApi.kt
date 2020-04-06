@@ -51,7 +51,7 @@ interface SpotifyApi {
     suspend fun addSong(@Path("playlist_id") playlistId: String, @Query("uris") songUri: String)
 
     @GET("https://api.spotify.com/v1/me/top/tracks")
-    suspend fun getUsersTopTracks(): Pager<TrackDTO>
+    suspend fun getUsersTopTracks(@Query("limit") limit: Int = 50): Pager<TrackDTO>
 
     @GET
     suspend fun getMoreTracks(@Url href: String): Pager<TrackDTO>
