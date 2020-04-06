@@ -1,5 +1,6 @@
 package com.mfriend.djapp.reviewrequests
 
+import arrow.core.Either
 import com.mfriend.djapp.common.db.daos.TrackDao
 import com.mfriend.djapp.common.db.entities.Track
 import com.mfriend.djapp.spotifyapi.SpotifyApi
@@ -22,12 +23,12 @@ class ReviewRequestRepo(private val spotifyApi: SpotifyApi, private val trackDao
     /**
      * Gets the list of songs requested to add to the playlist
      */
-    suspend fun getRequests(): List<Track> {
+    suspend fun getRequests(): Either<Throwable, List<Track>> = Either.catch {
         if (trackDao.getAll().isEmpty()) {
-            val topTracks = spotifyApi.getUsersTopTracks(100).items.map { it.toTrack() }
+            val topTracks = spotifyApi.getUsersTopTracks(-1).items.map { it.toTrack() }
             trackDao.insert(*topTracks.toTypedArray())
         }
-        return trackDao.getAll()
+        trackDao.getAll()
     }
 
     suspend fun clearRequest(track: Track) {

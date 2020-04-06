@@ -30,9 +30,13 @@ class ReviewRequestsViewModel(
     init {
         viewModelScope.launch {
             _currentTrack.value = TrackReviewErrors.LoadingSongs.left()
-            val requests = reviewRequestRepo.getRequests()
-            songsStack.addAll(requests)
-            _currentTrack.value = songsStack.poll().rightIfNotNull { TrackReviewErrors.NoMoreSongs }
+            _currentTrack.value = reviewRequestRepo.getRequests().fold(
+                { TrackReviewErrors.CommunicationError.left() },
+                { requests ->
+                    songsStack.addAll(requests)
+                    songsStack.poll().rightIfNotNull { TrackReviewErrors.NoMoreSongs }
+                }
+            )
         }
     }
 
