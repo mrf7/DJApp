@@ -46,10 +46,18 @@ interface SpotifyApi {
         @Path("user_id") userId: String
     ): PlaylistDto
 
+    /**
+     * Adds song denoted by [songUri] to playlist denoted by [playlistId]
+     */
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("playlists/{playlist_id}/tracks")
     suspend fun addSong(@Path("playlist_id") playlistId: String, @Query("uris") songUri: String)
 
+    /**
+     * Gets a personalized list of the current users most listened to tracks
+     *
+     * @param limit max number of tracks to get in the response, default: 50
+     */
     @GET("https://api.spotify.com/v1/me/top/tracks")
     suspend fun getUsersTopTracks(@Query("limit") limit: Int = 50): Pager<TrackDTO>
 

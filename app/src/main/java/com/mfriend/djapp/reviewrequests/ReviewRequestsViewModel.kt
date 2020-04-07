@@ -19,7 +19,7 @@ class ReviewRequestsViewModel(
 ) : ViewModel() {
 
     /**
-     *  Shows the currently seclect track
+     *  Holds the currently selected track or an error of type [TrackReviewErrors]
      */
     val currentTrack: LiveData<Either<TrackReviewErrors, Track>>
         get() = _currentTrack
@@ -27,9 +27,14 @@ class ReviewRequestsViewModel(
     private val _currentTrack = MutableLiveData<Either<TrackReviewErrors, Track>>()
     private val songsStack: Deque<Track> = LinkedList()
 
+    /**
+     * Sets up the viewmodel by fetching the list of requests
+     */
     init {
         viewModelScope.launch {
+            // Start by showing a loading screen
             _currentTrack.value = TrackReviewErrors.LoadingSongs.left()
+            // Get the requests and show the first one, unless an error occurred
             _currentTrack.value = reviewRequestRepo.getRequests().fold(
                 { TrackReviewErrors.CommunicationError.left() },
                 { requests ->
@@ -74,6 +79,9 @@ class ReviewRequestsViewModel(
     }
 }
 
+/**
+ * Potential errors to show the user
+ */
 enum class TrackReviewErrors {
     LoadingSongs,
     CommunicationError,

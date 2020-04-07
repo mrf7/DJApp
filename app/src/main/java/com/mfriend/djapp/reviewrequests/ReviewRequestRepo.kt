@@ -5,7 +5,7 @@ import com.mfriend.djapp.common.db.daos.TrackDao
 import com.mfriend.djapp.common.db.entities.Track
 import com.mfriend.djapp.spotifyapi.SpotifyApi
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
-import com.mfriend.djapp.spotifyapi.models.TrackDTO
+import com.mfriend.djapp.typeconverters.toTrack
 
 /**
  * Repository for interactions with the network and db related to reviewing song request
@@ -24,21 +24,18 @@ class ReviewRequestRepo(private val spotifyApi: SpotifyApi, private val trackDao
      */
     suspend fun getRequests(): Either<Throwable, List<Track>> = Either.catch {
         if (trackDao.getAll().isEmpty()) {
-            spotifyApi.getUsersTopTracks(-1).items.map { trackDTO ->
+            spotifyApi.getUsersTopTracks().items.map { trackDTO ->
                 trackDao.insert(trackDTO.toTrack())
             }
         }
         trackDao.getAll()
     }
 
+    /**
+     * Removes [track] from the list of requests for the user to address
+     */
     suspend fun clearRequest(track: Track) {
         trackDao.delete(track)
     }
 }
 
-/**
- * Convert a [TrackDTO] to a [Track] db object
- * TODO Put this somewhere else where it belongs
- */
-fun TrackDTO.toTrack(): Track =
-    Track(name, artists.first().name, album.name, uri, album.images.first().url)

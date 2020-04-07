@@ -16,7 +16,12 @@ import com.mfriend.djapp.databinding.FragmentReviewRequestsBinding
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 
+/**
+ * Fragment to display song requests to the user one at a time and lets them approve or decline each
+ * request
+ */
 class ReviewRequestsFragment : Fragment() {
+    // View binding for views and args from the nav host
     private lateinit var binding: FragmentReviewRequestsBinding
     private val args by navArgs<ReviewRequestsFragmentArgs>()
 
@@ -45,6 +50,7 @@ class ReviewRequestsFragment : Fragment() {
             }
         }
 
+        // Pass click events to the viewmodel
         binding.btnAddSong.setOnClickListener {
             viewModel.addSongPressed()
         }
