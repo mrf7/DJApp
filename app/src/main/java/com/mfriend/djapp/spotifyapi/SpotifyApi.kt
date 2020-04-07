@@ -27,7 +27,6 @@ interface SpotifyApi {
 
     /**
      * Gets the playlists the currently authenticated user has on their account
-     * TODO find a way to intercept the response and unwrap it into either [Pager.items] or an error
      *
      * @return A [Pager] that contains a list of [PlaylistDto] in [Pager.items]
      */
