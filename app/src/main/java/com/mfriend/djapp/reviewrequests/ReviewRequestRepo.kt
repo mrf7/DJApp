@@ -1,39 +1,41 @@
 package com.mfriend.djapp.reviewrequests
 
-import com.mfriend.djapp.spotifyapi.SpotifyService
+import arrow.core.Either
+import com.mfriend.djapp.common.db.daos.TrackDao
+import com.mfriend.djapp.common.db.entities.Track
+import com.mfriend.djapp.spotifyapi.SpotifyApi
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
-import com.mfriend.djapp.spotifyapi.models.TrackDTO
+import com.mfriend.djapp.typeconverters.toTrack
 
 /**
  * Repository for interactions with the network and db related to reviewing song request
  */
-class ReviewRequestRepo(private val spotifyService: SpotifyService) {
-
-    private var nextPage: String? = null
+class ReviewRequestRepo(private val spotifyApi: SpotifyApi, private val trackDao: TrackDao) {
 
     /**
      * Adds [trackDTO] to [playlistDto]
      */
-    suspend fun addSongToPlaylist(trackDTO: TrackDTO, playlistDto: PlaylistDto) {
-        spotifyService.addSong(playlistDto.id, trackDTO.uri)
+    suspend fun addSongToPlaylist(trackDTO: Track, playlistDto: PlaylistDto) {
+        spotifyApi.addSong(playlistDto.id, trackDTO.spotifyUri)
     }
 
     /**
-     * Fetches the users most listened to tracks
+     * Gets the list of songs requested to add to the playlist
      */
-    suspend fun getUsersTopTracks(): List<TrackDTO> {
-        val newPage = spotifyService.getUsersTopTracks()
-        nextPage = newPage.next
-        return newPage.items
+    suspend fun getRequests(): Either<Throwable, List<Track>> = Either.catch {
+        if (trackDao.getAll().isEmpty()) {
+            spotifyApi.getUsersTopTracks().items.map { trackDTO ->
+                trackDao.insert(trackDTO.toTrack())
+            }
+        }
+        trackDao.getAll()
     }
 
     /**
-     * Gets the next page of songs
+     * Removes [track] from the list of requests for the user to address
      */
-    suspend fun getMoreSongs(): List<TrackDTO> {
-        val nextPageGuard = nextPage ?: return emptyList()
-        val newPage = spotifyService.getMoreTracks(nextPageGuard)
-        nextPage = newPage.next
-        return newPage.items
+    suspend fun clearRequest(track: Track) {
+        trackDao.delete(track)
     }
 }
+

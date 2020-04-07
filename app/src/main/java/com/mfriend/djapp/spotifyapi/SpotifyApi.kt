@@ -18,7 +18,7 @@ import retrofit2.http.Url
  *
  * Created by mfriend on 2020-01-05.
  */
-interface SpotifyService {
+interface SpotifyApi {
     /**
      * Returns the currently authenticated [UserDto]
      */
@@ -27,7 +27,6 @@ interface SpotifyService {
 
     /**
      * Gets the playlists the currently authenticated user has on their account
-     * TODO find a way to intercept the response and unwrap it into either [Pager.items] or an error
      *
      * @return A [Pager] that contains a list of [PlaylistDto] in [Pager.items]
      */
@@ -46,12 +45,20 @@ interface SpotifyService {
         @Path("user_id") userId: String
     ): PlaylistDto
 
+    /**
+     * Adds song denoted by [songUri] to playlist denoted by [playlistId]
+     */
     @Headers("Content-Type: application/json", "Accept: application/json")
     @POST("playlists/{playlist_id}/tracks")
     suspend fun addSong(@Path("playlist_id") playlistId: String, @Query("uris") songUri: String)
 
+    /**
+     * Gets a personalized list of the current users most listened to tracks
+     *
+     * @param limit max number of tracks to get in the response, default: 50
+     */
     @GET("https://api.spotify.com/v1/me/top/tracks")
-    suspend fun getUsersTopTracks(): Pager<TrackDTO>
+    suspend fun getUsersTopTracks(@Query("limit") limit: Int = 50): Pager<TrackDTO>
 
     @GET
     suspend fun getMoreTracks(@Url href: String): Pager<TrackDTO>
