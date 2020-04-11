@@ -38,4 +38,3 @@ class ReviewRequestRepo(private val spotifyApi: SpotifyApi, private val trackDao
         trackDao.delete(track)
     }
 }
-
