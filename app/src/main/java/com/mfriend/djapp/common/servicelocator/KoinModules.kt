@@ -22,5 +22,5 @@ val appModule = module {
     // DB dependencies
     factory { AppDatabase.buildDb(androidApplication()) }
     factory { get<AppDatabase>().trackDao() }
-    single { ReviewRequestRepo(get()) }
+    single { ReviewRequestRepo(get(), get()) }
 }

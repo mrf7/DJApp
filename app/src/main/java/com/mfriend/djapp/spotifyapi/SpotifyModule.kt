@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
 /**
- * Koin module to provide the spotify api via the [SpotifyService] interface
+ * Koin module to provide the spotify api via the [SpotifyApi] interface
  *
  * Created by MFriend on 2020-01-05.
  */
@@ -17,11 +17,13 @@ object SpotifyModule {
     private const val REDIRECT_URI = "http://com.mfriend.djapp/callback"
     private const val CLIENT_ID = "bc77027fdfd54c0091c11fcc1895c5dd"
 
-    private fun retrofit(authToken: String): Retrofit = Retrofit.Builder().apply {
-        client(getClient(authToken))
-        baseUrl(SPOTIFY_WEB_API_URL)
-        addConverterFactory(MoshiConverterFactory.create())
-    }.build()
+    private fun retrofit(authToken: String): Retrofit {
+        return Retrofit.Builder()
+            .client(getClient(authToken))
+            .baseUrl(SPOTIFY_WEB_API_URL)
+            .addConverterFactory(MoshiConverterFactory.create())
+            .build()
+    }
 
     private fun getClient(authToken: String): OkHttpClient {
         return OkHttpClient.Builder().apply {
@@ -64,7 +66,7 @@ object SpotifyModule {
         single {
             val authToken: String =
                 requireNotNull(getKoin().getProperty("authToken")) { " Auth token not set" }
-            retrofit(authToken).create(SpotifyService::class.java)
+            retrofit(authToken).create(SpotifyApi::class.java)
         }
     }
 }

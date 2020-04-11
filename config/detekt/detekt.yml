@@ -28,7 +28,7 @@ console-reports:
     - 'ProjectStatisticsReport'
     - 'ComplexityReport'
     - 'NotificationReport'
-    #  - 'FindingsReport'
+    # - 'FindingsReport'
     - 'FileBasedFindingsReport'
 
 comments:
@@ -435,7 +435,7 @@ potential-bugs:
     active: true
     excludes: '**/test/**,**/androidTest/**,**/*.Test.kt,**/*.Spec.kt,**/*.Spek.kt'
     excludeAnnotatedProperties: ''
-    ignoreOnClassesPattern: '*Activity|*.Fragment'
+    ignoreOnClassesPattern: '.*Activity|.*Fragment'
   MapGetWithNotNullAssertionOperator:
     active: true
   MissingWhenCase:

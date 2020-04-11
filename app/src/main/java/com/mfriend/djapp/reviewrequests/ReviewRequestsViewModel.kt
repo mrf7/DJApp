@@ -4,8 +4,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import arrow.core.Either
+import arrow.core.left
+import arrow.core.rightIfNotNull
+import com.mfriend.djapp.common.db.entities.Track
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
-import com.mfriend.djapp.spotifyapi.models.TrackDTO
 import kotlinx.coroutines.launch
 import java.util.Deque
 import java.util.LinkedList
@@ -16,17 +19,29 @@ class ReviewRequestsViewModel(
 ) : ViewModel() {
 
     /**
-     *  Shows the currently seclect track
+     *  Holds the currently selected track or an error of type [TrackReviewErrors]
      */
-    val currentTrack: LiveData<TrackDTO>
+    val currentTrack: LiveData<Either<TrackReviewErrors, Track>>
         get() = _currentTrack
 
-    private val _currentTrack = MutableLiveData<TrackDTO>()
-    private val songsStack: Deque<TrackDTO> = LinkedList()
+    private val _currentTrack = MutableLiveData<Either<TrackReviewErrors, Track>>()
+    private val songsStack: Deque<Track> = LinkedList()
 
+    /**
+     * Sets up the viewmodel by fetching the list of requests
+     */
     init {
         viewModelScope.launch {
-            refreshSongs()
+            // Start by showing a loading screen
+            _currentTrack.value = TrackReviewErrors.LoadingSongs.left()
+            // Get the requests and show the first one, unless an error occurred
+            _currentTrack.value = reviewRequestRepo.getRequests().fold(
+                { TrackReviewErrors.CommunicationError.left() },
+                { requests ->
+                    songsStack.addAll(requests)
+                    songsStack.poll().rightIfNotNull { TrackReviewErrors.NoMoreSongs }
+                }
+            )
         }
     }
 
@@ -35,10 +50,11 @@ class ReviewRequestsViewModel(
      * then moves to the next song
      */
     fun addSongPressed() {
-        val trackToAdd = _currentTrack.value ?: return
-        viewModelScope.launch {
-            reviewRequestRepo.addSongToPlaylist(trackToAdd, playlist)
-            nextSong()
+        _currentTrack.value?.map { trackToAdd ->
+            viewModelScope.launch {
+                reviewRequestRepo.addSongToPlaylist(trackToAdd, playlist)
+                nextSong()
+            }
         }
     }
 
@@ -54,19 +70,20 @@ class ReviewRequestsViewModel(
      * Moves to the next song, loading new songs from the api if there is no next
      */
     private fun nextSong() {
-        if (songsStack.peekFirst() == null) {
-            _currentTrack.value = null
-            viewModelScope.launch { refreshSongs() }
-        } else {
-            _currentTrack.value = songsStack.pop()
+        _currentTrack.value?.map { track ->
+            viewModelScope.launch {
+                reviewRequestRepo.clearRequest(track)
+            }
         }
+        _currentTrack.value = songsStack.poll().rightIfNotNull { TrackReviewErrors.NoMoreSongs }
     }
+}
 
-    /**
-     * Fetches the users top songs from the api and adds them to the back of the stack
-     */
-    private suspend fun refreshSongs() {
-        reviewRequestRepo.getUsersTopTracks().forEach { songsStack.push(it) }
-        _currentTrack.value = songsStack.pop()
-    }
+/**
+ * Potential errors to show the user
+ */
+enum class TrackReviewErrors {
+    LoadingSongs,
+    CommunicationError,
+    NoMoreSongs
 }
