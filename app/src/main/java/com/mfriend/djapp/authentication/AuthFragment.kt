@@ -2,19 +2,18 @@ package com.mfriend.djapp.authentication
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.mfriend.djapp.common.helper.extensions.LOGGER_TAG
 import com.mfriend.djapp.databinding.FragmentAuthBinding
 import com.mfriend.djapp.spotifyapi.SpotifyModule
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationResponse
 import org.koin.android.ext.android.getKoin
 import org.koin.core.logger.KOIN_TAG
+import timber.log.Timber
 
 /**
  * Fragment to allow the user to sign in to their spotify account to perform requests that require
@@ -55,24 +54,21 @@ class AuthFragment : Fragment() {
         when (response.type) {
             AuthenticationResponse.Type.TOKEN -> handleResponseSuccess(response)
             AuthenticationResponse.Type.ERROR -> handleResponseError(response)
-            else -> Log.e(
-                LOGGER_TAG,
-                "Got different response type: ${response.type} "
-            )
+            else -> Timber.e("Got different response type: ${response.type}")
         }
     }
 
     private fun handleResponseSuccess(response: AuthenticationResponse) {
-        Log.d(LOGGER_TAG, "response: ${response.accessToken} expires ${response.expiresIn}")
-        Log.d(KOIN_TAG, "Setting koin property for auth token")
+        Timber.d("response: ${response.accessToken} expires ${response.expiresIn}")
+        Timber.tag(KOIN_TAG).d("Setting koin property for auth token")
         getKoin().setProperty("authToken", response.accessToken)
         val action = AuthFragmentDirections.showUsersPlaylists()
-        Log.d("MRF", "Navigating to API fragment.")
+        Timber.d("Navigating to API fragment.")
         findNavController().navigate(action)
     }
 
     private fun handleResponseError(response: AuthenticationResponse) {
-        Log.d(LOGGER_TAG, "response: ${response.error}")
+        Timber.d("response: ${response.error}")
     }
 
     companion object {

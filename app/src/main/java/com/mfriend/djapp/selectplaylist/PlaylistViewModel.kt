@@ -1,18 +1,17 @@
 package com.mfriend.djapp.selectplaylist
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.mfriend.djapp.common.helper.Event
-import com.mfriend.djapp.common.helper.extensions.LOGGER_TAG
 import com.mfriend.djapp.spotifyapi.SpotifyApi
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import com.mfriend.djapp.spotifyapi.models.PlaylistRequestDto
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
+import timber.log.Timber
 
 class PlaylistViewModel(private val spotifyApi: SpotifyApi) : ViewModel() {
     private val _selectPlaylistDto: MutableLiveData<Event<PlaylistDto>> = MutableLiveData()
@@ -36,11 +35,7 @@ class PlaylistViewModel(private val spotifyApi: SpotifyApi) : ViewModel() {
             val createdPlaylist = try {
                 spotifyApi.createPlaylist(newPlaylist, userId)
             } catch (e: HttpException) {
-                Log.e(
-                    this@PlaylistViewModel.LOGGER_TAG,
-                    "Got an http exception trying to create playlist",
-                    e
-                )
+                Timber.e(e, "Got an http exception trying to create playlist")
                 return@launch
             }
             _selectPlaylistDto.value =
