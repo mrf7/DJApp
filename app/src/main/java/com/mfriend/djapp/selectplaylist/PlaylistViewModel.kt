@@ -17,6 +17,13 @@ class PlaylistViewModel(private val spotifyApi: SpotifyApi) : ViewModel() {
     private val _selectPlaylistDto: MutableLiveData<Event<PlaylistDto>> = MutableLiveData()
     val selectedPlaylistDto: LiveData<Event<PlaylistDto>> = _selectPlaylistDto
 
+    init {
+        viewModelScope.launch {
+            val userEither = spotifyApi.getCurrentUserEither()
+            Timber.d("User: $userEither")
+        }
+    }
+
     val playlists: LiveData<List<PlaylistDto>> = liveData {
         emit(emptyList())
         emit(spotifyApi.getUsersPlaylists().items)
