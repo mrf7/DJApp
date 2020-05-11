@@ -2,7 +2,7 @@ package com.mfriend.djapp.spotifyapi.adapters
 
 import arrow.core.Either
 import arrow.core.left
-import arrow.core.right
+import arrow.core.toOption
 import okhttp3.Request
 import okhttp3.ResponseBody
 import okio.IOException
@@ -25,53 +25,45 @@ sealed class ErrorResponse<out T> {
 }
 
 
-class EitherResponseCall<S : Any, E : Any>(
-    private val delegate: Call<S>,
+class EitherResponseCall<T : Any, E : Any>(
+    private val delegate: Call<T>,
     private val errorConverter: Converter<ResponseBody, E>
-) : Call<Either<ErrorResponse<E>, S>> {
+) : Call<Either<ErrorResponse<E>, T>> {
 
-    override fun enqueue(callback: Callback<Either<ErrorResponse<E>, S>>) {
-        return delegate.enqueue(object : Callback<S> {
+    override fun enqueue(callback: Callback<Either<ErrorResponse<E>, T>>) {
+        return delegate.enqueue(object : Callback<T> {
             // This is called when a network response is received. Can either be a 2XX (success) or
             // a failure status code
-            override fun onResponse(call: Call<S>, response: Response<S>) {
-                if (response.isSuccessful) {
-                    val body = response.body()
-                    if (body != null) {
-                        callback.onResponse(this@EitherResponseCall, Response.success(body.right()))
-                    } else {
-                        val unknownError = ErrorResponse.UnknownError(null).left()
-                        callback.onResponse(this@EitherResponseCall, Response.success(unknownError))
-                    }
+            override fun onResponse(call: Call<T>, response: Response<T>) {
+                val responseResult = if (response.isSuccessful) {
+                    // Convert the T? response body into Option<T> then into Either<ErrorResponse, T>
+                    // gives left is response.body() is null, and response.body().right otherwise
+                    response.body().toOption()
+                        .toEither(ifEmpty = { ErrorResponse.UnknownError(null) })
                 } else {
+                    // get the response body of an error
                     val errorBody = response.errorBody()
+                    // Try to convert the error body into E with errorConverter, if that doesnt work
+                    // then give null. Convert E? into Option<E> with toOption()
                     val convertedError = when {
-                        errorBody == null -> null
-                        errorBody.contentLength() == 0L -> null
-                        else -> try {
+                        errorBody == null || errorBody.contentLength() == 0L -> null
+                        else -> kotlin.runCatching {
                             errorConverter.convert(errorBody)
-                        } catch (ex: Exception) {
-                            null
-                        }
-                    }
-                    if (convertedError != null) {
-                        callback.onResponse(
-                            this@EitherResponseCall,
-                            Response.success(
-                                ErrorResponse.ApiError(convertedError, response.code()).left()
-                            )
-                        )
-                    } else {
-                        val errorResponse = ErrorResponse.UnknownError(null).left()
-                        callback.onResponse(
-                            this@EitherResponseCall,
-                            Response.success(errorResponse)
-                        )
-                    }
+                        }.getOrNull()
+                    }.toOption()
+
+                    // If we were able to parse an errorBody into E, give an ApiError<E>, otherwise,
+                    // give UnknownError. Wrap both branches into Either.left
+                    convertedError.fold(
+                        ifEmpty = { ErrorResponse.UnknownError(null) },
+                        ifSome = { ErrorResponse.ApiError(it, response.code()) }
+                    ).left()
                 }
+                // Notify callback of the response
+                callback.onResponse(this@EitherResponseCall, Response.success(responseResult))
             }
 
-            override fun onFailure(call: Call<S>, t: Throwable) {
+            override fun onFailure(call: Call<T>, t: Throwable) {
                 val networkResponse = when (t) {
                     is IOException -> ErrorResponse.NetworkError(t)
                     else -> ErrorResponse.UnknownError(t)
@@ -85,7 +77,7 @@ class EitherResponseCall<S : Any, E : Any>(
 
     override fun isExecuted(): Boolean = delegate.isExecuted
 
-    override fun clone(): Call<Either<ErrorResponse<E>, S>> {
+    override fun clone(): Call<Either<ErrorResponse<E>, T>> {
         return EitherResponseCall(delegate.clone(), errorConverter)
     }
 
@@ -93,7 +85,7 @@ class EitherResponseCall<S : Any, E : Any>(
 
     override fun cancel() = delegate.cancel()
 
-    override fun execute(): Response<Either<ErrorResponse<E>, S>> {
+    override fun execute(): Response<Either<ErrorResponse<E>, T>> {
         throw UnsupportedOperationException("Can't execute this guy")
     }
 
@@ -134,8 +126,9 @@ class EitherResponseAdapterFactory : CallAdapter.Factory() {
         // the response type is Either and should be parameterized
         check(responseType is ParameterizedType) { "Response must be parameterized as NetworkResponse<Foo> or NetworkResponse<out Foo>" }
 
-        val successBodyType = getParameterUpperBound(0, responseType)
-        val errorBodyType = getParameterUpperBound(1, responseType)
+        // In Either, the second parameterized type is the success, first is error
+        val errorBodyType = getParameterUpperBound(0, responseType)
+        val successBodyType = getParameterUpperBound(1, responseType)
 
         val errorBodyConverter =
             retrofit.nextResponseBodyConverter<Any>(null, errorBodyType, annotations)
