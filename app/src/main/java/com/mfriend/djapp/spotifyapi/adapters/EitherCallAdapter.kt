@@ -2,7 +2,7 @@ package com.mfriend.djapp.spotifyapi.adapters
 
 import arrow.core.Either
 import arrow.core.left
-import arrow.core.toOption
+import arrow.core.right
 import okhttp3.Request
 import okhttp3.ResponseBody
 import okio.IOException
@@ -18,47 +18,57 @@ import java.lang.reflect.Type
 /**
  * Sealed class of all potential errors from the spotify api
  */
-sealed class ErrorResponse {
-    data class ApiError<U : Any>(val body: U, val code: Int) : ErrorResponse()
-    data class NetworkError(val error: IOException) : ErrorResponse()
-    data class UnknownError(val error: Throwable?) : ErrorResponse()
+sealed class ErrorResponse<out T> {
+    data class ApiError<T>(val body: T, val code: Int) : ErrorResponse<T>()
+    data class NetworkError(val error: IOException) : ErrorResponse<Nothing>()
+    data class UnknownError(val error: Throwable?) : ErrorResponse<Nothing>()
 }
 
 
 class EitherResponseCall<S : Any, E : Any>(
     private val delegate: Call<S>,
     private val errorConverter: Converter<ResponseBody, E>
-) : Call<Either<ErrorResponse, S>> {
+) : Call<Either<ErrorResponse<E>, S>> {
 
-    override fun enqueue(callback: Callback<Either<ErrorResponse, S>>) {
+    override fun enqueue(callback: Callback<Either<ErrorResponse<E>, S>>) {
         return delegate.enqueue(object : Callback<S> {
             // This is called when a network response is received. Can either be a 2XX (success) or
             // a failure status code
             override fun onResponse(call: Call<S>, response: Response<S>) {
-                val responseResult = if (response.isSuccessful) {
-                    // For status codes, give the body if non null, otherwise give unknown error
-                    response.body().toOption().toEither {
-                        ErrorResponse.UnknownError(null)
+                if (response.isSuccessful) {
+                    val body = response.body()
+                    if (body != null) {
+                        callback.onResponse(this@EitherResponseCall, Response.success(body.right()))
+                    } else {
+                        val unknownError = ErrorResponse.UnknownError(null).left()
+                        callback.onResponse(this@EitherResponseCall, Response.success(unknownError))
                     }
                 } else {
-                    val error = response.errorBody()
-                    // Convert the error body into the appropriate ApiError data class via the converter
-                    // or null
+                    val errorBody = response.errorBody()
                     val convertedError = when {
-                        error == null || error.contentLength() == 0L -> null
-                        else -> kotlin.runCatching {
-                            errorConverter.convert(error)
-                        }.getOrNull()
-                    }.toOption()
-                    // wrap the error in the appropriate ErrorResponse type based on if we have an error
-                    // body
-                    convertedError.fold(
-                        ifEmpty = { ErrorResponse.UnknownError(null) },
-                        ifSome = { ErrorResponse.ApiError(convertedError, response.code()) }
-                    ).left()
+                        errorBody == null -> null
+                        errorBody.contentLength() == 0L -> null
+                        else -> try {
+                            errorConverter.convert(errorBody)
+                        } catch (ex: Exception) {
+                            null
+                        }
+                    }
+                    if (convertedError != null) {
+                        callback.onResponse(
+                            this@EitherResponseCall,
+                            Response.success(
+                                ErrorResponse.ApiError(convertedError, response.code()).left()
+                            )
+                        )
+                    } else {
+                        val errorResponse = ErrorResponse.UnknownError(null).left()
+                        callback.onResponse(
+                            this@EitherResponseCall,
+                            Response.success(errorResponse)
+                        )
+                    }
                 }
-                // Notify the callback of the response
-                callback.onResponse(this@EitherResponseCall, Response.success(responseResult))
             }
 
             override fun onFailure(call: Call<S>, t: Throwable) {
@@ -75,14 +85,15 @@ class EitherResponseCall<S : Any, E : Any>(
 
     override fun isExecuted(): Boolean = delegate.isExecuted
 
-    override fun clone(): Call<Either<ErrorResponse, S>> =
-        EitherResponseCall(delegate.clone(), errorConverter)
+    override fun clone(): Call<Either<ErrorResponse<E>, S>> {
+        return EitherResponseCall(delegate.clone(), errorConverter)
+    }
 
     override fun isCanceled(): Boolean = delegate.isCanceled
 
     override fun cancel() = delegate.cancel()
 
-    override fun execute(): Response<Either<ErrorResponse, S>> {
+    override fun execute(): Response<Either<ErrorResponse<E>, S>> {
         throw UnsupportedOperationException("Can't execute this guy")
     }
 
@@ -92,10 +103,9 @@ class EitherResponseCall<S : Any, E : Any>(
 class EitherResponseCallAdapter<S : Any, E : Any>(
     private val successType: Type,
     private val errorBodyConverter: Converter<ResponseBody, E>
-) : CallAdapter<S, Call<Either<ErrorResponse, S>>> {
-    override fun adapt(call: Call<S>): Call<Either<ErrorResponse, S>> {
-        return EitherResponseCall(call, errorBodyConverter)
-    }
+) : CallAdapter<S, Call<Either<ErrorResponse<E>, S>>> {
+    override fun adapt(call: Call<S>): Call<Either<ErrorResponse<E>, S>> =
+        EitherResponseCall(call, errorBodyConverter)
 
     override fun responseType(): Type = successType
 }

@@ -1,7 +1,6 @@
 package com.mfriend.djapp.spotifyapi
 
 import com.mfriend.djapp.spotifyapi.adapters.EitherResponseAdapterFactory
-import com.mfriend.djapp.spotifyapi.models.NetworkResponseAdapterFactory
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
 import okhttp3.OkHttpClient
@@ -25,7 +24,6 @@ object SpotifyModule {
             .baseUrl(SPOTIFY_WEB_API_URL)
             .addConverterFactory(MoshiConverterFactory.create())
             .addCallAdapterFactory(EitherResponseAdapterFactory())
-            .addCallAdapterFactory(NetworkResponseAdapterFactory())
             .build()
     }
 
