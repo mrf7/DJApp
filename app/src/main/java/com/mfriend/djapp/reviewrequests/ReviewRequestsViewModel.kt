@@ -10,6 +10,7 @@ import arrow.core.rightIfNotNull
 import com.mfriend.djapp.common.db.entities.Track
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.Deque
 import java.util.LinkedList
 
@@ -36,8 +37,11 @@ class ReviewRequestsViewModel(
             _currentTrack.value = TrackReviewErrors.LoadingSongs.left()
             // Get the requests and show the first one, unless an error occurred
             _currentTrack.value = reviewRequestRepo.getRequests().fold(
-                { TrackReviewErrors.CommunicationError.left() },
-                { requests ->
+                ifLeft = {
+                    Timber.e(it, "Got an exception trying to get requests")
+                    TrackReviewErrors.CommunicationError.left()
+                },
+                ifRight = { requests ->
                     songsStack.addAll(requests)
                     songsStack.poll().rightIfNotNull { TrackReviewErrors.NoMoreSongs }
                 }
