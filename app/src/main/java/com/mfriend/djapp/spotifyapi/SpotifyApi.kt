@@ -1,8 +1,10 @@
 package com.mfriend.djapp.spotifyapi
 
+import arrow.core.Either
 import com.mfriend.djapp.spotifyapi.models.Pager
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import com.mfriend.djapp.spotifyapi.models.PlaylistRequestDto
+import com.mfriend.djapp.spotifyapi.models.SpotifyErrorBody
 import com.mfriend.djapp.spotifyapi.models.TrackDTO
 import com.mfriend.djapp.spotifyapi.models.UserDto
 import retrofit2.http.Body
@@ -24,6 +26,9 @@ interface SpotifyApi {
      */
     @GET("me")
     suspend fun getCurrentUser(): UserDto
+
+    @GET("me")
+    suspend fun getCurrentUserEither(): Either<SpotifyErrorBody, UserDto>
 
     /**
      * Gets the playlists the currently authenticated user has on their account
