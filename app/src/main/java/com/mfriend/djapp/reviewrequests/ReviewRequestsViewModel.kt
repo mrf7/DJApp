@@ -38,7 +38,7 @@ class ReviewRequestsViewModel(
             // Get the requests and show the first one, unless an error occurred
             _currentTrack.value = reviewRequestRepo.getRequests().fold(
                 ifLeft = {
-                    Timber.e(it, "Got an exception trying to get requests")
+                    Timber.e("Got an exception trying to get requests $it")
                     TrackReviewErrors.CommunicationError.left()
                 },
                 ifRight = { requests ->
@@ -56,6 +56,7 @@ class ReviewRequestsViewModel(
     fun addSongPressed() {
         _currentTrack.value?.map { trackToAdd ->
             viewModelScope.launch {
+                // TODO handle the error case
                 reviewRequestRepo.addSongToPlaylist(trackToAdd, playlist)
                 nextSong()
             }

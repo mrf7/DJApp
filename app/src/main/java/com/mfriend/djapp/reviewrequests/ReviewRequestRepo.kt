@@ -1,10 +1,13 @@
 package com.mfriend.djapp.reviewrequests
 
 import arrow.core.Either
+import arrow.core.left
+import arrow.core.right
 import com.mfriend.djapp.common.db.daos.TrackDao
 import com.mfriend.djapp.common.db.entities.Track
 import com.mfriend.djapp.spotifyapi.SpotifyApi
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
+import com.mfriend.djapp.spotifyapi.models.SpotifyErrorBody
 import com.mfriend.djapp.typeconverters.toTrack
 
 /**
@@ -22,13 +25,23 @@ class ReviewRequestRepo(private val spotifyApi: SpotifyApi, private val trackDao
     /**
      * Gets the list of songs requested to add to the playlist
      */
-    suspend fun getRequests(): Either<Throwable, List<Track>> = Either.catch {
-        if (trackDao.getAll().isEmpty()) {
-            spotifyApi.getUsersTopTracks().items.map { trackDTO ->
-                trackDao.insert(trackDTO.toTrack())
+    suspend fun getRequests(): Either<SpotifyErrorBody, List<Track>> {
+        val allTracks = trackDao.getAll()
+        return if (allTracks.isEmpty()) {
+            val tracks =
+                spotifyApi.getUsersTopTracks().map { it.items }
+
+            // If successful, insert all the tracks into the DB, otherwise return the error
+            when (tracks) {
+                is Either.Right -> {
+                    tracks.b.forEach { trackDao.insert(it.toTrack()) }
+                    trackDao.getAll().right()
+                }
+                is Either.Left -> tracks.a.left()
             }
+        } else {
+            allTracks.right()
         }
-        trackDao.getAll()
     }
 
     /**
