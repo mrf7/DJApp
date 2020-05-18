@@ -13,7 +13,7 @@ buildscript {
 }
 plugins {
     id("io.gitlab.arturbosch.detekt") version "1.7.1"
-    id("de.fayard.buildSrcVersions") version "0.7.0"
+    buildSrcVersions
 }
 
 allprojects {
