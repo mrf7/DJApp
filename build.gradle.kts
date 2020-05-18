@@ -6,21 +6,19 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath("com.android.tools.build:gradle:3.6.3")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.3.71")
-        classpath("androidx.navigation:navigation-safe-args-gradle-plugin:2.2.1")
+        classpath(Libs.com_android_tools_build_gradle)
+        classpath(Libs.kotlin_gradle_plugin)
+        classpath(Libs.navigation_safe_args_gradle_plugin)
     }
 }
 plugins {
-    id("io.gitlab.arturbosch.detekt").version("1.7.1")
-//    id("com.github.ben-manes.versions").version("0.28.0")
+    id("io.gitlab.arturbosch.detekt") version "1.7.1"
     id("de.fayard.buildSrcVersions") version "0.7.0"
-
 }
 
-//allprojects {
-////    apply from: "$rootDir/detekt.gradle"
-//}
+allprojects {
+    apply(file("$rootDir/detekt.gradle"))
+}
 
 allprojects {
     repositories {
