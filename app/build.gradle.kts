@@ -38,77 +38,75 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.71")
-    implementation("androidx.appcompat:appcompat:1.1.0")
-    implementation("androidx.legacy:legacy-support-v4:1.0.0")
-
+    implementation(Libs.kotlin_stdlib_jdk7)
+    implementation(Libs.appcompat)
+    implementation(Libs.legacy_support_v4)
     // Timber for logging.
-    implementation("com.jakewharton.timber:timber:4.7.1")
+    implementation(Libs.timber)
 
     // UI
-    implementation("androidx.constraintlayout:constraintlayout:1.1.3")
-    implementation("androidx.recyclerview:recyclerview:1.1.0")
+    implementation(Libs.constraintlayout)
+    implementation(Libs.recyclerview)
 
     // Ktx
-    implementation("androidx.fragment:fragment-ktx:1.2.3")
-    implementation("androidx.collection:collection-ktx:1.1.0")
-    implementation("androidx.activity:activity-ktx:1.1.0")
-    implementation("androidx.core:core-ktx:1.2.0")
+    implementation(Libs.fragment_ktx)
+    implementation(Libs.collection_ktx)
+    implementation(Libs.activity_ktx)
+    implementation(Libs.core_ktx)
     val lifeCycleVersion = "2.2.0-rc03"
-    implementation("androidx.lifecycle:lifecycle-livedata-core-ktx:$lifeCycleVersion")
-    implementation("androidx.lifecycle:lifecycle-livedata-ktx:$lifeCycleVersion")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:$lifeCycleVersion")
-    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:$lifeCycleVersion")
+    implementation(Libs.lifecycle_livedata_core_ktx)
+    implementation(Libs.lifecycle_livedata_ktx)
+    implementation(Libs.lifecycle_runtime_ktx)
+    implementation(Libs.lifecycle_viewmodel_ktx)
     val navVersion = "2.2.1"
-    implementation("androidx.navigation:navigation-runtime-ktx:$navVersion")
-    implementation("androidx.navigation:navigation-fragment-ktx:$navVersion")
-    implementation("androidx.navigation:navigation-ui-ktx:$navVersion")
-    implementation("androidx.room:room-ktx:2.2.5")
-    implementation("androidx.navigation:navigation-fragment-ktx:2.2.1")
-    implementation("androidx.navigation:navigation-ui-ktx:2.2.1")
+    implementation(Libs.navigation_runtime_ktx)
+    implementation(Libs.navigation_fragment_ktx)
+    implementation(Libs.navigation_ui_ktx)
+
 
     // Spotify authorization api and stuff required for it
     implementation(project(":spotify-auth"))
-    implementation("com.google.code.gson:gson:2.8.6")
-    implementation("com.squareup.moshi:moshi-kotlin:1.8.0")
-    implementation("androidx.lifecycle:lifecycle-extensions:2.2.0")
+
+    implementation(Libs.gson)
+    implementation(Libs.moshi_kotlin)
+    implementation(Libs.lifecycle_extensions)
     // Dont update to 1.9.2 it breaks the build :(
     //noinspection GradleDependency
-    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.8.0")
-    implementation("androidx.navigation:navigation-fragment:2.3.0-alpha04")
+    kapt(Libs.moshi_kotlin_codegen)
+    implementation(Libs.navigation_fragment)
 
     // Web request dependencies (Retrofit+MOSHI)
-    implementation("com.squareup.retrofit2:retrofit:2.7.2")
+    implementation(Libs.retrofit)
     // TODO Make a build variant that adds logs
-    implementation("com.squareup.okhttp3:logging-interceptor:4.2.1")
-    implementation("com.squareup.retrofit2:converter-moshi:2.7.2")
+    implementation(Libs.logging_interceptor)
+    implementation(Libs.converter_moshi)
     // Koin
     // Koin AndroidX Scope feature
-    implementation("org.koin:koin-androidx-scope:2.0.1")
+    implementation(Libs.koin_androidx_scope)
     // Koin AndroidX ViewModel feature
-    implementation("org.koin:koin-androidx-viewmodel:2.0.1")
+    implementation(Libs.koin_androidx_viewmodel)
 
     // Room related dependencies
     // Room annotation processor
-    kapt("androidx.room:room-compiler:2.2.5")
+    kapt(Libs.room_compiler)
     // Room ktx and coroutines
-    implementation("androidx.room:room-ktx:2.2.5")
-    implementation("androidx.room:room-runtime:2.2.5")
+    implementation(Libs.room_ktx)
+    implementation(Libs.room_runtime)
+    implementation(Libs.room_ktx)
 
     // Functional bb
     val arrow_version = "0.10.4"
-    implementation("io.arrow-kt:arrow-core:$arrow_version")
-    implementation("io.arrow-kt:arrow-syntax:$arrow_version")
-    kapt("io.arrow-kt:arrow-meta:$arrow_version")
+    implementation(Libs.arrow_core)
+    implementation(Libs.arrow_syntax)
+    kapt(Libs.arrow_meta)
 
     // Coil for image loading
-    implementation("io.coil-kt:coil:0.9.5")
+    implementation(Libs.coil)
 
     // Test stuff
-    testImplementation("junit:junit:4.13")
-    testImplementation("io.mockk:mockk:1.9.3")
-    testImplementation("androidx.room:room-testing:2.2.5")
-    androidTestImplementation("androidx.test.ext:junit:1.1.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.2.0")
-
+    testImplementation(Libs.junit_junit)
+    testImplementation(Libs.mockk)
+    testImplementation(Libs.room_testing)
+    androidTestImplementation(Libs.androidx_test_ext_junit)
+    androidTestImplementation(Libs.espresso_core)
 }

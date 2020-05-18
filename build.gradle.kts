@@ -13,6 +13,9 @@ buildscript {
 }
 plugins {
     id("io.gitlab.arturbosch.detekt").version("1.7.1")
+//    id("com.github.ben-manes.versions").version("0.28.0")
+    id("de.fayard.buildSrcVersions") version "0.7.0"
+
 }
 
 //allprojects {
