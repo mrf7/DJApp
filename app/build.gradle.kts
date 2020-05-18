@@ -53,12 +53,10 @@ dependencies {
     implementation(Libs.collection_ktx)
     implementation(Libs.activity_ktx)
     implementation(Libs.core_ktx)
-    val lifeCycleVersion = "2.2.0-rc03"
     implementation(Libs.lifecycle_livedata_core_ktx)
     implementation(Libs.lifecycle_livedata_ktx)
     implementation(Libs.lifecycle_runtime_ktx)
     implementation(Libs.lifecycle_viewmodel_ktx)
-    val navVersion = "2.2.1"
     implementation(Libs.navigation_runtime_ktx)
     implementation(Libs.navigation_fragment_ktx)
     implementation(Libs.navigation_ui_ktx)
@@ -95,7 +93,6 @@ dependencies {
     implementation(Libs.room_ktx)
 
     // Functional bb
-    val arrow_version = "0.10.4"
     implementation(Libs.arrow_core)
     implementation(Libs.arrow_syntax)
     kapt(Libs.arrow_meta)

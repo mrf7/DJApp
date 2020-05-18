@@ -11,11 +11,14 @@ import org.gradle.plugin.use.PluginDependencySpec
  * YOU are responsible for updating manually the dependency version.
  */
 object Versions {
+    const val io_gitlab_arturbosch_detekt: String = "1.7.1" // available: "1.9.1"
+
     const val com_squareup_retrofit2: String = "2.8.1"
 
     const val org_jetbrains_kotlin: String = "1.3.72"
 
-    // NOTE: Updating breaks the build. gotta figure that shit out
+    const val androidx_lifecycle: String = "2.2.0"
+
     const val com_squareup_moshi: String = "1.8.0" // available: "1.9.2"
 
     const val androidx_room: String = "2.2.5"
@@ -30,25 +33,13 @@ object Versions {
 
     const val junit_junit: String = "4.13"
 
-    const val io_gitlab_arturbosch_detekt_gradle_plugin: String = "1.9.1"
-
     const val de_fayard_buildsrcversions_gradle_plugin: String = "0.7.0"
 
     const val navigation_safe_args_gradle_plugin: String = "2.2.2"
 
-    const val lifecycle_livedata_core_ktx: String = "2.2.0"
-
-    const val lifecycle_viewmodel_ktx: String = "2.2.0"
-
     const val navigation_fragment_ktx: String = "2.2.2"
 
-    const val lifecycle_livedata_ktx: String = "2.2.0"
-
     const val navigation_runtime_ktx: String = "2.2.2"
-
-    const val lifecycle_runtime_ktx: String = "2.2.0"
-
-    const val lifecycle_extensions: String = "2.2.0"
 
     const val logging_interceptor: String = "4.7.0"
 

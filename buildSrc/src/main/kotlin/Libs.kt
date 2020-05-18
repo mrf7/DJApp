@@ -6,6 +6,16 @@
  */
 object Libs {
     /**
+     * https://arturbosch.github.io/detekt
+     */
+    const val detekt_formatting: String = "io.gitlab.arturbosch.detekt:detekt-formatting:" +
+            Versions.io_gitlab_arturbosch_detekt
+
+    const val io_gitlab_arturbosch_detekt_gradle_plugin: String =
+        "io.gitlab.arturbosch.detekt:io.gitlab.arturbosch.detekt.gradle.plugin:" +
+                Versions.io_gitlab_arturbosch_detekt
+
+    /**
      * https://github.com/square/retrofit/
      */
     const val converter_moshi: String = "com.squareup.retrofit2:converter-moshi:" +
@@ -48,6 +58,36 @@ object Libs {
      */
     const val kotlin_stdlib_jdk7: String = "org.jetbrains.kotlin:kotlin-stdlib-jdk7:" +
             Versions.org_jetbrains_kotlin
+
+    /**
+     * https://developer.android.com/topic/libraries/architecture/index.html
+     */
+    const val lifecycle_extensions: String = "androidx.lifecycle:lifecycle-extensions:" +
+            Versions.androidx_lifecycle
+
+    /**
+     * https://developer.android.com/jetpack/androidx
+     */
+    const val lifecycle_livedata_core_ktx: String =
+        "androidx.lifecycle:lifecycle-livedata-core-ktx:" + Versions.androidx_lifecycle
+
+    /**
+     * https://developer.android.com/jetpack/androidx
+     */
+    const val lifecycle_livedata_ktx: String = "androidx.lifecycle:lifecycle-livedata-ktx:" +
+            Versions.androidx_lifecycle
+
+    /**
+     * https://developer.android.com/jetpack/androidx
+     */
+    const val lifecycle_runtime_ktx: String = "androidx.lifecycle:lifecycle-runtime-ktx:" +
+            Versions.androidx_lifecycle
+
+    /**
+     * https://developer.android.com/jetpack/androidx
+     */
+    const val lifecycle_viewmodel_ktx: String = "androidx.lifecycle:lifecycle-viewmodel-ktx:" +
+            Versions.androidx_lifecycle
 
     /**
      * https://github.com/square/moshi
@@ -118,10 +158,6 @@ object Libs {
      */
     const val junit_junit: String = "junit:junit:" + Versions.junit_junit
 
-    const val io_gitlab_arturbosch_detekt_gradle_plugin: String =
-        "io.gitlab.arturbosch.detekt:io.gitlab.arturbosch.detekt.gradle.plugin:" +
-                Versions.io_gitlab_arturbosch_detekt_gradle_plugin
-
     const val de_fayard_buildsrcversions_gradle_plugin: String =
         "de.fayard.buildSrcVersions:de.fayard.buildSrcVersions.gradle.plugin:" +
                 Versions.de_fayard_buildsrcversions_gradle_plugin
@@ -134,46 +170,16 @@ object Libs {
                 Versions.navigation_safe_args_gradle_plugin
 
     /**
-     * https://developer.android.com/jetpack/androidx
-     */
-    const val lifecycle_livedata_core_ktx: String =
-        "androidx.lifecycle:lifecycle-livedata-core-ktx:" + Versions.lifecycle_livedata_core_ktx
-
-    /**
-     * https://developer.android.com/jetpack/androidx
-     */
-    const val lifecycle_viewmodel_ktx: String = "androidx.lifecycle:lifecycle-viewmodel-ktx:" +
-            Versions.lifecycle_viewmodel_ktx
-
-    /**
      * https://developer.android.com/topic/libraries/architecture/index.html
      */
     const val navigation_fragment_ktx: String = "androidx.navigation:navigation-fragment-ktx:" +
             Versions.navigation_fragment_ktx
 
     /**
-     * https://developer.android.com/jetpack/androidx
-     */
-    const val lifecycle_livedata_ktx: String = "androidx.lifecycle:lifecycle-livedata-ktx:" +
-            Versions.lifecycle_livedata_ktx
-
-    /**
      * https://developer.android.com/topic/libraries/architecture/index.html
      */
     const val navigation_runtime_ktx: String = "androidx.navigation:navigation-runtime-ktx:" +
             Versions.navigation_runtime_ktx
-
-    /**
-     * https://developer.android.com/jetpack/androidx
-     */
-    const val lifecycle_runtime_ktx: String = "androidx.lifecycle:lifecycle-runtime-ktx:" +
-            Versions.lifecycle_runtime_ktx
-
-    /**
-     * https://developer.android.com/topic/libraries/architecture/index.html
-     */
-    const val lifecycle_extensions: String = "androidx.lifecycle:lifecycle-extensions:" +
-            Versions.lifecycle_extensions
 
     /**
      * https://square.github.io/okhttp/
