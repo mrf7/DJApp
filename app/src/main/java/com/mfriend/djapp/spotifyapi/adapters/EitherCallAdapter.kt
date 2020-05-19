@@ -1,6 +1,7 @@
 package com.mfriend.djapp.spotifyapi.adapters
 
 import arrow.core.Either
+import arrow.core.Option
 import arrow.core.left
 import arrow.core.toOption
 import java.lang.reflect.ParameterizedType
@@ -45,12 +46,14 @@ class EitherResponseCall<T : Any, E : Any>(
                     val errorBody = response.errorBody()
                     // Try to convert the error body into E with errorConverter, if that doesnt work
                     // then give null. Convert E? into Option<E> with toOption()
-                    val convertedError = when {
-                        errorBody == null || errorBody.contentLength() == 0L -> null
-                        else -> kotlin.runCatching {
-                            errorConverter.convert(errorBody)
-                        }.getOrNull()
-                    }.toOption()
+                    val convertedError: Option<E> =
+                        if (errorBody == null || errorBody.contentLength() == 0L) {
+                            null
+                        } else {
+                            kotlin.runCatching {
+                                errorConverter.convert(errorBody)
+                            }.getOrNull()
+                        }.toOption()
 
                     // If we were able to parse an errorBody into E, give an ApiError<E>, otherwise,
                     // give UnknownError. Wrap both branches into Either.left
@@ -64,9 +67,10 @@ class EitherResponseCall<T : Any, E : Any>(
             }
 
             override fun onFailure(call: Call<T>, t: Throwable) {
-                val networkResponse = when (t) {
-                    is IOException -> ErrorResponse.NetworkError(t)
-                    else -> ErrorResponse.UnknownError(t)
+                val networkResponse: Either<ErrorResponse<Nothing>, Nothing> = if (t is IOException) {
+                    ErrorResponse.NetworkError(t)
+                } else {
+                    ErrorResponse.UnknownError(t)
                 }.left()
                 // I think using onResponse and Response.success() instead of onFailure here prevents
                 // the exception from getting thrown to the caller and instead just delivers it raw
@@ -77,9 +81,8 @@ class EitherResponseCall<T : Any, E : Any>(
 
     override fun isExecuted(): Boolean = delegate.isExecuted
 
-    override fun clone(): Call<Either<ErrorResponse<E>, T>> {
-        return EitherResponseCall(delegate.clone(), errorConverter)
-    }
+    override fun clone(): Call<Either<ErrorResponse<E>, T>> =
+        EitherResponseCall(delegate.clone(), errorConverter)
 
     override fun isCanceled(): Boolean = delegate.isCanceled
 

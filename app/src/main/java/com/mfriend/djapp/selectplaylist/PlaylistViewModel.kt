@@ -12,6 +12,7 @@ import com.mfriend.djapp.common.helper.Event
 import com.mfriend.djapp.spotifyapi.SpotifyApi
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import com.mfriend.djapp.spotifyapi.models.PlaylistRequestDto
+import com.mfriend.djapp.spotifyapi.models.SpotifyErrorBody
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -19,9 +20,9 @@ class PlaylistViewModel(private val spotifyApi: SpotifyApi) : ViewModel() {
     private val _selectPlaylistDto: MutableLiveData<Event<PlaylistDto>> = MutableLiveData()
     val selectedPlaylistDto: LiveData<Event<PlaylistDto>> = _selectPlaylistDto
 
-    val playlists: LiveData<Either<Unit, List<PlaylistDto>>> = liveData {
+    val playlists: LiveData<Either<SpotifyErrorBody, List<PlaylistDto>>> = liveData {
         emit(emptyList<PlaylistDto>().right())
-        emit(spotifyApi.getUsersPlaylists().map { it.items }.mapLeft { Unit })
+        emit(spotifyApi.getUsersPlaylists().map { it.items })
     }
 
     fun playlistSelected(selectedPlaylistDto: PlaylistDto) {
