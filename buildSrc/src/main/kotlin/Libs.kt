@@ -71,4 +71,5 @@ object Versions {
     const val OKHTTP_LOGGING_INTERCEPTOR: String = "4.7.0"
     const val timber: String = "4.7.1"
     const val COIL: String = "0.11.0"
+    const val KTLINT: String = "0.36.0"
 }

@@ -60,7 +60,6 @@ dependencies {
     implementation(AndroidX.NAVIGATION_FRAGMENT_KTX)
     implementation(AndroidX.NAVIGATION_UI_KTX)
 
-
     // Spotify authorization api and stuff required for it
     implementation(project(":spotify-auth"))
 
