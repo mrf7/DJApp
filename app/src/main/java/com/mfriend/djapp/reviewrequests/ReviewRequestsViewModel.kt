@@ -14,6 +14,9 @@ import java.util.LinkedList
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+/**
+ * ViewModel for the review requests user flow
+ */
 class ReviewRequestsViewModel(
     private val reviewRequestRepo: ReviewRequestRepo,
     private val playlist: PlaylistDto

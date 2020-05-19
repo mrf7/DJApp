@@ -14,6 +14,10 @@ import org.koin.android.ext.koin.androidApplication
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
+/**
+ * Koin Module containt all the App level resources like viewModels, daos, and repos
+ * Feel like theres probably a better way to do that
+ */
 val appModule = module {
     viewModel { PlaylistViewModel(get()) }
     viewModel { (playlistDto: PlaylistDto) ->

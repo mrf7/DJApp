@@ -16,6 +16,9 @@ import com.mfriend.djapp.spotifyapi.models.SpotifyErrorBody
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
+/**
+ *
+ */
 class PlaylistViewModel(private val spotifyApi: SpotifyApi) : ViewModel() {
     private val _selectPlaylistDto: MutableLiveData<Event<PlaylistDto>> = MutableLiveData()
     val selectedPlaylistDto: LiveData<Event<PlaylistDto>> = _selectPlaylistDto
