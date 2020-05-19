@@ -14,18 +14,21 @@ buildscript {
     }
 }
 plugins {
-    id("io.gitlab.arturbosch.detekt") version "1.9.1"
-    id("com.github.ben-manes.versions") version "0.28.0"
-    id("org.jlleitschuh.gradle.ktlint") version "9.2.1"
+    id(GradlePlugins.VERSIONS_TRACK) version GradlePluginsVersions.VERSIONS_TRACK
+    id(GradlePlugins.KTLINT) version GradlePluginsVersions.KTLINT
+    id(GradlePlugins.DETEKT) version GradlePluginsVersions.DETEKT
 }
 
 subprojects {
     apply {
-        plugin("io.gitlab.arturbosch.detekt")
-        plugin("org.jlleitschuh.gradle.ktlint")
+        plugin(GradlePlugins.DETEKT)
+        plugin(GradlePlugins.KTLINT)
     }
 
     ktlint {
+        debug.set(false)
+        version.set(GradlePluginsVersions.KTLINT)
+        android.set(true)
         filter {
             exclude("**/generated/**")
             include("**/kotlin/**")
