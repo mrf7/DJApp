@@ -6,6 +6,7 @@ import arrow.core.toOption
 import okhttp3.Request
 import okhttp3.ResponseBody
 import okio.IOException
+import okio.Timeout
 import retrofit2.Call
 import retrofit2.CallAdapter
 import retrofit2.Callback
@@ -90,6 +91,7 @@ class EitherResponseCall<T : Any, E : Any>(
     }
 
     override fun request(): Request = delegate.request()
+    override fun timeout(): Timeout = delegate.timeout()
 }
 
 class EitherResponseCallAdapter<S : Any, E : Any>(
