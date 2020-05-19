@@ -7,14 +7,14 @@ plugins {
 }
 
 android {
-    compileSdkVersion(29)
+    compileSdkVersion(Sdk.COMPILE_SDK_VERSION)
     viewBinding {
         isEnabled = true
     }
     defaultConfig {
         applicationId = "com.mfriend.djapp"
-        minSdkVersion(21)
-        targetSdkVersion(29)
+        minSdkVersion(Sdk.MIN_SDK_VERSION)
+        targetSdkVersion(Sdk.TARGET_SDK_VERSION)
         versionCode = 1
         versionName = "1.0"
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
@@ -38,72 +38,69 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
-    implementation(Libs.kotlin_stdlib_jdk7)
-    implementation(Libs.appcompat)
-    implementation(Libs.legacy_support_v4)
+    implementation(AndroidX.APP_COMPAT)
+    implementation(AndroidX.LEGACY_SUPPORT_V4)
     // Timber for logging.
-    implementation(Libs.timber)
+    implementation(Libs.TIMBER)
 
     // UI
-    implementation(Libs.constraintlayout)
-    implementation(Libs.recyclerview)
+    implementation(AndroidX.CONSTRAINT_LAYOUT)
+    implementation(AndroidX.RECYCLERVIEW)
 
     // Ktx
-    implementation(Libs.fragment_ktx)
-    implementation(Libs.collection_ktx)
-    implementation(Libs.activity_ktx)
-    implementation(Libs.core_ktx)
-    implementation(Libs.lifecycle_livedata_core_ktx)
-    implementation(Libs.lifecycle_livedata_ktx)
-    implementation(Libs.lifecycle_runtime_ktx)
-    implementation(Libs.lifecycle_viewmodel_ktx)
-    implementation(Libs.navigation_runtime_ktx)
-    implementation(Libs.navigation_fragment_ktx)
-    implementation(Libs.navigation_ui_ktx)
+    implementation(AndroidX.FRAGMENT_KTX)
+    implementation(AndroidX.COLLECTION_KTX)
+    implementation(AndroidX.ACTIVITY_KTX)
+    implementation(AndroidX.CORE_KTX)
+    implementation(AndroidX.LIFECYCLE_LIVEDATA_CORE_KTX)
+    implementation(AndroidX.LIFECYCLE_LIVEDATA_KTX)
+    implementation(AndroidX.LIFECYCLE_RUNTIME_KTX)
+    implementation(AndroidX.LIFECYCLE_VIEWMODEL_KTX)
+    implementation(AndroidX.NAVIGATION_RUNTIME_KTX)
+    implementation(AndroidX.NAVIGATION_FRAGMENT_KTX)
+    implementation(AndroidX.NAVIGATION_UI_KTX)
 
 
     // Spotify authorization api and stuff required for it
     implementation(project(":spotify-auth"))
 
-    implementation(Libs.gson)
-    implementation(Libs.moshi_kotlin)
-    implementation(Libs.lifecycle_extensions)
+    implementation(AndroidX.LIFECYCLE_EXTENSIONS)
     // Dont update to 1.9.2 it breaks the build :(
     //noinspection GradleDependency
-    kapt(Libs.moshi_kotlin_codegen)
-    implementation(Libs.navigation_fragment)
+    kapt(Libs.MOSHI_KOTLIN_CODEGEN)
+    implementation(Libs.MOSHI_KOTLIN)
 
     // Web request dependencies (Retrofit+MOSHI)
-    implementation(Libs.retrofit)
+    implementation(Libs.RETROFIT2)
     // TODO Make a build variant that adds logs
-    implementation(Libs.logging_interceptor)
-    implementation(Libs.converter_moshi)
+    implementation(Libs.OKHTTP_LOGGING_INTERCEPTOR)
+    implementation(Libs.RETROFIT_MOSHI_CONVERTER)
     // Koin
     // Koin AndroidX Scope feature
-    implementation(Libs.koin_androidx_scope)
+    implementation(Libs.KOIN_ANDROIDX_SCOPE)
     // Koin AndroidX ViewModel feature
-    implementation(Libs.koin_androidx_viewmodel)
+    implementation(Libs.KOIN_VIEWMODEL)
 
     // Room related dependencies
     // Room annotation processor
-    kapt(Libs.room_compiler)
+    kapt(AndroidX.ROOM_COMPILER)
     // Room ktx and coroutines
-    implementation(Libs.room_ktx)
-    implementation(Libs.room_runtime)
-    implementation(Libs.room_ktx)
+    implementation(AndroidX.ROOM_KTX)
+    implementation(AndroidX.ROOM_RUNTIME)
+    implementation(AndroidX.ROOM_KTX)
 
     // Functional bb
-    implementation(Libs.arrow_core)
-    implementation(Libs.arrow_syntax)
-    kapt(Libs.arrow_meta)
+    implementation(Libs.ARROW_CORE)
+    implementation(Libs.ARROW_SYNTAX)
+    kapt(Libs.ARROW_META)
 
     // Coil for image loading
-    implementation(Libs.coil)
+    implementation(Libs.COIL)
 
     // Test stuff
-    testImplementation(Libs.junit_junit)
-    testImplementation(Libs.mockk)
-    testImplementation(Libs.room_testing)
-    androidTestImplementation(Libs.androidx_test_ext_junit)
-    androidTestImplementation(Libs.espresso_core)
+    testImplementation(Testing.JUNIT)
+    testImplementation(Testing.MOCKK)
+    testImplementation(Testing.ROOM_TESTING)
+    androidTestImplementation(AndroidTesting.ANDROIDX_JUNIT)
+    androidTestImplementation(AndroidTesting.ESPRESSO_CORE)
 }
