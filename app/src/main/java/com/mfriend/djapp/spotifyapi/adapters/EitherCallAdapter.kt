@@ -1,14 +1,10 @@
 package com.mfriend.djapp.spotifyapi.adapters
 
 import arrow.core.Either
-import arrow.core.Option
 import arrow.core.left
 import arrow.core.toOption
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
 import okhttp3.Request
 import okhttp3.ResponseBody
-import okio.IOException
 import okio.Timeout
 import retrofit2.Call
 import retrofit2.CallAdapter
@@ -16,16 +12,51 @@ import retrofit2.Callback
 import retrofit2.Converter
 import retrofit2.Response
 import retrofit2.Retrofit
+import java.io.IOException
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 
 /**
  * Sealed class of all potential errors from the spotify api
  */
 sealed class ErrorResponse<out T> {
+    /**
+     * Returned when the request responds with an errorobject from api with a defined error [body] of
+     * type [T] with http error code [code]
+     */
     data class ApiError<T>(val body: T, val code: Int) : ErrorResponse<T>()
+
+    /**
+     * Returned when a network error occurred that prevent a response from being delivered
+     *
+     * @property error that occurred
+     */
     data class NetworkError(val error: IOException) : ErrorResponse<Nothing>()
-    data class UnknownError(val error: Throwable?) : ErrorResponse<Nothing>()
+
+    /**
+     * Returned when some unknown error occurs
+     *
+     * @property error the error that occurred
+     */
+    data class UnknownError(val error: Throwable) : ErrorResponse<Nothing>()
+
+    /**
+     * Returned when the response is successful, but contained no body.
+     *
+     * @property code the success status code returned
+     */
+    data class EmptyBodyError(val code: Int) : ErrorResponse<Nothing>()
 }
 
+/**
+ * A [Call] that returns an [Either] instead of throwing exceptions. [Either.left] will be an
+ * [ErrorResponse] of some expected error body type [E], and [Either.right] will be the expected
+ * success response body type. Non successful responses other than those with the expected error
+ * body format will be returned as the appropriate subclass of [ErrorResponse].
+ *
+ * @param delegate the retrofit provided call delegate we use to make the call
+ * @param errorConverter to convert the error [ResponseBody] to [E]
+ */
 class EitherResponseCall<T : Any, E : Any>(
     private val delegate: Call<T>,
     private val errorConverter: Converter<ResponseBody, E>
@@ -40,38 +71,38 @@ class EitherResponseCall<T : Any, E : Any>(
                     // Convert the T? response body into Option<T> then into Either<ErrorResponse, T>
                     // gives left is response.body() is null, and response.body().right otherwise
                     response.body().toOption()
-                        .toEither(ifEmpty = { ErrorResponse.UnknownError(null) })
+                        .toEither(ifEmpty = { ErrorResponse.EmptyBodyError(response.code()) })
                 } else {
                     // get the response body of an error
                     val errorBody = response.errorBody()
-                    // Try to convert the error body into E with errorConverter, if that doesnt work
-                    // then give null. Convert E? into Option<E> with toOption()
-                    val convertedError: Option<E> =
-                        if (errorBody == null || errorBody.contentLength() == 0L) {
-                            null
-                        } else {
-                            kotlin.runCatching {
-                                errorConverter.convert(errorBody)
-                            }.getOrNull()
-                        }.toOption()
-
-                    // If we were able to parse an errorBody into E, give an ApiError<E>, otherwise,
-                    // give UnknownError. Wrap both branches into Either.left
-                    convertedError.fold(
-                        ifEmpty = { ErrorResponse.UnknownError(null) },
-                        ifSome = { ErrorResponse.ApiError(it, response.code()) }
-                    ).left()
+                    val responseCode = response.code()
+                    try {
+                        // If the errorBody isnt null, try to convert it. The convert may also return
+                        // null so coalesce these nulls together.
+                        val convertedBody = errorBody?.let { errorConverter.convert(it) }.toOption()
+                        // If we're able to get an error body, return an api error. If the body is null
+                        // return an empty body error
+                        convertedBody.fold(
+                            ifEmpty = { ErrorResponse.EmptyBodyError(responseCode) },
+                            ifSome = { ErrorResponse.ApiError(it, responseCode) }
+                        ).left()
+                    } catch (ex: IOException) {
+                        // If we get some exception parsing the error body (likely because it had an
+                        // unexpected format and couldnt be parsed into E), return an unknown error
+                        ErrorResponse.UnknownError(ex).left()
+                    }
                 }
                 // Notify callback of the response
                 callback.onResponse(this@EitherResponseCall, Response.success(responseResult))
             }
 
             override fun onFailure(call: Call<T>, t: Throwable) {
-                val networkResponse: Either<ErrorResponse<Nothing>, Nothing> = if (t is IOException) {
-                    ErrorResponse.NetworkError(t)
-                } else {
-                    ErrorResponse.UnknownError(t)
-                }.left()
+                val networkResponse: Either<ErrorResponse<Nothing>, Nothing> =
+                    if (t is IOException) {
+                        ErrorResponse.NetworkError(t)
+                    } else {
+                        ErrorResponse.UnknownError(t)
+                    }.left()
                 // I think using onResponse and Response.success() instead of onFailure here prevents
                 // the exception from getting thrown to the caller and instead just delivers it raw
                 callback.onResponse(this@EitherResponseCall, Response.success(networkResponse))
@@ -96,6 +127,9 @@ class EitherResponseCall<T : Any, E : Any>(
     override fun timeout(): Timeout = delegate.timeout()
 }
 
+/**
+ * [CallAdapter] used by retrofit to wrap a call in [EitherResponseCall]
+ */
 class EitherResponseCallAdapter<S : Any, E : Any>(
     private val successType: Type,
     private val errorBodyConverter: Converter<ResponseBody, E>
@@ -106,6 +140,10 @@ class EitherResponseCallAdapter<S : Any, E : Any>(
     override fun responseType(): Type = successType
 }
 
+/**
+ * [CallAdapter.Factory] for retrofit to determine if we can use [EitherResponseCall] to resolve a given return
+ * type
+ */
 class EitherResponseAdapterFactory : CallAdapter.Factory() {
     override fun get(
         returnType: Type,
