@@ -129,12 +129,19 @@ class EitherResponseAdapterFactory : CallAdapter.Factory() {
         check(responseType is ParameterizedType) { "Response must be parameterized as NetworkResponse<Foo> or NetworkResponse<out Foo>" }
 
         // In Either, the second parameterized type is the success, first is error
-        val errorBodyType = getParameterUpperBound(0, responseType)
-        val successBodyType = getParameterUpperBound(1, responseType)
+        val leftType = getParameterUpperBound(0, responseType)
+        // If left type isn't ErrorResponse, or isnt parameterized, we cant do anything
+        if (getRawType(leftType) != ErrorResponse::class.java) {
+            return null
+        }
+        check(leftType is ParameterizedType) { "Left type must be parameterized as ErrorResponse<ExpectedErrorBodyType>" }
+        val expectedErrorBodyType = getParameterUpperBound(0, leftType)
+
+        val rightType = getParameterUpperBound(1, responseType)
 
         val errorBodyConverter =
-            retrofit.nextResponseBodyConverter<Any>(null, errorBodyType, annotations)
+            retrofit.nextResponseBodyConverter<Any>(null, expectedErrorBodyType, annotations)
 
-        return EitherResponseCallAdapter<Any, Any>(successBodyType, errorBodyConverter)
+        return EitherResponseCallAdapter<Any, Any>(rightType, errorBodyConverter)
     }
 }

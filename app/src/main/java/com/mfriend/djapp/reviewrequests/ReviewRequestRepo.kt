@@ -6,8 +6,9 @@ import arrow.core.right
 import com.mfriend.djapp.common.db.daos.TrackDao
 import com.mfriend.djapp.common.db.entities.Track
 import com.mfriend.djapp.spotifyapi.SpotifyApi
+import com.mfriend.djapp.spotifyapi.adapters.ErrorResponse
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
-import com.mfriend.djapp.spotifyapi.models.SpotifyErrorBody
+import com.mfriend.djapp.spotifyapi.models.SpotifyErrorContainer
 import com.mfriend.djapp.typeconverters.toTrack
 
 /**
@@ -25,7 +26,7 @@ class ReviewRequestRepo(private val spotifyApi: SpotifyApi, private val trackDao
     /**
      * Gets the list of songs requested to add to the playlist
      */
-    suspend fun getRequests(): Either<SpotifyErrorBody, List<Track>> {
+    suspend fun getRequests(): Either<ErrorResponse<SpotifyErrorContainer>, List<Track>> {
         val allTracks = trackDao.getAll()
         return if (allTracks.isEmpty()) {
             val tracks =

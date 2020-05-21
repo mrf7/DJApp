@@ -14,3 +14,8 @@ data class SpotifyErrorBody(
     @Json(name = "message")
     val message: String
 )
+
+data class SpotifyErrorContainer(
+    @Json(name = "error")
+    val error: SpotifyErrorBody
+)
