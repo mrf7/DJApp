@@ -37,6 +37,7 @@ android {
 }
 
 dependencies {
+    implementation("org.jsoup:jsoup:1.10.3")
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(AndroidX.APP_COMPAT)
     implementation(AndroidX.LEGACY_SUPPORT_V4)
