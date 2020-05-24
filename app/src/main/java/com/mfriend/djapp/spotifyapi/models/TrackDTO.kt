@@ -3,6 +3,11 @@ package com.mfriend.djapp.spotifyapi.models
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 
+/**
+ * Response data hold for the spotify api's track object
+ *
+ *
+ */
 @JsonClass(generateAdapter = true)
 data class TrackDTO(
     @Json(name = "album")
