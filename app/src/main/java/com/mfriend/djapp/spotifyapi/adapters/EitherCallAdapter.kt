@@ -3,6 +3,9 @@ package com.mfriend.djapp.spotifyapi.adapters
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.toOption
+import java.io.IOException
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 import okhttp3.Request
 import okhttp3.ResponseBody
 import okio.Timeout
@@ -12,9 +15,6 @@ import retrofit2.Callback
 import retrofit2.Converter
 import retrofit2.Response
 import retrofit2.Retrofit
-import java.io.IOException
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
 
 /**
  * Sealed class of all potential errors from the spotify api
