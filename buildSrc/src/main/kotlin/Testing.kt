@@ -12,10 +12,10 @@ object Testing {
     /**
      * http://junit.org
      */
-    const val JUNIT: String = "junit:junit:" + TestingVersions.JUNIT
+    const val JUNIT: String = "org.junit.jupiter:junit-jupiter:" + TestingVersions.JUNIT
 }
 
 object TestingVersions {
-    const val JUNIT: String = "4.13"
+    const val JUNIT: String = "5.6.2"
     const val MOCKK: String = "1.10.0"
 }
