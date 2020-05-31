@@ -99,6 +99,7 @@ dependencies {
 
     // Test stuff
     testImplementation(Testing.JUNIT)
+    testImplementation(Testing.ASSERT_J)
     testImplementation(Testing.MOCKK)
     testImplementation(Testing.ROOM_TESTING)
     androidTestImplementation(AndroidTesting.ANDROIDX_JUNIT)

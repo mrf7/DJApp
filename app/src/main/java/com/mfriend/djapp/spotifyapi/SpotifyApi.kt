@@ -1,7 +1,7 @@
 package com.mfriend.djapp.spotifyapi
 
 import arrow.core.Either
-import com.mfriend.djapp.spotifyapi.adapters.ErrorResponse
+import com.mfriend.djapp.helpers.retrofitadapters.ErrorResponse
 import com.mfriend.djapp.spotifyapi.models.Pager
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import com.mfriend.djapp.spotifyapi.models.PlaylistRequestDto
