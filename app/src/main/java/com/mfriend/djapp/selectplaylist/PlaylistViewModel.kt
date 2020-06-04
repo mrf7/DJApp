@@ -9,6 +9,7 @@ import arrow.core.Either
 import arrow.core.getOrElse
 import arrow.core.right
 import com.mfriend.djapp.common.helper.Event
+import com.mfriend.djapp.helpers.retrofitadapters.ErrorResponse
 import com.mfriend.djapp.spotifyapi.SpotifyApi
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import com.mfriend.djapp.spotifyapi.models.PlaylistRequestDto
@@ -32,9 +33,14 @@ class PlaylistViewModel(private val spotifyApi: SpotifyApi) : ViewModel() {
     /**
      * Livedata that will emit all of the users playlist.
      */
-    val playlists: LiveData<Either<SpotifyErrorBody, List<PlaylistDto>>> = liveData {
+    val playlists: LiveData<Either<SpotifyErrorBody?, List<PlaylistDto>>> = liveData {
         emit(emptyList<PlaylistDto>().right())
-        emit(spotifyApi.getUsersPlaylists().map { it.items })
+        emit(spotifyApi.getUsersPlaylists().map { it.items }.mapLeft {
+            when (it) {
+                is ErrorResponse.ApiError -> it.body.error
+                else -> null
+            }
+        })
     }
 
     /**
