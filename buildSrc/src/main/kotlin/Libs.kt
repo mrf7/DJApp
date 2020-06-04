@@ -1,6 +1,11 @@
 object Libs {
 
     /**
+     * https://github.com/Kotlin/kotlinx.coroutines
+     */
+    const val KOTLIN_COROUTINES =
+        "org.jetbrains.kotlinx:kotlinx-coroutines-core" + Versions.KOTLIN_COROUTINES
+    /**
      * https://github.com/JakeWharton/timber
      */
     const val TIMBER: String = "com.jakewharton.timber:timber:" + Versions.timber
@@ -64,6 +69,7 @@ object Libs {
 }
 
 object Versions {
+    const val KOTLIN_COROUTINES: String = "1.3.7"
     const val RETROFIT2: String = "2.8.1"
     const val MOSHI_KOTLIN: String = "1.8.0" // available: "1.9.2"
     const val ARROW: String = "0.10.5"
@@ -71,4 +77,5 @@ object Versions {
     const val OKHTTP_LOGGING_INTERCEPTOR: String = "4.7.0"
     const val timber: String = "4.7.1"
     const val COIL: String = "0.11.0"
+    const val KTLINT: String = "0.36.0"
 }

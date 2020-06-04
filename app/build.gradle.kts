@@ -31,6 +31,9 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 
+    lintOptions {
+        disable.add("InvalidPackage")
+    }
     kotlinOptions {
         jvmTarget = JavaVersion.VERSION_1_8.toString()
     }
@@ -38,10 +41,9 @@ android {
 
 dependencies {
     implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+    // Android support stuff i dont actually know what these do
     implementation(AndroidX.APP_COMPAT)
     implementation(AndroidX.LEGACY_SUPPORT_V4)
-    // Timber for logging.
-    implementation(Libs.TIMBER)
 
     // UI
     implementation(AndroidX.CONSTRAINT_LAYOUT)
@@ -60,21 +62,26 @@ dependencies {
     implementation(AndroidX.NAVIGATION_FRAGMENT_KTX)
     implementation(AndroidX.NAVIGATION_UI_KTX)
 
+    // Lifecycle extensions for viewmodel and stuff
+    implementation(AndroidX.LIFECYCLE_EXTENSIONS)
+
+    // Timber for logging.
+    implementation(Libs.TIMBER)
 
     // Spotify authorization api and stuff required for it
     implementation(project(":spotify-auth"))
 
-    implementation(AndroidX.LIFECYCLE_EXTENSIONS)
-    // Dont update to 1.9.2 it breaks the build :(
+    // Web request dependencies (Retrofit+MOSHI)
     //noinspection GradleDependency
     kapt(Libs.MOSHI_KOTLIN_CODEGEN)
-    implementation(Libs.MOSHI_KOTLIN)
+//    implementation(Libs.MOSHI_KOTLIN)
 
-    // Web request dependencies (Retrofit+MOSHI)
     implementation(Libs.RETROFIT2)
+
     // TODO Make a build variant that adds logs
     implementation(Libs.OKHTTP_LOGGING_INTERCEPTOR)
     implementation(Libs.RETROFIT_MOSHI_CONVERTER)
+
     // Koin
     // Koin AndroidX Scope feature
     implementation(Libs.KOIN_ANDROIDX_SCOPE)

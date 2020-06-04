@@ -2,7 +2,6 @@ import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 buildscript {
 
-
     repositories {
         google()
         jcenter()
@@ -27,8 +26,12 @@ subprojects {
 
     ktlint {
         debug.set(false)
-        version.set(GradlePluginsVersions.KTLINT)
+        // Use Versions.KTLINT to get the version of ktlint instead of the version of the plugin found
+        // in GradlePluginsVersions
+        version.set(Versions.KTLINT)
         android.set(true)
+        enableExperimentalRules.set(true)
+        additionalEditorconfigFile.set(file("$rootDir/config/ktlint/.editorconfig"))
         filter {
             exclude("**/generated/**")
             include("**/kotlin/**")

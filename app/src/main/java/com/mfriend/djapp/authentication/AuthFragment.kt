@@ -72,6 +72,6 @@ class AuthFragment : Fragment() {
     }
 
     companion object {
-        const val REQUEST_CODE = 69
+        private const val REQUEST_CODE = 69
     }
 }
