@@ -41,6 +41,7 @@ subprojects {
     detekt {
         config = files("$rootDir/config/detekt/detekt.yml")
         parallel = true
+        autoCorrect = true
         reports {
             html {
                 enabled = true

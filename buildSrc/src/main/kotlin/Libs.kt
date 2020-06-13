@@ -1,3 +1,6 @@
+/**
+ * Class for holding runtime dependencies
+ */
 object Libs {
 
     /**
@@ -5,6 +8,7 @@ object Libs {
      */
     const val KOTLIN_COROUTINES =
         "org.jetbrains.kotlinx:kotlinx-coroutines-core" + Versions.KOTLIN_COROUTINES
+
     /**
      * https://github.com/JakeWharton/timber
      */
@@ -39,7 +43,6 @@ object Libs {
     const val MOSHI_KOTLIN: String = "com.squareup.moshi:moshi-kotlin:" +
             Versions.MOSHI_KOTLIN
 
-
     /**
      * https://github.com/square/moshi
      */
@@ -63,9 +66,11 @@ object Libs {
 
     const val KOIN_ANDROIDX_SCOPE: String = "org.koin:koin-androidx-scope:" + Versions.KOIN
 
+    /**
+     *
+     */
     const val KOIN_VIEWMODEL: String = "org.koin:koin-androidx-viewmodel:" +
             Versions.KOIN
-
 }
 
 object Versions {

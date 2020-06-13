@@ -1,3 +1,6 @@
+/**
+ * Android provided dependencies
+ */
 object AndroidX {
     /**
      * https://developer.android.com/jetpack/androidx
@@ -110,6 +113,9 @@ object AndroidX {
     const val ROOM_RUNTIME: String = "androidx.room:room-runtime:" + AndroidXVersions.ANDROIDX_ROOM
 }
 
+/**
+ * Android provided testing libraries
+ */
 object AndroidTesting {
     /**
      * https://developer.android.com/testing
@@ -123,9 +129,13 @@ object AndroidTesting {
     const val ESPRESSO_CORE: String = "androidx.test.espresso:espresso-core:" +
             AndroidXVersions.ESPRESSO_CORE
 
+    /**
+     * https://developer.android.com/topic/libraries/architecture/index.html
+     */
+    const val ROOM_TESTING: String = "androidx.room:room-testing:" + AndroidXVersions.ANDROIDX_ROOM
 }
 
-object AndroidXVersions {
+private object AndroidXVersions {
     const val LEGACY_SUPPORT_V4: String = "1.0.0"
     const val NAVIGATION_UI_KTX: String = "2.2.2"
     const val CONSTRAINT_LAYOUT: String = "1.1.3"

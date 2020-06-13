@@ -36,10 +36,7 @@ class PlaylistViewModel(private val spotifyApi: SpotifyApi) : ViewModel() {
     val playlists: LiveData<Either<SpotifyErrorBody?, List<PlaylistDto>>> = liveData {
         emit(emptyList<PlaylistDto>().right())
         emit(spotifyApi.getUsersPlaylists().map { it.items }.mapLeft {
-            when (it) {
-                is ErrorResponse.ApiError -> it.body.error
-                else -> null
-            }
+            if (it is ErrorResponse.ApiError) it.body.error else null
         })
     }
 

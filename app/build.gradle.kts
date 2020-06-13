@@ -108,7 +108,7 @@ dependencies {
     testImplementation(Testing.JUNIT)
     testImplementation(Testing.ASSERT_J)
     testImplementation(Testing.MOCKK)
-    testImplementation(Testing.ROOM_TESTING)
+    testImplementation(AndroidTesting.ROOM_TESTING)
     androidTestImplementation(AndroidTesting.ANDROIDX_JUNIT)
     androidTestImplementation(AndroidTesting.ESPRESSO_CORE)
 }
