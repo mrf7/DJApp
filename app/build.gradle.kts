@@ -1,9 +1,12 @@
 plugins {
     id("com.android.application")
+    id("com.google.gms.google-services")
     kotlin("android")
     kotlin("android.extensions")
     kotlin("kapt")
     id("androidx.navigation.safeargs.kotlin")
+    id("kotlin-android")
+    id("kotlin-android-extensions")
 }
 
 android {
@@ -102,6 +105,10 @@ dependencies {
 
     // Coil for image loading
     implementation(Libs.COIL)
+
+    // Firebase cloud messaging
+    implementation("com.google.firebase:firebase-analytics:17.2.2")
+    implementation("com.google.firebase:firebase-messaging:20.2.0")
 
     // Test stuff
     testImplementation(Testing.JUNIT)

@@ -10,6 +10,7 @@ buildscript {
         classpath(GradlePlugins.ANDROID_BUILD_TOOLS)
         classpath(GradlePlugins.KOTLIN_GRADLE)
         classpath(GradlePlugins.NAV_SAFE_ARGS)
+        classpath("com.google.gms:google-services:4.3.3")
     }
 }
 plugins {
