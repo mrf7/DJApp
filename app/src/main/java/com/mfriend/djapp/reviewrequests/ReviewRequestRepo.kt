@@ -5,8 +5,8 @@ import arrow.core.left
 import arrow.core.right
 import com.mfriend.djapp.common.db.daos.TrackDao
 import com.mfriend.djapp.common.db.entities.Track
-import com.mfriend.djapp.spotifyapi.SpotifyApi
 import com.mfriend.djapp.helpers.retrofitadapters.ErrorResponse
+import com.mfriend.djapp.spotifyapi.SpotifyApi
 import com.mfriend.djapp.spotifyapi.models.PlaylistDto
 import com.mfriend.djapp.spotifyapi.models.SpotifyErrorContainer
 import com.mfriend.djapp.typeconverters.toTrack

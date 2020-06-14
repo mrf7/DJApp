@@ -3,6 +3,8 @@ package com.mfriend.djapp.helpers.retrofitadapters
 import arrow.core.Either
 import arrow.core.left
 import arrow.core.toOption
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 import okhttp3.Request
 import okhttp3.ResponseBody
 import okio.IOException
@@ -13,8 +15,6 @@ import retrofit2.Callback
 import retrofit2.Converter
 import retrofit2.Response
 import retrofit2.Retrofit
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
 
 /**
  * Sealed class of all potential errors from the spotify api
@@ -24,7 +24,6 @@ sealed class ErrorResponse<out T> {
     data class NetworkError(val error: IOException) : ErrorResponse<Nothing>()
     data class UnknownError(val error: Throwable?) : ErrorResponse<Nothing>()
 }
-
 
 /**
  * Wraps a [delegate] from retrofit to return an [Either.left] of [ErrorResponse] instead of throwing an exception in
