@@ -145,7 +145,7 @@ private object AndroidXVersions {
     const val FRAGMENT_KTX: String = "1.2.5"
     const val RECYCLER_VIEW: String = "1.1.0"
     const val APP_COMPAT: String = "1.1.0"
-    const val CORE_KTX: String = "1.2.0"
+    const val CORE_KTX: String = "1.3.0"
     const val NAVIGATION_FRAGMENT_KTX: String = "2.2.2"
     const val ANDROIDX_JUNIT: String = "1.1.1"
     const val ANDROIDX_ROOM: String = "2.2.5"
