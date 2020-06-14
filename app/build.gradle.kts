@@ -8,8 +8,8 @@ plugins {
 
 android {
     compileSdkVersion(Sdk.COMPILE_SDK_VERSION)
-    viewBinding {
-        isEnabled = true
+    buildFeatures {
+        viewBinding = true
     }
     defaultConfig {
         applicationId = "com.mfriend.djapp"

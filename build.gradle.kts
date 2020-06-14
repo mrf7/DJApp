@@ -26,8 +26,6 @@ subprojects {
 
     ktlint {
         debug.set(false)
-        // Use Versions.KTLINT to get the version of ktlint instead of the version of the plugin found
-        // in GradlePluginsVersions
         version.set(GradlePluginsVersions.KTLINT)
         android.set(true)
         enableExperimentalRules.set(true)

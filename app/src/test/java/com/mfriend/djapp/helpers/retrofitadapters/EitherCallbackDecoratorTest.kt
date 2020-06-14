@@ -10,7 +10,6 @@ import io.mockk.mockk
 import io.mockk.runs
 import io.mockk.slot
 import io.mockk.verify
-import java.io.IOException
 import okhttp3.ResponseBody
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.assertj.core.api.Assertions.assertThat
@@ -22,6 +21,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Converter
 import retrofit2.Response
+import java.io.IOException
 
 private typealias EitherResponse = Either<ErrorResponse<String>, String>
 
