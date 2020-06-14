@@ -74,7 +74,6 @@ dependencies {
     // Web request dependencies (Retrofit+MOSHI)
     //noinspection GradleDependency
     kapt(Libs.MOSHI_KOTLIN_CODEGEN)
-//    implementation(Libs.MOSHI_KOTLIN)
 
     implementation(Libs.RETROFIT2)
 
@@ -106,8 +105,9 @@ dependencies {
 
     // Test stuff
     testImplementation(Testing.JUNIT)
+    testImplementation(Testing.ASSERT_J)
     testImplementation(Testing.MOCKK)
-    testImplementation(Testing.ROOM_TESTING)
+    testImplementation(AndroidTesting.ROOM_TESTING)
     androidTestImplementation(AndroidTesting.ANDROIDX_JUNIT)
     androidTestImplementation(AndroidTesting.ESPRESSO_CORE)
 }

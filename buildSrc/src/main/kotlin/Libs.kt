@@ -1,3 +1,6 @@
+/**
+ * Class for holding runtime dependencies
+ */
 object Libs {
 
     /**
@@ -5,6 +8,7 @@ object Libs {
      */
     const val KOTLIN_COROUTINES =
         "org.jetbrains.kotlinx:kotlinx-coroutines-core" + Versions.KOTLIN_COROUTINES
+
     /**
      * https://github.com/JakeWharton/timber
      */
@@ -39,7 +43,6 @@ object Libs {
     const val MOSHI_KOTLIN: String = "com.squareup.moshi:moshi-kotlin:" +
             Versions.MOSHI_KOTLIN
 
-
     /**
      * https://github.com/square/moshi
      */
@@ -63,12 +66,14 @@ object Libs {
 
     const val KOIN_ANDROIDX_SCOPE: String = "org.koin:koin-androidx-scope:" + Versions.KOIN
 
+    /**
+     *
+     */
     const val KOIN_VIEWMODEL: String = "org.koin:koin-androidx-viewmodel:" +
             Versions.KOIN
-
 }
 
-object Versions {
+private object Versions {
     const val KOTLIN_COROUTINES: String = "1.3.7"
     const val RETROFIT2: String = "2.8.1"
     const val MOSHI_KOTLIN: String = "1.8.0" // available: "1.9.2"
@@ -77,5 +82,4 @@ object Versions {
     const val OKHTTP_LOGGING_INTERCEPTOR: String = "4.7.0"
     const val timber: String = "4.7.1"
     const val COIL: String = "0.11.0"
-    const val KTLINT: String = "0.36.0"
 }

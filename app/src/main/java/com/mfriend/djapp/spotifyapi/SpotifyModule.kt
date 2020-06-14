@@ -1,6 +1,6 @@
 package com.mfriend.djapp.spotifyapi
 
-import com.mfriend.djapp.spotifyapi.adapters.EitherResponseAdapterFactory
+import com.mfriend.djapp.helpers.retrofitadapters.EitherResponseAdapterFactory
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
 import okhttp3.OkHttpClient
