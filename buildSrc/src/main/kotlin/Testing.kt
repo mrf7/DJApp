@@ -21,5 +21,5 @@ object Testing {
 private object TestingVersions {
     const val JUNIT: String = "5.6.2"
     const val MOCKK: String = "1.10.0"
-    const val ASSERT_J: String = "3.11.1"
+    const val ASSERT_J: String = "3.16.1"
 }

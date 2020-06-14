@@ -142,7 +142,7 @@ private object AndroidXVersions {
     const val COLLECTION_KTX: String = "1.1.0"
     const val ESPRESSO_CORE: String = "3.2.0"
     const val ACTIVITY_KTX: String = "1.1.0"
-    const val FRAGMENT_KTX: String = "1.2.4"
+    const val FRAGMENT_KTX: String = "1.2.5"
     const val RECYCLER_VIEW: String = "1.1.0"
     const val APP_COMPAT: String = "1.1.0"
     const val CORE_KTX: String = "1.2.0"
