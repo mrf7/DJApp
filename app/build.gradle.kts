@@ -74,7 +74,6 @@ dependencies {
     // Web request dependencies (Retrofit+MOSHI)
     //noinspection GradleDependency
     kapt(Libs.MOSHI_KOTLIN_CODEGEN)
-//    implementation(Libs.MOSHI_KOTLIN)
 
     implementation(Libs.RETROFIT2)
 

@@ -14,21 +14,21 @@ buildscript {
 }
 plugins {
     id(GradlePlugins.VERSIONS_TRACK) version GradlePluginsVersions.VERSIONS_TRACK
-    id(GradlePlugins.KTLINT) version GradlePluginsVersions.KTLINT
+    id(GradlePlugins.KTLINT_PLUGIN) version GradlePluginsVersions.KTLINT_PLUGIN
     id(GradlePlugins.DETEKT) version GradlePluginsVersions.DETEKT
 }
 
 subprojects {
     apply {
         plugin(GradlePlugins.DETEKT)
-        plugin(GradlePlugins.KTLINT)
+        plugin(GradlePlugins.KTLINT_PLUGIN)
     }
 
     ktlint {
         debug.set(false)
         // Use Versions.KTLINT to get the version of ktlint instead of the version of the plugin found
         // in GradlePluginsVersions
-        version.set(Versions.KTLINT)
+        version.set(GradlePluginsVersions.KTLINT)
         android.set(true)
         enableExperimentalRules.set(true)
         additionalEditorconfigFile.set(file("$rootDir/config/ktlint/.editorconfig"))
