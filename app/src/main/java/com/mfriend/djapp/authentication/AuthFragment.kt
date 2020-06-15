@@ -43,6 +43,9 @@ class AuthFragment : Fragment() {
                 REQUEST_CODE
             )
         }
+        binding.SeeReqs.setOnClickListener {
+            findNavController().navigate(AuthFragmentDirections.showRequests())
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

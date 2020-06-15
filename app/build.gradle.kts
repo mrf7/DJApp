@@ -109,6 +109,7 @@ dependencies {
     // Firebase cloud messaging
     implementation("com.google.firebase:firebase-analytics:17.2.2")
     implementation("com.google.firebase:firebase-messaging:20.2.0")
+    implementation("com.google.firebase:firebase-firestore-ktx:21.4.3")
 
     // Test stuff
     testImplementation(Testing.JUNIT)

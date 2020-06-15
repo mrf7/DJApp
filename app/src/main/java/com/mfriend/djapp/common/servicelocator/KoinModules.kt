@@ -6,6 +6,8 @@
 package com.mfriend.djapp.common.servicelocator
 
 import com.mfriend.djapp.common.db.AppDatabase
+import com.mfriend.djapp.messaging.RequestListPocViewModel
+import com.mfriend.djapp.messaging.RequestsRepo
 import com.mfriend.djapp.reviewrequests.ReviewRequestRepo
 import com.mfriend.djapp.reviewrequests.ReviewRequestsViewModel
 import com.mfriend.djapp.selectplaylist.PlaylistViewModel
@@ -23,8 +25,10 @@ val appModule = module {
     viewModel { (playlistDto: PlaylistDto) ->
         ReviewRequestsViewModel(get(), playlistDto)
     }
+    viewModel { RequestListPocViewModel(get()) }
     // DB dependencies
     factory { AppDatabase.buildDb(androidApplication()) }
     factory { get<AppDatabase>().trackDao() }
     single { ReviewRequestRepo(get(), get()) }
+    single { RequestsRepo() }
 }

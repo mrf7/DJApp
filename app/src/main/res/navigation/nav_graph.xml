@@ -7,13 +7,16 @@
         tools:ignore="UnusedNavigation">
 
     <fragment
-            android:id="@+id/authFragment"
-            android:name="com.mfriend.djapp.authentication.AuthFragment"
-            android:label="fragment_auth"
-            tools:layout="@layout/fragment_auth">
+        android:id="@+id/authFragment"
+        android:name="com.mfriend.djapp.authentication.AuthFragment"
+        android:label="fragment_auth"
+        tools:layout="@layout/fragment_auth">
         <action
-                android:id="@+id/showUsersPlaylists"
-                app:destination="@id/playlistFragment" />
+            android:id="@+id/showUsersPlaylists"
+            app:destination="@id/playlistFragment" />
+        <action
+            android:id="@+id/showRequests"
+            app:destination="@id/requestListPocFragment" />
     </fragment>
 
     <fragment
@@ -27,13 +30,18 @@
                 app:popUpTo="@id/playlistFragment" />
     </fragment>
     <fragment
-            android:id="@+id/reviewRequestsFragment"
-            android:name="com.mfriend.djapp.reviewrequests.ReviewRequestsFragment"
-            android:label="fragment_review_requests"
-            tools:layout="@layout/fragment_review_requests">
+        android:id="@+id/reviewRequestsFragment"
+        android:name="com.mfriend.djapp.reviewrequests.ReviewRequestsFragment"
+        android:label="fragment_review_requests"
+        tools:layout="@layout/fragment_review_requests">
         <argument
-                android:name="selectedPlaylist"
-                app:argType="com.mfriend.djapp.spotifyapi.models.PlaylistDto" />
+            android:name="selectedPlaylist"
+            app:argType="com.mfriend.djapp.spotifyapi.models.PlaylistDto" />
     </fragment>
+    <fragment
+        android:id="@+id/requestListPocFragment"
+        android:name="com.mfriend.djapp.messaging.RequestListPocFragment"
+        android:label="request_list_poc_fragment"
+        tools:layout="@layout/request_list_poc_fragment" />
 
 </navigation>
