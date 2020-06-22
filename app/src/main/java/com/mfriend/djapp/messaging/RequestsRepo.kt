@@ -4,6 +4,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.channels.sendBlocking
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -21,7 +22,7 @@ class RequestsRepo(private val db: FirebaseFirestore = Firebase.firestore) {
         val subscription = document.addSnapshotListener { snapshot, _ ->
             val requests =
                 snapshot?.documents?.mapNotNull { it.toObject(RequestDto::class.java) } ?: return@addSnapshotListener
-            offer(requests.mapNotNull { it.songUri })
+            sendBlocking(requests.mapNotNull { it.songUri })
         }
         awaitClose { subscription.remove() }
     }
