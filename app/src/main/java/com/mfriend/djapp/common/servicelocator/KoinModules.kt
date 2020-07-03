@@ -5,6 +5,9 @@
  */
 package com.mfriend.djapp.common.servicelocator
 
+import android.content.Context
+import com.mfriend.djapp.authentication.SplashScreenViewModel
+import com.mfriend.djapp.common.SharedPrefDataSource
 import com.mfriend.djapp.common.db.AppDatabase
 import com.mfriend.djapp.reviewrequests.ReviewRequestRepo
 import com.mfriend.djapp.reviewrequests.ReviewRequestsViewModel
@@ -23,8 +26,19 @@ val appModule = module {
     viewModel { (playlistDto: PlaylistDto) ->
         ReviewRequestsViewModel(get(), playlistDto)
     }
+    viewModel { SplashScreenViewModel(get()) }
     // DB dependencies
     factory { AppDatabase.buildDb(androidApplication()) }
     factory { get<AppDatabase>().trackDao() }
     single { ReviewRequestRepo(get(), get()) }
+
+    val FILE_NAME: String = "shared"
+    single {
+        SharedPrefDataSource(
+            androidApplication().getSharedPreferences(
+                FILE_NAME,
+                Context.MODE_PRIVATE
+            )
+        )
+    }
 }

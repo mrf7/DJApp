@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/nav_graph"
-        app:startDestination="@id/authFragment"
-        tools:ignore="UnusedNavigation">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashFragment"
+    tools:ignore="UnusedNavigation">
 
     <fragment
-            android:id="@+id/authFragment"
-            android:name="com.mfriend.djapp.authentication.AuthFragment"
-            android:label="fragment_auth"
-            tools:layout="@layout/fragment_auth">
+        android:id="@+id/splashFragment"
+        android:name="com.mfriend.djapp.authentication.SplashScreenFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash">
         <action
-                android:id="@+id/showUsersPlaylists"
-                app:destination="@id/playlistFragment" />
+            android:id="@+id/showUsersPlaylists"
+            app:destination="@id/playlistFragment" />
     </fragment>
 
     <fragment

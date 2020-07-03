@@ -1,5 +1,6 @@
 package com.mfriend.djapp.spotifyapi
 
+import com.mfriend.djapp.common.SharedPrefDataSource
 import com.mfriend.djapp.helpers.retrofitadapters.EitherResponseAdapterFactory
 import com.spotify.sdk.android.authentication.AuthenticationRequest
 import com.spotify.sdk.android.authentication.AuthenticationResponse
@@ -66,8 +67,10 @@ object SpotifyModule {
 
     fun get() = module {
         single {
-            val authToken: String =
-                requireNotNull(getKoin().getProperty("authToken")) { " Auth token not set" }
+            val sharedPrefDataSource: SharedPrefDataSource = get()
+
+            @Suppress("MaxLineLength")
+            val authToken: String = requireNotNull(sharedPrefDataSource.spotifyAuthToken)
             retrofit(authToken).create(SpotifyApi::class.java)
         }
     }

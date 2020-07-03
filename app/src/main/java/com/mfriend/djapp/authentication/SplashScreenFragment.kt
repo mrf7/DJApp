@@ -7,20 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.mfriend.djapp.databinding.FragmentAuthBinding
+import com.mfriend.djapp.common.helper.observeEvent
+import com.mfriend.djapp.databinding.FragmentSplashBinding
 import com.mfriend.djapp.spotifyapi.SpotifyModule
 import com.spotify.sdk.android.authentication.AuthenticationClient
 import com.spotify.sdk.android.authentication.AuthenticationResponse
-import org.koin.android.ext.android.getKoin
-import org.koin.core.logger.KOIN_TAG
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 /**
  * Fragment to allow the user to sign in to their spotify account to perform requests that require
  * an auth token
  */
-class AuthFragment : Fragment() {
-    private lateinit var binding: FragmentAuthBinding
+class SplashScreenFragment : Fragment() {
+    private lateinit var binding: FragmentSplashBinding
+    private val splashViewModel: SplashScreenViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,13 +29,27 @@ class AuthFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Set up the binding
-        binding = FragmentAuthBinding.inflate(inflater, container, false)
+        binding = FragmentSplashBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button.setOnClickListener {
+        binding.btnStartParty.setOnClickListener {
+            splashViewModel.onStartPartyPressed()
+        }
+        binding.btnJoinParty.setOnClickListener {
+            splashViewModel.onJoinPartyPressed()
+        }
+        splashViewModel.navigationEvent.observeEvent(viewLifecycleOwner) {
+            val direction = when (it) {
+                SplashScreenViewModel.NavDirections.JoinParty -> SplashScreenFragmentDirections.showUsersPlaylists()
+                SplashScreenViewModel.NavDirections.CreateParty -> TODO()
+            }
+            findNavController().navigate(direction)
+        }
+
+        splashViewModel.startAuthEvent.observeEvent(viewLifecycleOwner) {
             val authRequest = SpotifyModule.getRequest()
             val authIntent =
                 AuthenticationClient.createLoginActivityIntent(requireActivity(), authRequest)
@@ -52,19 +67,10 @@ class AuthFragment : Fragment() {
         val response = AuthenticationClient.getResponse(resultCode, data)
 
         when (response.type) {
-            AuthenticationResponse.Type.TOKEN -> handleResponseSuccess(response)
+            AuthenticationResponse.Type.TOKEN -> splashViewModel.onAuthSuccess(response.accessToken)
             AuthenticationResponse.Type.ERROR -> handleResponseError(response)
             else -> Timber.e("Got different response type: ${response.type}")
         }
-    }
-
-    private fun handleResponseSuccess(response: AuthenticationResponse) {
-        Timber.d("response: ${response.accessToken} expires ${response.expiresIn}")
-        Timber.tag(KOIN_TAG).d("Setting koin property for auth token")
-        getKoin().setProperty("authToken", response.accessToken)
-        val action = AuthFragmentDirections.showUsersPlaylists()
-        Timber.d("Navigating to API fragment.")
-        findNavController().navigate(action)
     }
 
     private fun handleResponseError(response: AuthenticationResponse) {
