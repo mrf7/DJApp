@@ -6,6 +6,10 @@ import androidx.lifecycle.ViewModel
 import com.mfriend.djapp.common.SharedPrefDataSource
 import com.mfriend.djapp.common.UserMode
 import com.mfriend.djapp.common.helper.Event
+import com.spotify.sdk.android.authentication.AuthenticationResponse
+import org.koin.core.logger.KOIN_TAG
+import org.koin.java.KoinJavaComponent.getKoin
+import timber.log.Timber
 
 /**
  * View model for back end operations on the initial screen to start/join a party
@@ -30,8 +34,9 @@ class SplashScreenViewModel(private val sharedPrefDataSource: SharedPrefDataSour
     /**
      * Call when authorization is successfull
      */
-    fun onAuthSuccess(token: String) {
-        sharedPrefDataSource.spotifyAuthToken = token
+    fun onAuthSuccess(response: AuthenticationResponse) {
+        Timber.tag(KOIN_TAG).d("Setting koin property for auth token")
+        getKoin().setProperty("authToken", response.accessToken)
         sharedPrefDataSource.userMode = UserMode.Host
         _navigationEvent.value = Event(NavDirections.JoinParty)
     }
@@ -40,7 +45,8 @@ class SplashScreenViewModel(private val sharedPrefDataSource: SharedPrefDataSour
      * Call when start party is pressed
      */
     fun onStartPartyPressed() {
-        if (sharedPrefDataSource.spotifyAuthToken != null) {
+        val existingToken = getKoin().getProperty("authToken")
+        if (existingToken != null) {
             sharedPrefDataSource.userMode = UserMode.Host
             _navigationEvent.value = Event(NavDirections.JoinParty)
         } else {

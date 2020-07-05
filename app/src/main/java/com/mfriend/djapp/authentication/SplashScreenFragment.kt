@@ -67,7 +67,7 @@ class SplashScreenFragment : Fragment() {
         val response = AuthenticationClient.getResponse(resultCode, data)
 
         when (response.type) {
-            AuthenticationResponse.Type.TOKEN -> splashViewModel.onAuthSuccess(response.accessToken)
+            AuthenticationResponse.Type.TOKEN -> splashViewModel.onAuthSuccess(response)
             AuthenticationResponse.Type.ERROR -> handleResponseError(response)
             else -> Timber.e("Got different response type: ${response.type}")
         }

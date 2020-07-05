@@ -37,6 +37,7 @@ class PlaylistViewModel(private val spotifyApi: SpotifyApi) : ViewModel() {
         emit(emptyList<PlaylistDto>().right())
         emit(
             spotifyApi.getUsersPlaylists().map { it.items }.mapLeft {
+                Timber.e("Something went wrong $it")
                 if (it is ErrorResponse.ApiError) it.body.error else null
             }
         )
